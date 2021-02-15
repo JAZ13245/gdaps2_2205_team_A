@@ -8,7 +8,7 @@ _This README contains basic information about the project and its artifacts. If 
 - MEMBER2
 - Ryan P
 - MEMBER4
-- MEMBER5
+- Evan Riley
 
 ## Repo Organization
 - [game/](game/) - Contains the main MonoGame project. Notes about how to run the game are in [game/README.md](game/README.md).

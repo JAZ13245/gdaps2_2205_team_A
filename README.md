@@ -5,9 +5,9 @@ _This README contains basic information about the project and its artifacts. If 
 
 ## Team Members
 - James Z
-- MEMBER2
 - Andrew Clark
-- MEMBER4
+- Ryan Patterson
+- MEMBER4 [shep]
 - Evan Riley
 
 ## Repo Organization

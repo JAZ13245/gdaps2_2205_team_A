@@ -7,7 +7,7 @@ _This README contains basic information about the project and its artifacts. If 
 - James Zilberman
 - Andrew Clark
 - Ryan Patterson
-- MEMBER4 [shep]
+- Shep Will
 - Evan Riley
 
 ## Repo Organization

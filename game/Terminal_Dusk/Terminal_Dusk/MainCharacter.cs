@@ -19,7 +19,7 @@ namespace Terminal_Dusk
     }
     class MainCharacter
     {
-        Vector2 mcLoc;       // Mario's location on the screen
+        Vector2 mcLoc;       // Mc's location on the screen
         McState state;
     }
 }

@@ -9,7 +9,22 @@ namespace Terminal_Dusk
 {
     class Enemy : GameObject
     {
-        //uncomment code and change as necessary
+        private int health;
+        private int strength;
+        private int speed;
+        private Texture2D spriteSheet;
+        private int[] drops;
+        private EnemyState currentState;
+        private enum EnemyState
+        {
+            Idle,
+            IdleBehaviour,
+            Hostile,
+            Attacking,
+            Dying
+        }
+
+
         public Enemy(Texture2D sprite, Rectangle location) : base(sprite, location)
         {
         }
@@ -23,6 +38,11 @@ namespace Terminal_Dusk
             }
             return false;
         }
+
+
+
+
+
 
         public override void Update(GameTime gameTime)
         {

@@ -17,8 +17,8 @@ namespace Terminal_Dusk
         private GameState currentState;
         private SpriteFont LabelFont;
         private bool wasMainOrPause = false;
-        //for drawing the MC
-        private Player mc;
+        //for drawing the player
+        private Player player;
         // User input fields
         private KeyboardState kbState;
         private KeyboardState prevKbState;
@@ -50,7 +50,7 @@ namespace Terminal_Dusk
             // TODO: use this.Content to load your game content here
             LabelFont = this.Content.Load<SpriteFont>("LabelFont");
             // Sets up the mario location
-            Vector2 mcLoc = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
 
 
 

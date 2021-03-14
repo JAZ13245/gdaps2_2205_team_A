@@ -18,7 +18,7 @@ namespace Terminal_Dusk
         private SpriteFont LabelFont;
         private bool wasMainOrPause = false;
         //for drawing the MC
-        private MainCharacter mc;
+        private Player mc;
         // User input fields
         private KeyboardState kbState;
         private KeyboardState prevKbState;

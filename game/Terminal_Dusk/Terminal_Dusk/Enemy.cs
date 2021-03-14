@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Terminal_Dusk
 {
-    class Enemies : GameObject
+    class Enemy : GameObject
     {
         //uncomment code and change as necessary
         /*public Enemies(Texture2D sprite, Rectangle location) : base(sprite, location)

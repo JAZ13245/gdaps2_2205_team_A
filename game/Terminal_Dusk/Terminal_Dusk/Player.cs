@@ -17,7 +17,7 @@ namespace Terminal_Dusk
         CrouchRight,
         CrouchLeft // Add state(s) to support crouching
     }
-    class MainCharacter
+    class Player
     {
         Vector2 mcLoc;       // Mc's location on the screen
         McState state;

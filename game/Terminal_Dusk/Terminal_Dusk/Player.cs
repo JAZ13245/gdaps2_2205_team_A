@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 namespace Terminal_Dusk
 {
     // Mario State enum
-    enum McState
+    enum PlayerState
     {
         FaceLeft,
         WalkLeft,
@@ -19,7 +19,7 @@ namespace Terminal_Dusk
     }
     class Player
     {
-        Vector2 mcLoc;       // Mc's location on the screen
-        McState state;
+        Vector2 playerLoc;       // Mc's location on the screen
+        PlayerState state;
     }
 }

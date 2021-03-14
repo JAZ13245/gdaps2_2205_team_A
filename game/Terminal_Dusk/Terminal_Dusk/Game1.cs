@@ -15,7 +15,7 @@ namespace Terminal_Dusk
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private GameState currentState;
-        private SpriteFont LabelFont;
+        private SpriteFont labelFont;
         private bool wasMainOrPause = false;
         //for drawing the player
         private Player player;
@@ -48,7 +48,7 @@ namespace Terminal_Dusk
 
 
             // TODO: use this.Content to load your game content here
-            LabelFont = this.Content.Load<SpriteFont>("LabelFont");
+            labelFont = this.Content.Load<SpriteFont>("LabelFont");
             // Sets up the mario location
             Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
 
@@ -99,30 +99,30 @@ namespace Terminal_Dusk
             switch (currentState)
             {
                 case GameState.MainMenu:
-                    _spriteBatch.DrawString(LabelFont, "This is the Main Menu", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(LabelFont, "Press O for the Options Menu, S for Save Files, or Escape to Exit", new Vector2(5, 25), Color.White);
+                    _spriteBatch.DrawString(labelFont, "This is the Main Menu", new Vector2(5, 5), Color.White);
+                    _spriteBatch.DrawString(labelFont, "Press O for the Options Menu, S for Save Files, or Escape to Exit", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.SaveFileMenu:
-                    _spriteBatch.DrawString(LabelFont, "This is the Save Files Menu", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(LabelFont, "Press M for the Main Menu or LMB to go to GamePlay", new Vector2(5, 25), Color.White);
+                    _spriteBatch.DrawString(labelFont, "This is the Save Files Menu", new Vector2(5, 5), Color.White);
+                    _spriteBatch.DrawString(labelFont, "Press M for the Main Menu or LMB to go to GamePlay", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.GamePlayState:
-                    _spriteBatch.DrawString(LabelFont, "This is the Game Play State", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(LabelFont, "Press P to pause", new Vector2(5, 25), Color.White);
+                    _spriteBatch.DrawString(labelFont, "This is the Game Play State", new Vector2(5, 5), Color.White);
+                    _spriteBatch.DrawString(labelFont, "Press P to pause", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.PauseMenu:
-                    _spriteBatch.DrawString(LabelFont, "This is the pause Menu", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(LabelFont, "Press M for the Main Menu, O for options, or Escape to Exit", new Vector2(5, 25), Color.White);
+                    _spriteBatch.DrawString(labelFont, "This is the pause Menu", new Vector2(5, 5), Color.White);
+                    _spriteBatch.DrawString(labelFont, "Press M for the Main Menu, O for options, or Escape to Exit", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.OptionsMenu:
-                    _spriteBatch.DrawString(LabelFont, "This is the Options Menu", new Vector2(5, 5), Color.White);
+                    _spriteBatch.DrawString(labelFont, "This is the Options Menu", new Vector2(5, 5), Color.White);
                     if(wasMainOrPause)
                     {
-                        _spriteBatch.DrawString(LabelFont, "Press M for the Main Menu", new Vector2(5, 25), Color.White);
+                        _spriteBatch.DrawString(labelFont, "Press M for the Main Menu", new Vector2(5, 25), Color.White);
                     }
                     else
                     {
-                        _spriteBatch.DrawString(LabelFont, "Press P for the Pause Menu", new Vector2(5, 25), Color.White);
+                        _spriteBatch.DrawString(labelFont, "Press P for the Pause Menu", new Vector2(5, 25), Color.White);
                     }
                     break;
                 case GameState.ExitGame:

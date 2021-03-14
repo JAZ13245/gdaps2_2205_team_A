@@ -9,7 +9,7 @@ namespace Terminal_Dusk
 {
     abstract class GameObject
     {
-        private Rectangle position;
+        protected Rectangle position;
         protected Texture2D image;
 
         //propertie(s) for the position  field

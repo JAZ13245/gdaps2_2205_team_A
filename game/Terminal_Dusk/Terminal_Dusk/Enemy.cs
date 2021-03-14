@@ -9,13 +9,12 @@ namespace Terminal_Dusk
 {
     class Enemy : GameObject
     {
-        private int health;
-        private int strength;
-        private int speed;
-        private Texture2D spriteSheet;
-        private int[] drops;
-        private EnemyState currentState;
-        private enum EnemyState
+        protected int health;
+        protected int strength;
+        protected int speed;
+        protected int[] drops;
+        protected EnemyState currentState;
+        protected enum EnemyState
         {
             Idle,
             IdleBehaviour,
@@ -27,9 +26,11 @@ namespace Terminal_Dusk
 
         public Enemy(Texture2D sprite, Rectangle location) : base(sprite, location)
         {
+            image = sprite;
+            position = location;
         }
-
-        //a method to check if the player and the enviornment are touching       
+        
+        //a method to check if the enemy is touching another game object
         public bool CheckCollision(GameObject check)//some class or object inside the parantehses 
         {
             if (this.Position.Intersects(check.Position))
@@ -46,8 +47,53 @@ namespace Terminal_Dusk
 
         public override void Update(GameTime gameTime)
         {
+            switch(currentState)
+            {
+                case EnemyState.Idle:
+                    break;
 
+                case EnemyState.IdleBehaviour:
+                    break;
+
+                case EnemyState.Hostile:
+                    break;
+                
+                case EnemyState.Attacking:
+                    break;
+                
+                case EnemyState.Dying:
+                    break;
+                
+                default:
+                    break;
+            }
         }
+
+        public override void Draw(SpriteBatch sb)
+        {
+            switch (currentState)
+            {
+                case EnemyState.Idle:
+                    break;
+
+                case EnemyState.IdleBehaviour:
+                    break;
+
+                case EnemyState.Hostile:
+                    break;
+
+                case EnemyState.Attacking:
+                    break;
+
+                case EnemyState.Dying:
+                    break;
+
+                default:
+                    break;
+            }
+            base.Draw(sb);
+        }
+
 
         public override void Save(string filename)
         {

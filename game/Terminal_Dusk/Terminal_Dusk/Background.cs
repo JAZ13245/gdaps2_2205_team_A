@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Terminal_Dusk
 {
-    class Bakcground
+    class Background
     {
     }
 }

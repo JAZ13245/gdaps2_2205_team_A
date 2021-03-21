@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Terminal_Dusk
 {
-    class Imp
+    class Imp //: Enemy (will add when I start working on this enemy)
     {
     }
 }

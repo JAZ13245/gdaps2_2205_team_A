@@ -95,15 +95,9 @@ namespace Terminal_Dusk
         }
 
 
-        public override void Save(string filename)
-        {
-
-        }
+        public override void Save(string filename){}
         
-        public override void Load(string filename)
-        {
-
-        }
+        public override void Load(string filename){}
         
     }
 }

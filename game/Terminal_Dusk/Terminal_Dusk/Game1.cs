@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
+using Terminal_Dusk.Environments;
 
 namespace Terminal_Dusk
 {
@@ -39,6 +40,10 @@ namespace Terminal_Dusk
 
         //field for timer
         private double timer;
+
+        //SkyBackground object
+        private SkyBackground skyBackground;
+        private Texture2D skyTexture;
 
         public Game1()
         {
@@ -91,6 +96,9 @@ namespace Terminal_Dusk
             buttons[0].OnLeftButtonClick += GoToSaveMenu;
             buttons[1].OnLeftButtonClick += ExitGame;
 
+            //Sky Background
+            skyTexture = Content.Load<Texture2D>("SkyBackground");
+            skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*3 - 2001*3, 320*3, 2001*3), currentState);
         }
 
         protected override void Update(GameTime gameTime)
@@ -123,6 +131,8 @@ namespace Terminal_Dusk
                     ProcessGamePlayState(kbState);
                     double temptimer = timer;
                     timer = temptimer - gameTime.ElapsedGameTime.TotalSeconds;
+                    //Sky Background
+                    skyBackground.Update(gameTime);
                     break;
                 case GameState.ExitGame:
                     break;
@@ -152,9 +162,11 @@ namespace Terminal_Dusk
                     break;
                 case GameState.SaveFileMenu:
                     _spriteBatch.DrawString(labelFont, "This is the Save Files Menu", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(labelFont, "Press M for the Main Menu or P to go to GamePlay", new Vector2(5, 25), Color.White);
+                    _spriteBatch.DrawString(labelFont, "Press M for the Main Menu or G to go to GamePlay", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.GamePlayState:
+                    //Sky background (not working)
+                    skyBackground.Draw(_spriteBatch);
                     _spriteBatch.DrawString(labelFont, "This is the Game Play State", new Vector2(5, 5), Color.White);
                     _spriteBatch.DrawString(labelFont, "Press P to pause", new Vector2(5, 25), Color.White);
                     break;
@@ -247,7 +259,7 @@ namespace Terminal_Dusk
             {
                 currentState = GameState.MainMenu;
             }
-            if (SingleKeyPress(Keys.P, kbState))
+            if (SingleKeyPress(Keys.G, kbState))
             {
                 currentState = GameState.GamePlayState;
             }

@@ -32,8 +32,13 @@ namespace Terminal_Dusk
         //fields for button class
         private SpriteFont buttonFont;
         private List<Button> buttons = new List<Button>();
-        private Color bgColor = Color.White;
-        private Random rng = new Random();
+
+        //fields for background class
+        private List<Background> backgrounds = new List<Background>();
+        private List<Texture2D> backImgs = new List<Texture2D>();
+
+        //field for timer
+        private double timer;
 
         public Game1()
         {
@@ -46,8 +51,8 @@ namespace Terminal_Dusk
         {
             // TODO: Add your initialization logic here
             currentState = GameState.MainMenu;
-            _graphics.PreferredBackBufferWidth = 500;
-            _graphics.PreferredBackBufferHeight = 500;
+            _graphics.PreferredBackBufferWidth = 960;
+            _graphics.PreferredBackBufferHeight = 540;
             _graphics.ApplyChanges();
             base.Initialize();
         }
@@ -56,7 +61,8 @@ namespace Terminal_Dusk
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-
+            //background images
+            backImgs.Add(Content.Load<Texture2D>("TitleScreen1"));
             // TODO: use this.Content to load your game content here
             labelFont = this.Content.Load<SpriteFont>("LabelFont");
             // Sets up the mario location
@@ -64,19 +70,24 @@ namespace Terminal_Dusk
             //font for the button
             buttonFont = Content.Load<SpriteFont>("LabelFont");
 
+            //adding background(s)
+            backgrounds.Add(new Background(backImgs[0],
+                    new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height)));
+            //adding buttons
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
-                    new Rectangle(10, 40, 200, 100),    // where to put the button
+                    new Rectangle(10, 40, 100, 50),    // where to put the button
                     "Start",                        // button label
                     buttonFont,                               // label font
                     Color.Purple));
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(10, 150, 200, 100),
+                    new Rectangle(10, 150, 100, 50),
                     "Exit",
                     buttonFont,
                     Color.Purple));
 
+            //main menu buttons
             buttons[0].OnLeftButtonClick += GoToSaveMenu;
             buttons[1].OnLeftButtonClick += ExitGame;
 
@@ -94,6 +105,10 @@ namespace Terminal_Dusk
             {
                 case GameState.MainMenu:
                     ProcessMainMenu(kbState);
+                    for (int i = 0; i < 2; i++)
+                    {
+                        buttons[i].Update();
+                    }
                     break;
                 case GameState.PauseMenu:
                     ProcessPauseMenu(kbState);
@@ -106,6 +121,8 @@ namespace Terminal_Dusk
                     break;
                 case GameState.GamePlayState:
                     ProcessGamePlayState(kbState);
+                    double temptimer = timer;
+                    timer = temptimer - gameTime.ElapsedGameTime.TotalSeconds;
                     break;
                 case GameState.ExitGame:
                     break;
@@ -127,10 +144,15 @@ namespace Terminal_Dusk
                 case GameState.MainMenu:
                     _spriteBatch.DrawString(labelFont, "This is the Main Menu", new Vector2(5, 5), Color.White);
                     _spriteBatch.DrawString(labelFont, "Press O for the Options Menu, S for Save Files, or Escape to Exit", new Vector2(5, 25), Color.White);
+                    backgrounds[0].Draw(_spriteBatch);
+                    for (int i = 0; i < 2; i++)
+                    {
+                        buttons[i].Draw(_spriteBatch);
+                    }
                     break;
                 case GameState.SaveFileMenu:
                     _spriteBatch.DrawString(labelFont, "This is the Save Files Menu", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(labelFont, "Press M for the Main Menu or LMB to go to GamePlay", new Vector2(5, 25), Color.White);
+                    _spriteBatch.DrawString(labelFont, "Press M for the Main Menu or P to go to GamePlay", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.GamePlayState:
                     _spriteBatch.DrawString(labelFont, "This is the Game Play State", new Vector2(5, 5), Color.White);
@@ -154,6 +176,7 @@ namespace Terminal_Dusk
                 case GameState.ExitGame:
                     break;
             }
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
@@ -224,7 +247,7 @@ namespace Terminal_Dusk
             {
                 currentState = GameState.MainMenu;
             }
-            if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
+            if (SingleKeyPress(Keys.P, kbState))
             {
                 currentState = GameState.GamePlayState;
             }

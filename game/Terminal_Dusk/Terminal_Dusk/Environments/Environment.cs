@@ -9,9 +9,14 @@ namespace Terminal_Dusk
 {
     class Environment : GameObject
     {
+        private Texture2D sprite;
+        private Rectangle location;
+
         //uncomment code and change as necessary
         public Environment(Texture2D sprite, Rectangle location) : base(sprite, location)
         {
+            this.sprite = sprite;
+            this.location = location;
         }
 
         //a method to check if the player and the enviornment are touching       

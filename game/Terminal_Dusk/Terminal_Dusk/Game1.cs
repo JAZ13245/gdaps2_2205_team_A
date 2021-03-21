@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using System;
 
 namespace Terminal_Dusk
 {
@@ -17,13 +19,21 @@ namespace Terminal_Dusk
         private GameState currentState;
         private SpriteFont labelFont;
         private bool wasMainOrPause = false;
+        
         //for drawing the player
         private Player player;
+        
         // User input fields
         private KeyboardState kbState;
         private KeyboardState prevKbState;
         private MouseState mouseState;
         private MouseState prevMouseState;
+
+        //fields for button class
+        private SpriteFont buttonFont;
+        private List<Button> buttons = new List<Button>();
+        private Color bgColor = Color.White;
+        private Random rng = new Random();
 
         public Game1()
         {
@@ -51,8 +61,24 @@ namespace Terminal_Dusk
             labelFont = this.Content.Load<SpriteFont>("LabelFont");
             // Sets up the mario location
             Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            //font for the button
+            buttonFont = Content.Load<SpriteFont>("LabelFont");
 
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,           // device to create a custom texture
+                    new Rectangle(10, 40, 200, 100),    // where to put the button
+                    "Start",                        // button label
+                    buttonFont,                               // label font
+                    Color.Purple));
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(10, 150, 200, 100),
+                    "Exit",
+                    buttonFont,
+                    Color.Purple));
 
+            buttons[0].OnLeftButtonClick += GoToSaveMenu;
+            buttons[1].OnLeftButtonClick += ExitGame;
 
         }
 
@@ -211,6 +237,17 @@ namespace Terminal_Dusk
             {
                 currentState = GameState.PauseMenu;
             }
+        }
+
+        //method to go to save menu with the button
+        private void GoToSaveMenu()
+        {
+            currentState = GameState.SaveFileMenu;
+        }
+        //method to exit the game with the button
+        private void ExitGame()
+        {
+            currentState = GameState.ExitGame;
         }
 
 

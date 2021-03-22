@@ -15,6 +15,11 @@ namespace Terminal_Dusk.Environments
         //private double timer;
         GameState state;
 
+        public GameState State
+        {
+            set { state = value; }
+        }
+
         public SkyBackground(Texture2D sprite, Rectangle location, GameState state) : base(sprite, location)
         {
             this.sprite = sprite;
@@ -28,8 +33,18 @@ namespace Terminal_Dusk.Environments
             if(state == GameState.GamePlayState)
             {
                 //timer = gameTime.ElapsedGameTime.TotalSeconds;
-
-                location.Y += 50;
+                if(location.Y < 1350*3 - 2012*3) //to sunset
+                {
+                    location.Y += 1;
+                }
+                else if(location.Y >= 1350 * 3 - 2012 * 3 && location.Y < 1422*3 - 2012 * 3) //-651 -579
+                {
+                    location.Y = 1512 * 3 - 2012 * 3; //-489
+                }
+                else if(location.Y >= 1512 * 3 - 2012 * 3 && !(location.Y >= 0))
+                {
+                    location.Y += 1;
+                }
             }
         }
 

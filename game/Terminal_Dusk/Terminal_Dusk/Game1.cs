@@ -98,7 +98,7 @@ namespace Terminal_Dusk
 
             //Sky Background
             skyTexture = Content.Load<Texture2D>("SkyBackground");
-            skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*3 - 2001*3, 320*3, 2001*3), currentState);
+            skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*3 - 2012*3, 320*3, 2012*3), currentState);
         }
 
         protected override void Update(GameTime gameTime)
@@ -139,6 +139,9 @@ namespace Terminal_Dusk
                 default:
                     break;
             }
+
+            //Updates the game state in SkyBackground
+            skyBackground.State = currentState;
 
             base.Update(gameTime);
         }
@@ -223,6 +226,10 @@ namespace Terminal_Dusk
         private void ProcessPauseMenu(KeyboardState kbState)
         {
             kbState = Keyboard.GetState();
+            if (SingleKeyPress(Keys.P, kbState))
+            {
+                currentState = GameState.GamePlayState;
+            }
             if (SingleKeyPress(Keys.M, kbState))
             {
                 currentState = GameState.MainMenu;

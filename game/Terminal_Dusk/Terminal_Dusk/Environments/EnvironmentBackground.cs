@@ -5,49 +5,49 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-
 namespace Terminal_Dusk.Environments
 {
-    class SkyBackground : Environment
+    class EnvironmentBackground : Environment
     {
         private Texture2D sprite;
         private Rectangle location;
-        //private double timer;
         GameState state;
+        PlayerState playerState;
 
         public GameState State
         {
             set { state = value; }
         }
 
-        public SkyBackground(Texture2D sprite, Rectangle location, GameState state) : base(sprite, location)
+        public PlayerState PlayerState
+        {
+            set { playerState = value; }
+        }
+
+        public EnvironmentBackground(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState) : base(sprite, location)
         {
             this.sprite = sprite;
             this.location = location;
-            //timer = 0;
             this.state = state;
+            this.playerState = playerState;
         }
 
         public override void Update(GameTime gameTime)
         {
-            if(state == GameState.GamePlayState)
+            //Should be tied to player state
+            if (state == GameState.MainMenu)
             {
-                if (state == GameState.MainMenu)
+                Reset();
+            }
+            if (state == GameState.GamePlayState)
+            {
+                if (playerState == PlayerState.WalkRight)
                 {
-                    Reset();
+                    location.X -= 1;
                 }
-                //timer = gameTime.ElapsedGameTime.TotalSeconds;
-                if (location.Y < 1350*3 - 2012*3) //to sunset
+                else if (playerState == PlayerState.WalkLeft)
                 {
-                    location.Y += 1;
-                }
-                else if(location.Y >= 1350 * 3 - 2012 * 3 && location.Y < 1422*3 - 2012 * 3) //-651 -579
-                {
-                    location.Y = 1512 * 3 - 2012 * 3; //-489
-                }
-                else if(location.Y >= 1512 * 3 - 2012 * 3 && !(location.Y >= 0))
-                {
-                    location.Y += 1;
+                    location.X += 1;
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace Terminal_Dusk.Environments
         public void Reset()
         {
             location.X = 0;
-            location.Y = 90 * 3 - 2012 * 3;
+            location.Y = 0;
         }
     }
 }

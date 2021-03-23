@@ -20,9 +20,13 @@ namespace Terminal_Dusk
         private GameState currentState;
         private SpriteFont labelFont;
         private bool wasMainOrPause = false;
+
+        //Adjust screen size, should be added to options.
+        private double screenSize;
         
         //for drawing the player
         private Player player;
+        private Texture2D playerSpreadSheet;
         
         // User input fields
         private KeyboardState kbState;
@@ -44,6 +48,9 @@ namespace Terminal_Dusk
         //SkyBackground object
         private SkyBackground skyBackground;
         private Texture2D skyTexture;
+        //GameBackground
+        private EnvironmentBackground gameBackground;
+        private Texture2D backgroundTexture;
 
         public Game1()
         {
@@ -70,8 +77,7 @@ namespace Terminal_Dusk
             backImgs.Add(Content.Load<Texture2D>("TitleScreen1"));
             // TODO: use this.Content to load your game content here
             labelFont = this.Content.Load<SpriteFont>("LabelFont");
-            // Sets up the mario location
-            Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+            
             //font for the button
             buttonFont = Content.Load<SpriteFont>("LabelFont");
 
@@ -96,9 +102,20 @@ namespace Terminal_Dusk
             buttons[0].OnLeftButtonClick += GoToSaveMenu;
             buttons[1].OnLeftButtonClick += ExitGame;
 
+            //Game State Loads
+
+            // Sets up the player location
+            Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 50*3);
+            playerSpreadSheet = Content.Load<Texture2D>("pixel_charTest");
+            player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight);
+
             //Sky Background
             skyTexture = Content.Load<Texture2D>("SkyBackground");
             skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*3 - 2012*3, 320*3, 2012*3), currentState);
+
+            //Background
+            backgroundTexture = Content.Load<Texture2D>("TestScroll");
+            gameBackground = new EnvironmentBackground(backgroundTexture, new Rectangle(0, 0, 437*3, 180*3), currentState, player.State);
         }
 
         protected override void Update(GameTime gameTime)
@@ -118,22 +135,116 @@ namespace Terminal_Dusk
                         buttons[i].Update();
                     }
                     break;
+
                 case GameState.PauseMenu:
                     ProcessPauseMenu(kbState);
                     break;
+
                 case GameState.OptionsMenu:
                     ProcessOptionsMenu(kbState);
                     break;
+
                 case GameState.SaveFileMenu:
                     ProcessSaveFileMenu(kbState, mouseState);
                     break;
+
                 case GameState.GamePlayState:
                     ProcessGamePlayState(kbState);
                     double temptimer = timer;
                     timer = temptimer - gameTime.ElapsedGameTime.TotalSeconds;
-                    //Sky Background
+                    //Background
                     skyBackground.Update(gameTime);
+                    gameBackground.Update(gameTime);
+
+                    player.UpdateAnimation(gameTime);//animation update
+                    //Logic should be moved and handled in Player class, just copy/pasted for ease
+                    switch (player.State)
+                    {
+                        case PlayerState.FaceLeft:
+                            //Changes direction
+                            if (kbState.IsKeyDown(Keys.D) && prevKbState.IsKeyUp(Keys.D))
+                            {
+                                player.State = PlayerState.FaceRight;
+                            }
+                            //Transitions to walking
+                            else if (kbState.IsKeyDown(Keys.A) && prevKbState.IsKeyDown(Keys.A))
+                            {
+                                player.State = PlayerState.WalkLeft;
+                            }
+                            //Transitions to crouching
+                            else if (kbState.IsKeyDown(Keys.S) && prevKbState.IsKeyUp(Keys.S))
+                            {
+                                player.State = PlayerState.CrouchLeft;
+                            }
+
+                            break;
+                        case PlayerState.WalkLeft:
+                            //Moves Mario left
+                            if (kbState.IsKeyDown(Keys.A))
+                            {
+                                //mario.X -= 3;
+                            }
+                            
+                            //Transitions to standing
+                            else
+                            {
+                                player.State = PlayerState.FaceLeft;
+                            }
+                            break;
+                        case PlayerState.FaceRight:
+                            //Changes direction
+                            if (kbState.IsKeyDown(Keys.A) && prevKbState.IsKeyUp(Keys.A))
+                            {
+                                player.State = PlayerState.FaceLeft;
+                            }
+                            //Transitions to walking
+                            else if (kbState.IsKeyDown(Keys.D))
+                            {
+                                player.State = PlayerState.WalkRight;
+                            }
+                            //Transitions to crouching
+                            else if (kbState.IsKeyDown(Keys.S) && prevKbState.IsKeyUp(Keys.S))
+                            {
+                                player.State = PlayerState.CrouchRight;
+                            }
+                            break;
+                        case PlayerState.WalkRight:
+                            //Moves Mario right
+                            if (kbState.IsKeyDown(Keys.D))
+                            {
+                                //player.X += 3;
+                            }
+                            //Transitions to standing
+                            else
+                            {
+                                player.State = PlayerState.FaceRight;
+                            }
+                            break;
+                        case PlayerState.CrouchLeft:
+                            if (kbState.IsKeyDown(Keys.S))
+                            {
+                                //Should change location player is drawn to be lower
+                            }
+                            //Transitions to standing
+                            else
+                            {
+                                player.State = PlayerState.FaceLeft;
+                            }
+                            break;
+                        case PlayerState.CrouchRight:
+                            if (kbState.IsKeyDown(Keys.S))
+                            {
+                                //Should change location player is drawn to be lower
+                            }
+                            //Transitions to standing
+                            else
+                            {
+                                player.State = PlayerState.FaceRight;
+                            }
+                            break;
+                    }
                     break;
+
                 case GameState.ExitGame:
                     break;
                 default:
@@ -142,7 +253,10 @@ namespace Terminal_Dusk
 
             //Updates the game state in SkyBackground
             skyBackground.State = currentState;
+            gameBackground.State = currentState;
+            gameBackground.PlayerState = player.State;
 
+            prevKbState = kbState;
             base.Update(gameTime);
         }
 
@@ -168,8 +282,13 @@ namespace Terminal_Dusk
                     _spriteBatch.DrawString(labelFont, "Press M for the Main Menu or G to go to GamePlay", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.GamePlayState:
-                    //Sky background (not working)
+                    //Sky background
                     skyBackground.Draw(_spriteBatch);
+                    //Background
+                    gameBackground.Draw(_spriteBatch);
+                    //Player
+                    player.Draw(_spriteBatch);
+
                     _spriteBatch.DrawString(labelFont, "This is the Game Play State", new Vector2(5, 5), Color.White);
                     _spriteBatch.DrawString(labelFont, "Press P to pause", new Vector2(5, 25), Color.White);
                     break;
@@ -196,6 +315,7 @@ namespace Terminal_Dusk
 
             base.Draw(gameTime);
         }
+
 
         //A helper method to check single key press
         private bool SingleKeyPress(Keys key, KeyboardState currentKbState)

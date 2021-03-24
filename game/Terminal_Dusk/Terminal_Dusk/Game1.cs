@@ -158,6 +158,7 @@ namespace Terminal_Dusk
 
                     player.UpdateAnimation(gameTime);//animation update
                     //Logic should be moved and handled in Player class, just copy/pasted for ease
+                    //Should be able to go from walking to crouching more easily
                     switch (player.State)
                     {
                         case PlayerState.FaceLeft:

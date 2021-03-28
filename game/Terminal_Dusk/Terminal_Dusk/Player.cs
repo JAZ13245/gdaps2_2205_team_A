@@ -17,7 +17,7 @@ namespace Terminal_Dusk
         CrouchRight,
         CrouchLeft // Add state(s) to support crouching
     }
-    class Player
+    class Player 
     {
         Vector2 playerLoc;  // Mc's location on the screen
         PlayerState state;
@@ -73,7 +73,7 @@ namespace Terminal_Dusk
         }
 
         //the constructor
-        public Player(Texture2D spriteSheet, Vector2 playerLoc, PlayerState startingState)
+        public Player(Texture2D spriteSheet, Vector2 playerLoc, PlayerState startingState) 
         {
             this.spriteSheet = spriteSheet;
             this.playerLoc = playerLoc;
@@ -187,6 +187,10 @@ namespace Terminal_Dusk
                 0.5f,
                 flipSprite,
                 0);
+        }
+
+        public void Save() 
+        { 
         }
     }
 }

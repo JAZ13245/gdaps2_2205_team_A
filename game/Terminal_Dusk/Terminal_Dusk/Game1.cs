@@ -39,7 +39,7 @@ namespace Terminal_Dusk
         private List<Button> buttons = new List<Button>();
 
         //fields for background class
-        private List<Background> backgrounds = new List<Background>();
+        private List<Environment> backgrounds = new List<Environment>();
         private List<Texture2D> backImgs = new List<Texture2D>();
 
         //field for timer
@@ -82,7 +82,7 @@ namespace Terminal_Dusk
             buttonFont = Content.Load<SpriteFont>("LabelFont");
 
             //adding background(s)
-            backgrounds.Add(new Background(backImgs[0],
+            backgrounds.Add(new Environment(backImgs[0],
                     new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height)));
             //adding buttons
             buttons.Add(new Button(
@@ -105,17 +105,17 @@ namespace Terminal_Dusk
             //Game State Loads
 
             // Sets up the player location
-            Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 50*3);
+            Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 50*3);//3 is scale
             playerSpreadSheet = Content.Load<Texture2D>("pixel_charTest");
             player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight);
 
             //Sky Background
             skyTexture = Content.Load<Texture2D>("SkyBackground");
-            skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*3 - 2012*3, 320*3, 2012*3), currentState);
+            skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*3 - 2012*3, 320*3, 2012*3), currentState);//3 is scale
 
             //Background
             backgroundTexture = Content.Load<Texture2D>("TestScroll");
-            gameBackground = new EnvironmentBackground(backgroundTexture, new Rectangle(0, 0, 437*3, 180*3), currentState, player.State);
+            gameBackground = new EnvironmentBackground(backgroundTexture, new Rectangle(0, 0, 437*3, 180*3), currentState, player.State);//3 is scale
         }
 
         protected override void Update(GameTime gameTime)

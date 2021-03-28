@@ -35,7 +35,7 @@ namespace Terminal_Dusk
 
         public override string ToString()
         {
-            return base.ToString();
+            return ($"Enemy:Slime({position}) - HP:{health} - State:{currentState}");
         }
 
         public override void Update(GameTime gameTime)

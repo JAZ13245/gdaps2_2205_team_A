@@ -74,7 +74,7 @@ namespace Terminal_Dusk
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //background images
-            backImgs.Add(Content.Load<Texture2D>("TitleScreen1"));
+            backImgs.Add(Content.Load<Texture2D>("TitleScreen1Scale"));
             // TODO: use this.Content to load your game content here
             labelFont = this.Content.Load<SpriteFont>("LabelFont");
             
@@ -83,7 +83,7 @@ namespace Terminal_Dusk
 
             //adding background(s)
             backgrounds.Add(new Background(backImgs[0],
-                    new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height)));
+                    new Rectangle(0, 0, 320*3, 180*3)));
             //adding buttons
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
@@ -106,15 +106,15 @@ namespace Terminal_Dusk
 
             // Sets up the player location
             Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 50*3);
-            playerSpreadSheet = Content.Load<Texture2D>("pixel_charTest");
+            playerSpreadSheet = Content.Load<Texture2D>("pixel_charTestScale");
             player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight);
 
             //Sky Background
-            skyTexture = Content.Load<Texture2D>("SkyBackground");
-            skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*3 - 2012*3, 320*3, 2012*3), currentState);
+            skyTexture = Content.Load<Texture2D>("SkyBackgroundScale");
+            skyBackground = new SkyBackground(skyTexture, new Rectangle(0, (90*6) -(2012*3), 320*3, 2012*3), currentState);
 
             //Background
-            backgroundTexture = Content.Load<Texture2D>("TestScroll");
+            backgroundTexture = Content.Load<Texture2D>("TestScrollScale");
             gameBackground = new EnvironmentBackground(backgroundTexture, new Rectangle(0, 0, 437*3, 180*3), currentState, player.State);
         }
 
@@ -180,10 +180,10 @@ namespace Terminal_Dusk
 
                             break;
                         case PlayerState.WalkLeft:
-                            //Moves Mario left
+                            //Moves player left
                             if (kbState.IsKeyDown(Keys.A))
                             {
-                                //mario.X -= 3;
+                                //player.X -= 3;
                             }
                             
                             //Transitions to standing
@@ -210,7 +210,7 @@ namespace Terminal_Dusk
                             }
                             break;
                         case PlayerState.WalkRight:
-                            //Moves Mario right
+                            //Moves player right
                             if (kbState.IsKeyDown(Keys.D))
                             {
                                 //player.X += 3;
@@ -225,6 +225,7 @@ namespace Terminal_Dusk
                             if (kbState.IsKeyDown(Keys.S))
                             {
                                 //Should change location player is drawn to be lower
+                                
                             }
                             //Transitions to standing
                             else

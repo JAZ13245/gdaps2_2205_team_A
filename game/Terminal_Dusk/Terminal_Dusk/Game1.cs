@@ -84,7 +84,7 @@ namespace Terminal_Dusk
             buttonFont = Content.Load<SpriteFont>("LabelFont");
 
             //adding background(s)
-            backgrounds.Add(new Background(backImgs[0],
+            backgrounds.Add(new Environment(backImgs[0],
                     new Rectangle(0, 0, 320*3, 180*3)));
             //adding buttons
             buttons.Add(new Button(
@@ -368,7 +368,7 @@ namespace Terminal_Dusk
             if (SingleKeyPress(Keys.Escape, kbState))
             {
                 currentState = GameState.ExitGame;
-            }y
+            }
         }
         //helper method for OptionsMenu
         //also add a way for the player to change the scale and the keys for movement

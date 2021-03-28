@@ -51,6 +51,8 @@ namespace Terminal_Dusk
         //GameBackground
         private EnvironmentBackground gameBackground;
         private Texture2D backgroundTexture;
+        //A scale for changing the size of the screen
+        private int field;
 
         public Game1()
         {
@@ -142,6 +144,8 @@ namespace Terminal_Dusk
 
                 case GameState.OptionsMenu:
                     ProcessOptionsMenu(kbState);
+
+                    //add a way for the player to change the scale of the screen
                     break;
 
                 case GameState.SaveFileMenu:
@@ -363,9 +367,10 @@ namespace Terminal_Dusk
             if (SingleKeyPress(Keys.Escape, kbState))
             {
                 currentState = GameState.ExitGame;
-            }
+            }y
         }
         //helper method for OptionsMenu
+        //also add a way for the player to change the scale and the keys for movement
         private void ProcessOptionsMenu(KeyboardState kbState)
         {
             kbState = Keyboard.GetState();

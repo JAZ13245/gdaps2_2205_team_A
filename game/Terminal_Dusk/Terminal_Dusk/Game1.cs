@@ -417,6 +417,8 @@ namespace Terminal_Dusk
         private void ExitGame()
         {
             currentState = GameState.ExitGame;
+            //Added so it actually quits
+            Exit();
         }
 
 

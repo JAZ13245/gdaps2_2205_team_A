@@ -284,7 +284,10 @@ namespace Terminal_Dusk
                             {
                                 //mario.X -= 3;
                             }
-
+                            if (kbState.IsKeyDown(rightMove) && prevKbState.IsKeyUp(rightMove))
+                            {
+                                player.State = PlayerState.FaceRight;
+                            }
                             //Transitions to standing
                             else
                             {
@@ -317,6 +320,10 @@ namespace Terminal_Dusk
                             if (kbState.IsKeyDown(rightMove))
                             {
                                 //player.X += 3;
+                            }
+                            if (kbState.IsKeyDown(leftMove) && prevKbState.IsKeyUp(leftMove))
+                            {
+                                player.State = PlayerState.FaceLeft;
                             }
                             //Transitions to standing
                             else

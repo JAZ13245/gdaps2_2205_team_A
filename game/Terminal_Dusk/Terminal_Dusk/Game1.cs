@@ -25,7 +25,11 @@ namespace Terminal_Dusk
         //for drawing the player
         private Player player;
         private Texture2D playerSpreadSheet;
-        
+
+        //for the slime
+        private Slime slime1;
+        private Texture2D slimeSpriteSheet;
+
         // User input fields
         private KeyboardState kbState;
         private KeyboardState prevKbState;
@@ -164,7 +168,7 @@ namespace Terminal_Dusk
 
             //slime enemy
             slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScaled");
-            slime1 = new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2,0, 240,240));
+            slime1 = new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, 0, 240, 240));
 
             //Sky Background
             skyTexture = Content.Load<Texture2D>("SkyBackgroundScale");

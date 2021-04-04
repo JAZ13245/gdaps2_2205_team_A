@@ -51,8 +51,7 @@ namespace Terminal_Dusk
         //GameBackground
         private EnvironmentBackground gameBackground;
         private Texture2D backgroundTexture;
-        //A scale for changing the size of the screen
-        private int field;
+        
 
         public Game1()
         {
@@ -126,8 +125,8 @@ namespace Terminal_Dusk
                 Exit();
 
             // TODO: Add your update logic here
-            KeyboardState kbState = Keyboard.GetState();
-            MouseState mouseState = Mouse.GetState();
+            kbState = Keyboard.GetState();
+            mouseState = Mouse.GetState();
             switch (currentState)
             {
                 case GameState.MainMenu:
@@ -184,6 +183,10 @@ namespace Terminal_Dusk
 
                             break;
                         case PlayerState.WalkLeft:
+                            if (kbState.IsKeyDown(Keys.S) && prevKbState.IsKeyUp(Keys.S))
+                            {
+                                player.State = PlayerState.CrouchLeft;
+                            }
                             //Moves player left
                             if (kbState.IsKeyDown(Keys.A))
                             {
@@ -214,11 +217,16 @@ namespace Terminal_Dusk
                             }
                             break;
                         case PlayerState.WalkRight:
+                            if (kbState.IsKeyDown(Keys.S) && prevKbState.IsKeyUp(Keys.S))
+                            {
+                                player.State = PlayerState.CrouchRight;
+                            }
                             //Moves player right
                             if (kbState.IsKeyDown(Keys.D))
                             {
                                 //player.X += 3;
                             }
+                            
                             //Transitions to standing
                             else
                             {

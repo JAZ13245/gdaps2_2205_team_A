@@ -13,23 +13,25 @@ namespace Terminal_Dusk.Environments
         private Rectangle location;
         GameState state;
         PlayerState playerState;
+        int speed;
 
-        public GameState State
+        public override GameState State
         {
             set { state = value; }
         }
 
-        public PlayerState PlayerState
+        public override PlayerState PlayerState
         {
             set { playerState = value; }
         }
 
-        public EnvironmentBackground(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState) : base(sprite, location)
+        public EnvironmentBackground(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
         {
             this.sprite = sprite;
             this.location = location;
             this.state = state;
             this.playerState = playerState;
+            this.speed = speed;
         }
 
         public override void Update(GameTime gameTime)
@@ -43,11 +45,11 @@ namespace Terminal_Dusk.Environments
             {
                 if (playerState == PlayerState.WalkRight)
                 {
-                    location.X -= 1;
+                    location.X -= speed;
                 }
                 else if (playerState == PlayerState.WalkLeft)
                 {
-                    location.X += 1;
+                    location.X += speed;
                 }
             }
         }

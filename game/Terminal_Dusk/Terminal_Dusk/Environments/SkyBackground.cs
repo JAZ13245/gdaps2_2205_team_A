@@ -15,7 +15,7 @@ namespace Terminal_Dusk.Environments
         //private double timer;
         GameState state;
 
-        public GameState State
+        public override GameState State
         {
             set { state = value; }
         }

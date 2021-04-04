@@ -11,6 +11,18 @@ namespace Terminal_Dusk
     {
         private Texture2D sprite;
         private Rectangle location;
+        GameState state;
+        PlayerState playerState;
+
+        public virtual GameState State
+        {
+            set { state = value; }
+        }
+
+        public virtual PlayerState PlayerState
+        {
+            set { playerState = value; }
+        }
 
         //uncomment code and change as necessary
         public Environment(Texture2D sprite, Rectangle location) : base(sprite, location)

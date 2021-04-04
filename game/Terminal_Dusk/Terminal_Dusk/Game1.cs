@@ -176,6 +176,11 @@ namespace Terminal_Dusk
             slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScaled");
             slime1 = new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, 0, 240, 240));
 
+            //Loading to Environment Texture List
+            envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
+            envirImgs.Add(Content.Load<Texture2D>("TestScrollScale"));
+            envirImgs.Add(Content.Load<Texture2D>("ShrubsScale"));
+
             //Sky Background
             skyBackground = new SkyBackground(envirImgs[0], new Rectangle(0, 90*scale - 2012*scale, 320*scale, 2012*scale), currentState);//3 is scale
             envirHandler = (Environment)skyBackground;

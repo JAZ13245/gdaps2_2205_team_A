@@ -258,7 +258,7 @@ namespace Terminal_Dusk
                     {
                         case PlayerState.FaceLeft:
                             //Changes direction
-                            if (kbState.IsKeyDown(rightMove) && prevKbState.IsKeyUp(rightMove))
+                            if (kbState.IsKeyDown(rightMove) && !kbState.IsKeyDown(leftMove))
                             {
                                 player.State = PlayerState.FaceRight;
                             }
@@ -297,7 +297,7 @@ namespace Terminal_Dusk
                             break;
                         case PlayerState.FaceRight:
                             //Changes direction
-                            if (kbState.IsKeyDown(leftMove) && prevKbState.IsKeyUp(leftMove))
+                            if (kbState.IsKeyDown(leftMove) && !kbState.IsKeyDown(rightMove))
                             {
                                 player.State = PlayerState.FaceLeft;
                             }

@@ -21,8 +21,6 @@ namespace Terminal_Dusk
         private SpriteFont labelFont;
         private bool wasMainOrPause = false;
 
-        //Adjust screen size, should be added to options.
-        private double screenSize;
         
         //for drawing the player
         private Player player;
@@ -76,7 +74,7 @@ namespace Terminal_Dusk
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //background images
-            backImgs.Add(Content.Load<Texture2D>("TitleScreen1"));
+            backImgs.Add(Content.Load<Texture2D>("TitleScreen1Scale"));
             // TODO: use this.Content to load your game content here
             labelFont = this.Content.Load<SpriteFont>("LabelFont");
             
@@ -126,8 +124,8 @@ namespace Terminal_Dusk
                 Exit();
 
             // TODO: Add your update logic here
-            KeyboardState kbState = Keyboard.GetState();
-            MouseState mouseState = Mouse.GetState();
+            kbState = Keyboard.GetState();
+            mouseState = Mouse.GetState();
             switch (currentState)
             {
                 case GameState.MainMenu:
@@ -184,6 +182,10 @@ namespace Terminal_Dusk
 
                             break;
                         case PlayerState.WalkLeft:
+                            if (kbState.IsKeyDown(Keys.S) && prevKbState.IsKeyUp(Keys.S))
+                            {
+                                player.State = PlayerState.CrouchLeft;
+                            }
                             //Moves Mario left
                             if (kbState.IsKeyDown(Keys.A))
                             {
@@ -214,6 +216,10 @@ namespace Terminal_Dusk
                             }
                             break;
                         case PlayerState.WalkRight:
+                            if (kbState.IsKeyDown(Keys.S) && prevKbState.IsKeyUp(Keys.S))
+                            {
+                                player.State = PlayerState.CrouchRight;
+                            }
                             //Moves Mario right
                             if (kbState.IsKeyDown(Keys.D))
                             {
@@ -416,6 +422,8 @@ namespace Terminal_Dusk
         private void ExitGame()
         {
             currentState = GameState.ExitGame;
+            //Added so it actually quits
+            Exit();
         }
 
 

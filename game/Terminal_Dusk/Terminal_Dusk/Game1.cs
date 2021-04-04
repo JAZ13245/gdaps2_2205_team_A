@@ -21,15 +21,10 @@ namespace Terminal_Dusk
         private SpriteFont labelFont;
         private bool wasMainOrPause = false;
 
-        
+
         //for drawing the player
         private Player player;
         private Texture2D playerSpreadSheet;
-
-        //for drawing the slime enemy
-        private Slime slime1;
-        private Texture2D slimeSpriteSheet;
-
         
         // User input fields
         private KeyboardState kbState;
@@ -57,6 +52,15 @@ namespace Terminal_Dusk
         //A scale for changing the size of the screen
         private int scale = 3;
 
+        //options for keyboard controls
+        private Keys rightMove = Keys.D;
+        private Keys leftMove = Keys.A;
+        private Keys crouchMove = Keys.S;
+        private Keys upMove = Keys.W;
+        private bool usingWASD = true;
+        private bool usingArrow = false;
+
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -82,7 +86,7 @@ namespace Terminal_Dusk
             backImgs.Add(Content.Load<Texture2D>("TitleScreen1Scale"));
             // TODO: use this.Content to load your game content here
             labelFont = this.Content.Load<SpriteFont>("LabelFont");
-            
+
             //font for the button
             buttonFont = Content.Load<SpriteFont>("LabelFont");
 
@@ -90,27 +94,71 @@ namespace Terminal_Dusk
             backgrounds.Add(new Environment(backImgs[0],
                     new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height)));
             //adding buttons
+            //main menu start button
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
                     new Rectangle(10, 40, 100, 50),    // where to put the button
                     "Start",                        // button label
                     buttonFont,                               // label font
                     Color.Purple));
+            //main menu exit button
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(10, 260, 100, 50),
+                    "Exit",
+                    buttonFont,
+                    Color.Purple));
+            //main menu options button
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
                     new Rectangle(10, 150, 100, 50),
-                    "Exit",
+                    "Options",
+                    buttonFont,
+                    Color.Purple));
+            //options menu go to main button
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(10, 40, 200, 50),
+                    "Return to Main Menu",
+                    buttonFont,
+                    Color.Purple));
+            //options menu go to pause'
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(10, 40, 200, 50),
+                    "Return to Pause Menu",
+                    buttonFont,
+                    Color.Purple));
+            //options menu change controls
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(10, 150, 200, 50),
+                    "Change WASD Control",
+                    buttonFont,
+                    Color.Purple));
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle(10, 260, 200, 50),
+                    "Change Arrow Keys Control",
                     buttonFont,
                     Color.Purple));
 
             //main menu buttons
             buttons[0].OnLeftButtonClick += GoToSaveMenu;
             buttons[1].OnLeftButtonClick += ExitGame;
+            buttons[2].OnLeftButtonClick += MainOptions;
+            //options menu buttons
+            buttons[3].OnLeftButtonClick += GoToMainMenu;
+            buttons[4].OnLeftButtonClick += GoToPauseMenu;
+            //buttons that change controls
+            buttons[5].OnLeftButtonClick += ChangeToWASD;
+            buttons[6].OnLeftButtonClick += ChangeToArrows;
+
 
             //Game State Loads
 
             // Sets up the player location
-            Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 50*scale);//3 is scale
+            Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 50 * scale);//3 is scale
             playerSpreadSheet = Content.Load<Texture2D>("pixel_charTestScale");
             player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight);
 
@@ -120,11 +168,11 @@ namespace Terminal_Dusk
 
             //Sky Background
             skyTexture = Content.Load<Texture2D>("SkyBackgroundScale");
-            skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*scale - 2012*scale, 320*scale, 2012*scale), currentState);//3 is scale
+            skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90 * scale - 2012 * scale, 320 * scale, 2012 * scale), currentState);//3 is scale
 
             //Background
             backgroundTexture = Content.Load<Texture2D>("TestScrollScale");
-            gameBackground = new EnvironmentBackground(backgroundTexture, new Rectangle(0, 0, 437*scale, 180*scale), currentState, player.State);//3 is scale
+            gameBackground = new EnvironmentBackground(backgroundTexture, new Rectangle(0, 0, 437 * scale, 180 * scale), currentState, player.State);//3 is scale
         }
 
         protected override void Update(GameTime gameTime)
@@ -138,8 +186,7 @@ namespace Terminal_Dusk
             switch (currentState)
             {
                 case GameState.MainMenu:
-                    ProcessMainMenu(kbState);
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < 3; i++)
                     {
                         buttons[i].Update();
                     }
@@ -150,7 +197,18 @@ namespace Terminal_Dusk
                     break;
 
                 case GameState.OptionsMenu:
-                    ProcessOptionsMenu(kbState);
+                    if (wasMainOrPause)
+                    {
+                        buttons[3].Update();
+                        buttons[5].Update();
+                        buttons[6].Update();
+                    }
+                    else
+                    {
+                        buttons[4].Update();
+                        buttons[5].Update();
+                        buttons[6].Update();
+                    }
 
                     //add a way for the player to change the scale of the screen
                     break;
@@ -176,33 +234,33 @@ namespace Terminal_Dusk
                     {
                         case PlayerState.FaceLeft:
                             //Changes direction
-                            if (kbState.IsKeyDown(Keys.D) && prevKbState.IsKeyUp(Keys.D))
+                            if (kbState.IsKeyDown(rightMove) && prevKbState.IsKeyUp(rightMove))
                             {
                                 player.State = PlayerState.FaceRight;
                             }
                             //Transitions to walking
-                            else if (kbState.IsKeyDown(Keys.A) && prevKbState.IsKeyDown(Keys.A))
+                            else if (kbState.IsKeyDown(leftMove) && prevKbState.IsKeyDown(leftMove))
                             {
                                 player.State = PlayerState.WalkLeft;
                             }
                             //Transitions to crouching
-                            else if (kbState.IsKeyDown(Keys.S) && prevKbState.IsKeyUp(Keys.S))
+                            else if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
                             {
                                 player.State = PlayerState.CrouchLeft;
                             }
 
                             break;
                         case PlayerState.WalkLeft:
-                            if (kbState.IsKeyDown(Keys.S) && prevKbState.IsKeyUp(Keys.S))
+                            if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
                             {
                                 player.State = PlayerState.CrouchLeft;
                             }
                             //Moves Mario left
-                            if (kbState.IsKeyDown(Keys.A))
+                            if (kbState.IsKeyDown(leftMove))
                             {
                                 //mario.X -= 3;
                             }
-                            
+
                             //Transitions to standing
                             else
                             {
@@ -211,28 +269,28 @@ namespace Terminal_Dusk
                             break;
                         case PlayerState.FaceRight:
                             //Changes direction
-                            if (kbState.IsKeyDown(Keys.A) && prevKbState.IsKeyUp(Keys.A))
+                            if (kbState.IsKeyDown(leftMove) && prevKbState.IsKeyUp(leftMove))
                             {
                                 player.State = PlayerState.FaceLeft;
                             }
                             //Transitions to walking
-                            else if (kbState.IsKeyDown(Keys.D))
+                            else if (kbState.IsKeyDown(rightMove))
                             {
                                 player.State = PlayerState.WalkRight;
                             }
                             //Transitions to crouching
-                            else if (kbState.IsKeyDown(Keys.S) && prevKbState.IsKeyUp(Keys.S))
+                            else if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
                             {
                                 player.State = PlayerState.CrouchRight;
                             }
                             break;
                         case PlayerState.WalkRight:
-                            if (kbState.IsKeyDown(Keys.S) && prevKbState.IsKeyUp(Keys.S))
+                            if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
                             {
                                 player.State = PlayerState.CrouchRight;
                             }
                             //Moves Mario right
-                            if (kbState.IsKeyDown(Keys.D))
+                            if (kbState.IsKeyDown(rightMove))
                             {
                                 //player.X += 3;
                             }
@@ -243,7 +301,7 @@ namespace Terminal_Dusk
                             }
                             break;
                         case PlayerState.CrouchLeft:
-                            if (kbState.IsKeyDown(Keys.S))
+                            if (kbState.IsKeyDown(crouchMove))
                             {
                                 //Should change location player is drawn to be lower
                             }
@@ -254,7 +312,7 @@ namespace Terminal_Dusk
                             }
                             break;
                         case PlayerState.CrouchRight:
-                            if (kbState.IsKeyDown(Keys.S))
+                            if (kbState.IsKeyDown(crouchMove))
                             {
                                 //Should change location player is drawn to be lower
                             }
@@ -291,10 +349,8 @@ namespace Terminal_Dusk
             switch (currentState)
             {
                 case GameState.MainMenu:
-                    _spriteBatch.DrawString(labelFont, "This is the Main Menu", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(labelFont, "Press O for the Options Menu, S for Save Files, or Escape to Exit", new Vector2(5, 25), Color.White);
                     backgrounds[0].Draw(_spriteBatch);
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < 3; i++)
                     {
                         buttons[i].Draw(_spriteBatch);
                     }
@@ -321,13 +377,17 @@ namespace Terminal_Dusk
                     break;
                 case GameState.OptionsMenu:
                     _spriteBatch.DrawString(labelFont, "This is the Options Menu", new Vector2(5, 5), Color.White);
-                    if(wasMainOrPause)
+                    if (wasMainOrPause)
                     {
-                        _spriteBatch.DrawString(labelFont, "Press M for the Main Menu", new Vector2(5, 25), Color.White);
+                        buttons[3].Draw(_spriteBatch);
+                        buttons[5].Draw(_spriteBatch);
+                        buttons[6].Draw(_spriteBatch);
                     }
                     else
                     {
-                        _spriteBatch.DrawString(labelFont, "Press P for the Pause Menu", new Vector2(5, 25), Color.White);
+                        buttons[4].Draw(_spriteBatch);
+                        buttons[5].Draw(_spriteBatch);
+                        buttons[6].Draw(_spriteBatch);
                     }
                     break;
                 case GameState.ExitGame:
@@ -350,21 +410,6 @@ namespace Terminal_Dusk
             return false;
         }
 
-        //helper method for Main Menu
-        private void ProcessMainMenu(KeyboardState kbState)
-        {
-            kbState = Keyboard.GetState();
-            if(SingleKeyPress(Keys.S, kbState))
-            {
-                currentState = GameState.SaveFileMenu;
-            }
-            if(SingleKeyPress(Keys.O, kbState))
-            {
-                currentState = GameState.OptionsMenu;
-                wasMainOrPause = true;
-            }
-            
-        }
         //helper method for PauseMenu
         private void ProcessPauseMenu(KeyboardState kbState)
         {
@@ -387,20 +432,7 @@ namespace Terminal_Dusk
                 currentState = GameState.ExitGame;
             }
         }
-        //helper method for OptionsMenu
-        //also add a way for the player to change the scale and the keys for movement
-        private void ProcessOptionsMenu(KeyboardState kbState)
-        {
-            kbState = Keyboard.GetState();
-            if (SingleKeyPress(Keys.M, kbState) && wasMainOrPause == true)
-            {
-                currentState = GameState.MainMenu;
-            }
-            if (SingleKeyPress(Keys.P, kbState) && wasMainOrPause == false)
-            {
-                currentState = GameState.PauseMenu;
-            }
-        }
+
         //helper method for SaveFileMenu
         private void ProcessSaveFileMenu(KeyboardState kbState, MouseState mouseState)
         {
@@ -437,7 +469,43 @@ namespace Terminal_Dusk
             //Added so it actually quits
             Exit();
         }
+        //method to go to the main menu
+        private void GoToMainMenu()
+        {
+            currentState = GameState.MainMenu;
+        }
+        //method to go to the pause menu
+        private void GoToPauseMenu()
+        {
+            currentState = GameState.PauseMenu;
+        }
 
+        //method to go to options from main
+        private void MainOptions()
+        {
+            wasMainOrPause = true;
+            currentState = GameState.OptionsMenu;
+        }
 
+        //method for changing controls
+        private void ChangeToWASD()
+        {
+            rightMove = Keys.D;
+            leftMove = Keys.A;
+            crouchMove = Keys.S;
+            upMove = Keys.W;
+            usingWASD = true;
+            usingArrow = false;
+        }
+
+        private void ChangeToArrows()
+        {
+            rightMove = Keys.Right;
+            leftMove = Keys.Left;
+            crouchMove = Keys.Down;
+            upMove = Keys.Up;
+            usingWASD = false;
+            usingArrow = true;
+        }
     }
 }

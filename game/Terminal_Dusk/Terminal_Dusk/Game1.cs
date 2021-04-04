@@ -52,7 +52,7 @@ namespace Terminal_Dusk
         private EnvironmentBackground gameBackground;
         private Texture2D backgroundTexture;
         //A scale for changing the size of the screen
-        private int field;
+        private int scale = 3;
 
         public Game1()
         {
@@ -65,8 +65,8 @@ namespace Terminal_Dusk
         {
             // TODO: Add your initialization logic here
             currentState = GameState.MainMenu;
-            _graphics.PreferredBackBufferWidth = 960;
-            _graphics.PreferredBackBufferHeight = 540;
+            _graphics.PreferredBackBufferWidth = 320 * scale;
+            _graphics.PreferredBackBufferHeight = 180 * scale;
             _graphics.ApplyChanges();
             base.Initialize();
         }
@@ -107,17 +107,17 @@ namespace Terminal_Dusk
             //Game State Loads
 
             // Sets up the player location
-            Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 50*3);//3 is scale
+            Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 50*scale);//3 is scale
             playerSpreadSheet = Content.Load<Texture2D>("pixel_charTest");
             player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight);
 
             //Sky Background
             skyTexture = Content.Load<Texture2D>("SkyBackground");
-            skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*3 - 2012*3, 320*3, 2012*3), currentState);//3 is scale
+            skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*scale - 2012*scale, 320*scale, 2012*scale), currentState);//3 is scale
 
             //Background
             backgroundTexture = Content.Load<Texture2D>("TestScroll");
-            gameBackground = new EnvironmentBackground(backgroundTexture, new Rectangle(0, 0, 437*3, 180*3), currentState, player.State);//3 is scale
+            gameBackground = new EnvironmentBackground(backgroundTexture, new Rectangle(0, 0, 437*scale, 180*scale), currentState, player.State);//3 is scale
         }
 
         protected override void Update(GameTime gameTime)
@@ -367,7 +367,7 @@ namespace Terminal_Dusk
             if (SingleKeyPress(Keys.Escape, kbState))
             {
                 currentState = GameState.ExitGame;
-            }y
+            }
         }
         //helper method for OptionsMenu
         //also add a way for the player to change the scale and the keys for movement

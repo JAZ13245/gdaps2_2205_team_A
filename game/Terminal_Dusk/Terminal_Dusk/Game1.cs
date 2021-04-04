@@ -279,15 +279,16 @@ namespace Terminal_Dusk
                             {
                                 player.State = PlayerState.CrouchLeft;
                             }
+                            if (kbState.IsKeyDown(rightMove) && prevKbState.IsKeyUp(rightMove))
+                            {
+                                player.State = PlayerState.FaceRight;
+                            }
                             //Moves Mario left
                             if (kbState.IsKeyDown(leftMove))
                             {
                                 //mario.X -= 3;
                             }
-                            if (kbState.IsKeyDown(rightMove) && prevKbState.IsKeyUp(rightMove))
-                            {
-                                player.State = PlayerState.FaceRight;
-                            }
+                            
                             //Transitions to standing
                             else
                             {
@@ -316,15 +317,16 @@ namespace Terminal_Dusk
                             {
                                 player.State = PlayerState.CrouchRight;
                             }
+                            if (kbState.IsKeyDown(leftMove) && prevKbState.IsKeyUp(leftMove))
+                            {
+                                player.State = PlayerState.FaceLeft;
+                            }
                             //Moves Mario right
                             if (kbState.IsKeyDown(rightMove))
                             {
                                 //player.X += 3;
                             }
-                            if (kbState.IsKeyDown(leftMove) && prevKbState.IsKeyUp(leftMove))
-                            {
-                                player.State = PlayerState.FaceLeft;
-                            }
+                            
                             //Transitions to standing
                             else
                             {

@@ -25,6 +25,11 @@ namespace Terminal_Dusk
         //for drawing the player
         private Player player;
         private Texture2D playerSpreadSheet;
+
+        //for drawing the slime enemy
+        private Slime slime1;
+        private Texture2D slimeSpriteSheet;
+
         
         // User input fields
         private KeyboardState kbState;
@@ -109,6 +114,10 @@ namespace Terminal_Dusk
             playerSpreadSheet = Content.Load<Texture2D>("pixel_charTestScale");
             player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight);
 
+            //slime enemy
+            slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScaled");
+            slime1 = new Slime(slimeSpriteSheet, new Rectangle(0,0, 240,240));
+
             //Sky Background
             skyTexture = Content.Load<Texture2D>("SkyBackgroundScale");
             skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*scale - 2012*scale, 320*scale, 2012*scale), currentState);//3 is scale
@@ -157,6 +166,8 @@ namespace Terminal_Dusk
                     //Background
                     skyBackground.Update(gameTime);
                     gameBackground.Update(gameTime);
+
+                    slime1.Update(gameTime);
 
                     player.UpdateAnimation(gameTime);//animation update
                     //Logic should be moved and handled in Player class, just copy/pasted for ease
@@ -299,6 +310,7 @@ namespace Terminal_Dusk
                     gameBackground.Draw(_spriteBatch);
                     //Player
                     player.Draw(_spriteBatch);
+                    slime1.Draw(_spriteBatch);
 
                     _spriteBatch.DrawString(labelFont, "This is the Game Play State", new Vector2(5, 5), Color.White);
                     _spriteBatch.DrawString(labelFont, "Press P to pause", new Vector2(5, 25), Color.White);

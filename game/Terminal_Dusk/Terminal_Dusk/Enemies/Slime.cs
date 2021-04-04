@@ -10,8 +10,9 @@ namespace Terminal_Dusk
     {
         public Slime(Texture2D sprite, Rectangle location) :base (sprite, location)
         {
-            this.image = sprite;
-            this.position = location;
+            image = sprite;
+            position = location;
+            enemyLocation = new Vector2(location.X, location.Y);
         }
 
 
@@ -20,6 +21,7 @@ namespace Terminal_Dusk
 
         public override void Draw(SpriteBatch sb)
         {
+            DrawJump(sb);
             base.Draw(sb);
         }
 
@@ -42,5 +44,25 @@ namespace Terminal_Dusk
         {
             base.Update(gameTime);
         }
+
+
+        private void DrawJump(SpriteBatch sb)
+        {
+            sb.Draw(
+                image,                    // - The texture to draw
+                enemyLocation,                       // - The location to draw on the screen
+                new Rectangle(                  // - The "source" rectangle
+                    0,                          //   - This rectangle specifies
+                    0,                          //	   where "inside" the texture
+                    240,             //     to get pixels (We don't want to
+                    240),           //     draw the whole thing)
+                Color.White,                    // - The color
+                0,                              // - Rotation (none currently)
+                Vector2.Zero,                   // - Origin inside the image (top left)
+                0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
+                SpriteEffects.None,                     // - Can be used to flip the image
+                0);                             // - Layer depth (unused)
+        }
+
     }
 }

@@ -43,12 +43,18 @@ namespace Terminal_Dusk
         //field for timer
         private double timer;
 
+        //Environment list
+        private List<Environment> environments = new List<Environment>();
+        private List<Texture2D> envirImgs = new List<Texture2D>();
+        Environment envirHandler;
+
         //SkyBackground object
         private SkyBackground skyBackground;
-        private Texture2D skyTexture;
         //GameBackground
         private EnvironmentBackground gameBackground;
-        private Texture2D backgroundTexture;
+        //Shrubs
+        private EnvironmentBackground shrubs;
+
         //A scale for changing the size of the screen
         private int scale = 3;
 
@@ -109,13 +115,26 @@ namespace Terminal_Dusk
             playerSpreadSheet = Content.Load<Texture2D>("pixel_charTestScale");
             player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight);
 
+
+            //Loading to Environment Texture List
+            envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
+            envirImgs.Add(Content.Load<Texture2D>("TestScrollScale"));
+            envirImgs.Add(Content.Load<Texture2D>("ShrubsScale"));
+
             //Sky Background
-            skyTexture = Content.Load<Texture2D>("SkyBackgroundScale");
-            skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*scale - 2012*scale, 320*scale, 2012*scale), currentState);//3 is scale
+            skyBackground = new SkyBackground(envirImgs[0], new Rectangle(0, 90*scale - 2012*scale, 320*scale, 2012*scale), currentState);//3 is scale
+            envirHandler = (Environment)skyBackground;
+            environments.Add(envirHandler);
 
             //Background
-            backgroundTexture = Content.Load<Texture2D>("TestScrollScale");
-            gameBackground = new EnvironmentBackground(backgroundTexture, new Rectangle(0, 0, 437*scale, 180*scale), currentState, player.State);//3 is scale
+            gameBackground = new EnvironmentBackground(envirImgs[1], new Rectangle(0, 0, 437*scale, 180*scale), currentState, player.State, 1); //1 is speed
+            envirHandler = (Environment)gameBackground;
+            environments.Add(envirHandler);
+
+            //Shrubs //Needs more suitable class
+            /*shrubs = new EnvironmentBackground(envirImgs[2], new Rectangle(0, 0, 50*scale, 90*scale), currentState, player.State, 2); //2 is speed
+            envirHandler = (Environment)shrubs;
+            environments.Add(envirHandler);*/
         }
 
         protected override void Update(GameTime gameTime)
@@ -155,8 +174,10 @@ namespace Terminal_Dusk
                     double temptimer = timer;
                     timer = temptimer - gameTime.ElapsedGameTime.TotalSeconds;
                     //Background
-                    skyBackground.Update(gameTime);
-                    gameBackground.Update(gameTime);
+                    for (int i = 0; i < environments.Count; i++)
+                    {
+                        environments[i].Update(gameTime);
+                    }
 
                     player.UpdateAnimation(gameTime);//animation update
                     //Logic should be moved and handled in Player class, just copy/pasted for ease
@@ -262,10 +283,16 @@ namespace Terminal_Dusk
                     break;
             }
 
-            //Updates the game state in SkyBackground
-            skyBackground.State = currentState;
-            gameBackground.State = currentState;
-            gameBackground.PlayerState = player.State;
+            //Updates the game state for environments
+            for (int i = 0; i < environments.Count; i++)
+            {
+                environments[i].State = currentState;
+            }
+            //Updates the player state for environments
+            for (int i = 0; i < environments.Count; i++)
+            {
+                environments[i].PlayerState = player.State;
+            }
 
             prevKbState = kbState;
             base.Update(gameTime);
@@ -293,10 +320,10 @@ namespace Terminal_Dusk
                     _spriteBatch.DrawString(labelFont, "Press M for the Main Menu or G to go to GamePlay", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.GamePlayState:
-                    //Sky background
-                    skyBackground.Draw(_spriteBatch);
-                    //Background
-                    gameBackground.Draw(_spriteBatch);
+                    for(int i=0; i < environments.Count; i++)
+                    {
+                        environments[i].Draw(_spriteBatch);
+                    }
                     //Player
                     player.Draw(_spriteBatch);
 

@@ -108,15 +108,15 @@ namespace Terminal_Dusk
 
             // Sets up the player location
             Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 50*scale);//3 is scale
-            playerSpreadSheet = Content.Load<Texture2D>("pixel_charTest");
+            playerSpreadSheet = Content.Load<Texture2D>("pixel_charTestScale");
             player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight);
 
             //Sky Background
-            skyTexture = Content.Load<Texture2D>("SkyBackground");
+            skyTexture = Content.Load<Texture2D>("SkyBackgroundScale");
             skyBackground = new SkyBackground(skyTexture, new Rectangle(0, 90*scale - 2012*scale, 320*scale, 2012*scale), currentState);//3 is scale
 
             //Background
-            backgroundTexture = Content.Load<Texture2D>("TestScroll");
+            backgroundTexture = Content.Load<Texture2D>("TestScrollScale");
             gameBackground = new EnvironmentBackground(backgroundTexture, new Rectangle(0, 0, 437*scale, 180*scale), currentState, player.State);//3 is scale
         }
 

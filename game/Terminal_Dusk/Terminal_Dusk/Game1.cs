@@ -116,7 +116,7 @@ namespace Terminal_Dusk
 
             //slime enemy
             slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScaled");
-            slime1 = new Slime(slimeSpriteSheet, new Rectangle(0,0, 240,240));
+            slime1 = new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2,0, 240,240));
 
             //Sky Background
             skyTexture = Content.Load<Texture2D>("SkyBackgroundScale");

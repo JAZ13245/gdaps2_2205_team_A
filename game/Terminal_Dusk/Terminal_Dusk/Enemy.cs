@@ -15,6 +15,7 @@ namespace Terminal_Dusk
         protected int[] drops;
         protected EnemyState currentState;
         protected Vector2 enemyLocation;
+        protected Random enemyRNG;
         protected enum EnemyState
         {
             Idle,

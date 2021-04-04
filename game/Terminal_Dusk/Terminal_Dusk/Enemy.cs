@@ -14,6 +14,7 @@ namespace Terminal_Dusk
         protected int speed;
         protected int[] drops;
         protected EnemyState currentState;
+        protected Vector2 enemyLocation;
         protected enum EnemyState
         {
             Idle,
@@ -93,6 +94,9 @@ namespace Terminal_Dusk
             }
             base.Draw(sb);
         }
+
+
+        
 
 
         public override void Save(string filename){}

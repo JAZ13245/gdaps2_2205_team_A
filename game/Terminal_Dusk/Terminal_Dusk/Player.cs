@@ -17,7 +17,7 @@ namespace Terminal_Dusk
         CrouchRight,
         CrouchLeft // Add state(s) to support crouching
     }
-    class Player
+    class Player 
     {
         Vector2 playerLoc;  // Mc's location on the screen
         PlayerState state;
@@ -34,11 +34,11 @@ namespace Terminal_Dusk
 
         //constants for walk rectangles
         const int walkFrameCount = 4;
-        const int mainRectHeight = 37;
-        const int mainRectWidth = 10;
-        const int secondRow = 45;
-        const int crouchWidth = 11;
-        const int crouchHeight = 28;
+        const int mainRectHeight = 37*6;
+        const int mainRectWidth = 10*6;
+        const int secondRow = 37*6;
+        const int crouchWidth = 12*6;
+        const int crouchHeight = 28*6;
 
         // Properties to get & set player's current location and animation state
         public float X
@@ -53,6 +53,19 @@ namespace Terminal_Dusk
             }
         }
 
+        //y value for crouching in particular
+        public float Y
+        {
+            get
+            {
+                return this.playerLoc.Y;
+            }
+            set
+            {
+                this.playerLoc.Y = value;
+            }
+        }
+
         public PlayerState State
         {
             get { return state; }
@@ -60,7 +73,7 @@ namespace Terminal_Dusk
         }
 
         //the constructor
-        public Player(Texture2D spriteSheet, Vector2 playerLoc, PlayerState startingState)
+        public Player(Texture2D spriteSheet, Vector2 playerLoc, PlayerState startingState) 
         {
             this.spriteSheet = spriteSheet;
             this.playerLoc = playerLoc;
@@ -85,7 +98,7 @@ namespace Terminal_Dusk
                 if (frameListIndex == walkFrameCount) //End of cycle //Changed to == 4 since I'm comparing the index not the frame number
                 { frameListIndex = 0; }
               
-                List<int> frameList = new List<int> { 0, 1, 0, 2 };
+                List<int> frameList = new List<int> { 1, 0, 2, 0 };
                 //frame += 1;   //Different logic needed. I assume you wanted to go 1, 2, 1, 3 for the cycle, this won't do that. -James                
                 frame = frameList[frameListIndex];
 
@@ -134,14 +147,14 @@ namespace Terminal_Dusk
                 Color.White,                    // - The color
                 0,                              // - Rotation (none currently)
                 Vector2.Zero,                   // - Origin inside the image (top left)
-                3,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
+                0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
                 flipSprite,                     // - Can be used to flip the image
                 0);                             // - Layer depth (unused)
         }
 
         private void DrawWalking(SpriteEffects flipSprite, SpriteBatch spriteBatch)
         {
-            //Adjust rectangle to not get the odd clipping
+            //Adjust rectangle to not get the odd clipping - done
             spriteBatch.Draw(
                 spriteSheet,                  
                 playerLoc,              
@@ -153,7 +166,7 @@ namespace Terminal_Dusk
                 Color.White,               
                 0,                            
                 Vector2.Zero,
-                3,                    
+                0.5f,                    
                 flipSprite,                 
                 0);                     
         }
@@ -162,7 +175,7 @@ namespace Terminal_Dusk
         {
             spriteBatch.Draw(
                 spriteSheet,
-                playerLoc,
+                new Vector2(X, Y + 9*3),
                 new Rectangle(
                     0,    
                     secondRow,
@@ -171,9 +184,13 @@ namespace Terminal_Dusk
                 Color.White,
                 0,
                 Vector2.Zero,
-                3,
+                0.5f,
                 flipSprite,
                 0);
+        }
+
+        public void Save() 
+        { 
         }
     }
 }

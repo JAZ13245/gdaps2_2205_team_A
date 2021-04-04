@@ -55,6 +55,14 @@ namespace Terminal_Dusk.Environments
         public override void Draw(SpriteBatch sb)
         {
             sb.Draw(sprite, location, Color.White);
+
+            Rectangle tmpLocation = location;
+            //437   117
+            while (tmpLocation.X < location.Width)
+            {
+                sb.Draw(sprite, tmpLocation, Color.White); 
+                tmpLocation.X += location.Width;
+            }
         }
 
         public void Reset()

@@ -275,20 +275,18 @@ namespace Terminal_Dusk
 
                             break;
                         case PlayerState.WalkLeft:
+                            //Transitions to crouch
                             if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
                             {
                                 player.State = PlayerState.CrouchLeft;
                             }
+                            //Allows smoother movement Ex: holding leftMove then also pressing rightMove then letting go of rightMove
                             if (kbState.IsKeyDown(rightMove) && prevKbState.IsKeyUp(rightMove))
                             {
                                 player.State = PlayerState.FaceRight;
                             }
-                            //Moves Mario left
-                            if (kbState.IsKeyDown(leftMove))
-                            {
-                                //mario.X -= 3;
-                            }
-                            
+                            //Moves left
+                            if (kbState.IsKeyDown(leftMove)) { }
                             //Transitions to standing
                             else
                             {
@@ -313,20 +311,18 @@ namespace Terminal_Dusk
                             }
                             break;
                         case PlayerState.WalkRight:
+                            //Transitions to crouch
                             if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
                             {
                                 player.State = PlayerState.CrouchRight;
                             }
+                            //Allows smoother movement (Example in WalkLeft)
                             if (kbState.IsKeyDown(leftMove) && prevKbState.IsKeyUp(leftMove))
                             {
                                 player.State = PlayerState.FaceLeft;
                             }
-                            //Moves Mario right
-                            if (kbState.IsKeyDown(rightMove))
-                            {
-                                //player.X += 3;
-                            }
-                            
+                            //Moves right
+                            if (kbState.IsKeyDown(rightMove)) { }
                             //Transitions to standing
                             else
                             {
@@ -334,10 +330,13 @@ namespace Terminal_Dusk
                             }
                             break;
                         case PlayerState.CrouchLeft:
-                            if (kbState.IsKeyDown(crouchMove))
+                            //Changes direction while crouching
+                            if (kbState.IsKeyDown(rightMove) && !kbState.IsKeyDown(leftMove) && kbState.IsKeyDown(crouchMove))
                             {
-                                //Should change location player is drawn to be lower
+                                player.State = PlayerState.CrouchRight;
                             }
+                            //Is crouching
+                            if (kbState.IsKeyDown(crouchMove)) { }
                             //Transitions to standing
                             else
                             {
@@ -345,10 +344,13 @@ namespace Terminal_Dusk
                             }
                             break;
                         case PlayerState.CrouchRight:
-                            if (kbState.IsKeyDown(crouchMove))
+                            //Changes direction while crouching
+                            if (kbState.IsKeyDown(leftMove) && !kbState.IsKeyDown(rightMove) && kbState.IsKeyDown(crouchMove))
                             {
-                                //Should change location player is drawn to be lower
+                                player.State = PlayerState.CrouchLeft;
                             }
+                            //Is crouching
+                            if (kbState.IsKeyDown(crouchMove)) { }
                             //Transitions to standing
                             else
                             {

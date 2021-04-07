@@ -12,7 +12,7 @@ namespace Terminal_Dusk.Environments
     {
         private Texture2D sprite;
         private Rectangle location;
-        //private double timer;
+        private int timer;
         GameState state;
 
         public override GameState State
@@ -36,18 +36,22 @@ namespace Terminal_Dusk.Environments
                 {
                     Reset();
                 }
-                //timer = gameTime.ElapsedGameTime.TotalSeconds;
-                if (location.Y < 1350*3 - 2012*3) //to sunset
+                //Slows scroll speed
+                timer = (int)gameTime.ElapsedGameTime.Ticks;
+                if(timer%2 == 0)
                 {
-                    location.Y += 1;
-                }
-                else if(location.Y >= 1350 * 3 - 2012 * 3 && location.Y < 1422*3 - 2012 * 3) //-651 -579
-                {
-                    location.Y = 1512 * 3 - 2012 * 3; //-489
-                }
-                else if(location.Y >= 1512 * 3 - 2012 * 3 && !(location.Y >= 0))
-                {
-                    location.Y += 1;
+                    if (location.Y < 1350 * 3 - 2012 * 3) //to sunset
+                    {
+                        location.Y += 1;
+                    }
+                    else if (location.Y >= 1350 * 3 - 2012 * 3 && location.Y < 1422 * 3 - 2012 * 3) //-651 -579
+                    {
+                        location.Y = 1512 * 3 - 2012 * 3; //-489
+                    }
+                    else if (location.Y >= 1512 * 3 - 2012 * 3 && !(location.Y >= 0))
+                    {
+                        location.Y += 1;
+                    }
                 }
             }
         }

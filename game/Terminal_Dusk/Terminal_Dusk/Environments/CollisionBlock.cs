@@ -7,13 +7,15 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Terminal_Dusk.Environments
 {
-    class EnvironmentBackground : Environment
+    class CollisionBlock : Environment
     {
-        private Texture2D sprite;
+        private Texture2D spriteSheet;
         private Rectangle location;
         GameState state;
         PlayerState playerState;
         int speed;
+
+        //Should all be base 10X10
 
         public override GameState State
         {
@@ -25,9 +27,9 @@ namespace Terminal_Dusk.Environments
             set { playerState = value; }
         }
 
-        public EnvironmentBackground(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
+        public CollisionBlock(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
         {
-            this.sprite = sprite;
+            this.spriteSheet = sprite;
             this.location = location;
             this.state = state;
             this.playerState = playerState;
@@ -36,8 +38,6 @@ namespace Terminal_Dusk.Environments
 
         public override void Update(GameTime gameTime)
         {
-            //Slows speed
-            int time = (int)gameTime.TotalGameTime.Ticks;
             //Should be tied to player state
             if (state == GameState.MainMenu)
             {
@@ -45,31 +45,20 @@ namespace Terminal_Dusk.Environments
             }
             if (state == GameState.GamePlayState)
             {
-                if (time % 2 == 0)
+                if (playerState == PlayerState.WalkRight)
                 {
-                    if (playerState == PlayerState.WalkRight)
-                    {
-                        location.X -= speed;
-                    }
-                    else if (playerState == PlayerState.WalkLeft)
-                    {
-                        location.X += speed;
-                    }
+                    location.X -= speed;
+                }
+                else if (playerState == PlayerState.WalkLeft)
+                {
+                    location.X += speed;
                 }
             }
         }
 
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(sprite, location, Color.White);
-
-            Rectangle tmpLocation = location;
-            //437   117
-            while (tmpLocation.X < location.Width)
-            {
-                sb.Draw(sprite, tmpLocation, Color.White); 
-                tmpLocation.X += location.Width;
-            }
+            sb.Draw(spriteSheet, location, Color.White);
         }
 
         public void Reset()
@@ -79,3 +68,4 @@ namespace Terminal_Dusk.Environments
         }
     }
 }
+

@@ -50,7 +50,7 @@ namespace Terminal_Dusk
         //Environment list
         private List<Environment> environments = new List<Environment>();
         private List<Texture2D> envirImgs = new List<Texture2D>();
-        Environment envirHandler;
+        Environment envirConverter;
 
         //SkyBackground object
         private SkyBackground skyBackground;
@@ -58,6 +58,8 @@ namespace Terminal_Dusk
         private EnvironmentBackground gameBackground;
         //Shrubs
         private EnvironmentBackground shrubs;
+        //Ground
+        private CollisionBlock ground;
 
         //A scale for changing the size of the screen
         private int scale = 3;
@@ -168,7 +170,7 @@ namespace Terminal_Dusk
             //Game State Loads
 
             // Sets up the player location
-            Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 50 * scale);//3 is scale
+            Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 47 * scale);//3 is scale
             playerSpreadSheet = Content.Load<Texture2D>("pixel_charTestScale");
             player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight);
 
@@ -179,22 +181,32 @@ namespace Terminal_Dusk
             //Loading to Environment Texture List
             envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
             envirImgs.Add(Content.Load<Texture2D>("TestScrollScale"));
+            envirImgs.Add(Content.Load<Texture2D>("DirtWithGrassScale"));
             envirImgs.Add(Content.Load<Texture2D>("ShrubsScale"));
 
             //Sky Background
             skyBackground = new SkyBackground(envirImgs[0], new Rectangle(0, 90*scale - 2012*scale, 320*scale, 2012*scale), currentState);//3 is scale
-            envirHandler = (Environment)skyBackground;
-            environments.Add(envirHandler);
+            envirConverter = (Environment)skyBackground;
+            environments.Add(envirConverter);
 
             //Background
             gameBackground = new EnvironmentBackground(envirImgs[1], new Rectangle(0, 0, 437*scale, 180*scale), currentState, player.State, 1); //1 is speed
-            envirHandler = (Environment)gameBackground;
-            environments.Add(envirHandler);
+            envirConverter = (Environment)gameBackground;
+            environments.Add(envirConverter);
+
+            //Ground
+            for (int i = 0; i < 1000; i++)
+            {
+                ground = new CollisionBlock(envirImgs[2], new Rectangle(i*scale, GraphicsDevice.Viewport.Height - 10*scale, 10 * scale, 10 * scale), currentState, player.State, 1);
+                envirConverter = (Environment)ground;
+                environments.Add(envirConverter);
+                i += 9;
+            }
 
             //Shrubs //Needs more suitable class
-            /*shrubs = new EnvironmentBackground(envirImgs[2], new Rectangle(0, 0, 50*scale, 90*scale), currentState, player.State, 2); //2 is speed
-            envirHandler = (Environment)shrubs;
-            environments.Add(envirHandler);*/
+            /*shrubs = new EnvironmentBackground(envirImgs[3], new Rectangle(0, 0, 50*scale, 90*scale), currentState, player.State, 2); //2 is speed
+            envirConverter = (Environment)shrubs;
+            environments.Add(envirConverter);*/
         }
 
         protected override void Update(GameTime gameTime)

@@ -12,7 +12,6 @@ namespace Terminal_Dusk.Environments
     {
         private Texture2D sprite;
         private Rectangle location;
-        private int timer;
         GameState state;
 
         public override GameState State
@@ -32,13 +31,9 @@ namespace Terminal_Dusk.Environments
         {
             if(state == GameState.GamePlayState)
             {
-                if (state == GameState.MainMenu)
-                {
-                    Reset();
-                }
                 //Slows scroll speed
-                timer = (int)gameTime.ElapsedGameTime.Ticks;
-                if(timer%2 == 0)
+                int timer = (int)gameTime.TotalGameTime.Ticks;
+                if (timer % 2 == 0)
                 {
                     if (location.Y < 1350 * 3 - 2012 * 3) //to sunset
                     {
@@ -54,6 +49,11 @@ namespace Terminal_Dusk.Environments
                     }
                 }
             }
+            if (state == GameState.MainMenu)
+            {
+                    Reset();
+            }
+                
         }
 
         public override void Draw(SpriteBatch sb)

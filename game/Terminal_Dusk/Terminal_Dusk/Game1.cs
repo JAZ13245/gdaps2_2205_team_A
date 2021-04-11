@@ -46,8 +46,8 @@ namespace Terminal_Dusk
 
         //field for timer
         private int counter = 1;
-        private int limit = 50;
-        private float countDuration = 2f; //every  2s.
+        private int limit = 300;
+        private float countDuration = 1f; //every  1s.
         private float currentTime = 0f;
 
         //Environment list
@@ -301,7 +301,8 @@ namespace Terminal_Dusk
                     if (counter >= limit)
                     {
                         counter = 0;//Reset the counter;
-                                    //any actions to perform
+                        //any actions to perform
+                        currentState = GameState.MainMenu;
                     }
 
                     //Background
@@ -470,8 +471,8 @@ namespace Terminal_Dusk
                     player.Draw(_spriteBatch);
                     slime1.Draw(_spriteBatch);
 
-                    _spriteBatch.DrawString(labelFont, "" + counter, new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(labelFont, "" + currentTime, new Vector2(5, 25), Color.White);
+                    _spriteBatch.DrawString(labelFont, "" + counter, new Vector2(5, 5), Color.Black);
+                    _spriteBatch.DrawString(labelFont, "Press P to pause", new Vector2(5, 25), Color.Black);
                     break;
                 case GameState.PauseMenu:
                     _spriteBatch.DrawString(labelFont, "This is the pause Menu", new Vector2(5, 5), Color.White);

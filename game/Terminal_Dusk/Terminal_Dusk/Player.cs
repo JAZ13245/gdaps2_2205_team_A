@@ -33,6 +33,7 @@ namespace Terminal_Dusk
     }
     /* //Not all of these need to be created
      * //However, if this works the way I think it will in my head, combinations will work better than the 16 needed states in PlayerState
+     * //If only two states don't use enum use bool
      * enum PlayerDirectionState
      * {
      *      Left,

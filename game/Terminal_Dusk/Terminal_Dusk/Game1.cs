@@ -180,7 +180,7 @@ namespace Terminal_Dusk
 
             //Loading to Environment Texture List
             envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
-            envirImgs.Add(Content.Load<Texture2D>("BackgroundScale"));
+            envirImgs.Add(Content.Load<Texture2D>("Scroll background(update 2)"));
             envirImgs.Add(Content.Load<Texture2D>("DirtWithGrassScale"));
             envirImgs.Add(Content.Load<Texture2D>("ShrubsScale"));
 
@@ -190,7 +190,7 @@ namespace Terminal_Dusk
             environments.Add(envirConverter);
 
             //Background
-            gameBackground = new EnvironmentBackground(envirImgs[1], new Rectangle(0, 0, 440*scale, 180*scale), currentState, player.State, 1); //1 is speed
+            gameBackground = new EnvironmentBackground(envirImgs[1], new Rectangle(0, 0, 437*scale, 180*scale), currentState, player.State, 1); //1 is speed
             envirConverter = (Environment)gameBackground;
             environments.Add(envirConverter);
 

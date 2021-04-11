@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
 using Terminal_Dusk.Environments;
+using System.IO;
 
 namespace Terminal_Dusk
 {
@@ -641,7 +642,60 @@ namespace Terminal_Dusk
         //Loads the environment based off of the text file
         public void LoadEnvironment(string filename)
         {
+            int xPlacement = 0;
+            int yPlacement = -10 * scale;
+            StreamReader reader = new StreamReader(filename);
 
+            string line = null;
+            while ((line = reader.ReadLine()) != null)
+            {
+                yPlacement += 10 * scale;
+                foreach (char ch in line)
+{
+                    switch (ch)
+                    {
+                        case 'X':
+                            xPlacement += 10 * scale;
+                            break;
+                        case 'O':
+                            xPlacement += 10 * scale;
+                            break;
+                        case 'B':
+                            xPlacement += 10 * scale;
+                            break;
+                        case 'T':
+                            xPlacement += 10 * scale;
+                            break;
+                        case 'N':
+                            yPlacement = -10 * scale;
+                            break;
+                    }
+                }
+            }
+            reader.Close();
+            /*
+             * N - next
+             * X - none
+            O - ground
+            1 - wall (walls may be able to work as the same class as ground)
+            ^ - spikes
+
+            Platforms
+            \ - left platform side
+            / - right platform side
+            = - platform top (block)
+            _ - platform bottom (can be a thin platform)
+
+
+            Foliage
+            B - bush 3 tall 5 wide
+            T - tree 12 tall 11 wide
+
+            L - log cabin
+
+            + - health
+            $ - enemy
+            */
         }
     }
 }

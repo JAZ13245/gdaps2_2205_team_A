@@ -209,7 +209,7 @@ namespace Terminal_Dusk
 
             //Loading to Environment Texture List
             envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
-            //envirImgs.Add(Content.Load<Texture2D>("BackgroundScale"));
+            envirImgs.Add(Content.Load<Texture2D>("Scroll background(update 2)"));
             envirImgs.Add(Content.Load<Texture2D>("DirtWithGrassScale"));
             envirImgs.Add(Content.Load<Texture2D>("ShrubsScale"));
 

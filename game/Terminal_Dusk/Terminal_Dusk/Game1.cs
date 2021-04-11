@@ -560,5 +560,17 @@ namespace Terminal_Dusk
             usingWASD = false;
             usingArrow = true;
         }
+
+        //Save the screen to be loaded up when restarted
+        public void SaveEnvironment(string filename)
+        {
+
+        }
+
+        //Loads the environment based off of the text file
+        public void LoadEnvironment(string filename)
+        {
+
+        }
     }
 }

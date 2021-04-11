@@ -14,7 +14,7 @@ namespace Terminal_Dusk
         private SpriteEffects flip;
         private int currentSprite;
 
-        public Slime(Texture2D sprite, Rectangle location) :base (sprite, location)
+        public Slime(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) :base (sprite, location, state,playerState,speed)
         {
             image = sprite;
             position = location;
@@ -24,6 +24,9 @@ namespace Terminal_Dusk
             frame = 0;
             currentSprite = 0;
             enemyRNG = new Random();
+            this.state = state;
+            this.playerState = playerState;
+            this.speed = speed;
         }
 
 
@@ -32,6 +35,7 @@ namespace Terminal_Dusk
 
         public override void Draw(SpriteBatch sb)
         {
+            //138 x 102
             DrawJump(sb,flip);
         }
 
@@ -52,14 +56,15 @@ namespace Terminal_Dusk
 
         public override void Update(GameTime gameTime)
         {
-            
+            ScrollWithPlayer();
             timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
             if (timeCounter >= timePerFrame)
             {
+                
                 switch (currentState)
                 {
                     case EnemyState.Idle:
-
+                        
                         currentSprite = 0;
                         frame++;
                         if (frame == 5)
@@ -80,9 +85,10 @@ namespace Terminal_Dusk
                         break;
 
                     case EnemyState.IdleBehaviour:
-                        
 
+                        
                         frame++;
+                        
                         if (frame > 5 & frame < 15)
                         {
                             switch (flip)
@@ -115,6 +121,7 @@ namespace Terminal_Dusk
                             currentSprite = 0;
                             currentState = EnemyState.Idle;
                         }
+                        
                         break;
 
                     case EnemyState.Hostile:
@@ -149,16 +156,49 @@ namespace Terminal_Dusk
                 image,                    // - The texture to draw
                 enemyLocation,                       // - The location to draw on the screen
                 new Rectangle(                  // - The "source" rectangle
-                    240*currentSprite,                          //   - This rectangle specifies
+                    138*currentSprite,                          //   - This rectangle specifies
                     0,                          //	   where "inside" the texture
-                    240,             //     to get pixels (We don't want to
-                    240),           //     draw the whole thing)
+                    138,             //     to get pixels (We don't want to
+                    102),           //     draw the whole thing)
                 Color.White,                    // - The color
                 0,                              // - Rotation (none currently)
                 Vector2.Zero,                   // - Origin inside the image (top left)
                 0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
                 flip,                     // - Can be used to flip the image
                 0);                             // - Layer depth (unused)
+        }
+
+
+        public GameState State
+        {
+            set { state = value; }
+        }
+
+        public PlayerState PlayerState
+        {
+            set { playerState = value; }
+        }
+
+
+
+
+        public override void ScrollWithPlayer()
+        {
+            if (state == GameState.MainMenu)
+            {
+                //Reset();
+            }
+            if (state == GameState.GamePlayState)
+            {
+                if (playerState == PlayerState.WalkRight)
+                {
+                    enemyLocation.X -= speed;
+                }
+                else if (playerState == PlayerState.WalkLeft)
+                {
+                    enemyLocation.X += speed;
+                }
+            }
         }
 
     }

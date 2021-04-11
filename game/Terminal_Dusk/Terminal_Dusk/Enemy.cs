@@ -16,6 +16,8 @@ namespace Terminal_Dusk
         protected EnemyState currentState;
         protected Vector2 enemyLocation;
         protected Random enemyRNG;
+        protected GameState state;
+        protected PlayerState playerState;
         protected enum EnemyState
         {
             Idle,
@@ -26,10 +28,13 @@ namespace Terminal_Dusk
         }
 
 
-        public Enemy(Texture2D sprite, Rectangle location) : base(sprite, location)
+        public Enemy(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
         {
             image = sprite;
             position = location;
+            this.state = state;
+            this.playerState = playerState;
+            this.speed = speed;
         }
         
         //a method to check if the enemy is touching another game object
@@ -103,6 +108,10 @@ namespace Terminal_Dusk
         public override void Save(string filename){}
         
         public override void Load(string filename){}
-        
+
+
+
+
+        public virtual void ScrollWithPlayer() { }
     }
 }

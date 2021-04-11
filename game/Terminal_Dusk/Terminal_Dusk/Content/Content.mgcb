@@ -75,6 +75,18 @@
 /processorParam:TextureFormat=Color
 /build:pixel_charTestScale.png
 
+#begin Scroll background(update 2).png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Scroll background(update 2).png
+
 #begin ShrubsScale.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -111,7 +123,7 @@
 /processorParam:TextureFormat=Color
 /build:SkyBackgroundScale.png
 
-#begin SlimeEnemyScaled.png
+#begin slimeEnemyScale.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -121,7 +133,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:SlimeEnemyScaled.png
+/build:slimeEnemyScale.png
 
 #begin TestScroll.png
 /importer:TextureImporter

@@ -25,7 +25,7 @@ namespace Terminal_Dusk
         }
 
         //uncomment code and change as necessary
-        public Environment(Texture2D sprite, Rectangle location) : base(sprite, location)
+        public Environment(Texture2D sprite, Rectangle location/*, int scale*/) : base(sprite, location)
         {
             this.sprite = sprite;
             this.location = location;

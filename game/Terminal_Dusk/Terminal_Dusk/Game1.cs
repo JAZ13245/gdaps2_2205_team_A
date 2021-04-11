@@ -662,6 +662,9 @@ namespace Terminal_Dusk
                             xPlacement += 10 * scale;
                             break;
                         case 'O':
+                            ground = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 1);
+                            envirConverter = (Environment)ground;
+                            environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
                         case 'B':

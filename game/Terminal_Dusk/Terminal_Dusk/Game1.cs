@@ -45,7 +45,10 @@ namespace Terminal_Dusk
         private List<Texture2D> backImgs = new List<Texture2D>();
 
         //field for timer
-        private double timer;
+        private int counter = 1;
+        private int limit = 50;
+        private float countDuration = 2f; //every  2s.
+        private float currentTime = 0f;
 
         //Environment list
         private List<Environment> environments = new List<Environment>();
@@ -109,49 +112,71 @@ namespace Terminal_Dusk
             //main menu start button
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,           // device to create a custom texture
-                    new Rectangle(10, 40, 100, 50),    // where to put the button
+                    new Rectangle((10/3) * scale, (40/3) * scale, (100/3) * scale, (50/3) * scale),    // where to put the button
                     "Start",                        // button label
                     buttonFont,                               // label font
                     Color.Purple));
             //main menu exit button
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(10, 260, 100, 50),
+                    new Rectangle((10/3) * scale, (260/3) * scale, (100/3) * scale, (50/3) * scale),
                     "Exit",
                     buttonFont,
                     Color.Purple));
             //main menu options button
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(10, 150, 100, 50),
+                    new Rectangle((10/3) * scale, (150/3) * scale, (100 / 3) * scale, (50 / 3) * scale),
                     "Options",
                     buttonFont,
                     Color.Purple));
             //options menu go to main button
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(10, 40, 200, 50),
+                    new Rectangle((10 / 3) * scale, (40 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
                     "Return to Main Menu",
                     buttonFont,
                     Color.Purple));
             //options menu go to pause'
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(10, 40, 200, 50),
+                    new Rectangle((10 / 3) * scale, (40 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
                     "Return to Pause Menu",
                     buttonFont,
                     Color.Purple));
             //options menu change controls
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(10, 150, 200, 50),
+                    new Rectangle((10 / 3) * scale, (150 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
                     "Change WASD Control",
                     buttonFont,
                     Color.Purple));
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle(10, 260, 200, 50),
+                    new Rectangle((10 / 3) * scale, (260 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
                     "Change Arrow Keys Control",
+                    buttonFont,
+                    Color.Purple));
+            //options menu scale change controls
+            //scale equals 3
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle((700 / 3) * scale, (40 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
+                    "Set to 960 * 540",
+                    buttonFont,
+                    Color.Purple));
+            //scale equals 4
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle((700 / 3) * scale, (150 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
+                    "Set to 1280 * 720",
+                    buttonFont,
+                    Color.Purple));
+            //scale equals 6
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle((700 / 3) * scale, (260 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
+                    "Set to 1920 * 1080",
                     buttonFont,
                     Color.Purple));
 
@@ -165,6 +190,10 @@ namespace Terminal_Dusk
             //buttons that change controls
             buttons[5].OnLeftButtonClick += ChangeToWASD;
             buttons[6].OnLeftButtonClick += ChangeToArrows;
+            //buttons that change scale
+            buttons[7].OnLeftButtonClick += ScaleTo3;
+            buttons[8].OnLeftButtonClick += ScaleTo4;
+            buttons[9].OnLeftButtonClick += ScaleTo6;
 
 
             //Game State Loads
@@ -180,7 +209,7 @@ namespace Terminal_Dusk
 
             //Loading to Environment Texture List
             envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
-            envirImgs.Add(Content.Load<Texture2D>("BackgroundScale"));
+            envirImgs.Add(Content.Load<Texture2D>("Scroll background(update 2)"));
             envirImgs.Add(Content.Load<Texture2D>("DirtWithGrassScale"));
             envirImgs.Add(Content.Load<Texture2D>("ShrubsScale"));
 
@@ -236,12 +265,18 @@ namespace Terminal_Dusk
                         buttons[3].Update();
                         buttons[5].Update();
                         buttons[6].Update();
+                        buttons[7].Update();
+                        buttons[8].Update();
+                        buttons[9].Update();
                     }
                     else
                     {
                         buttons[4].Update();
                         buttons[5].Update();
                         buttons[6].Update();
+                        buttons[7].Update();
+                        buttons[8].Update();
+                        buttons[9].Update();
                     }
 
                     //add a way for the player to change the scale of the screen
@@ -253,8 +288,22 @@ namespace Terminal_Dusk
 
                 case GameState.GamePlayState:
                     ProcessGamePlayState(kbState);
-                    double temptimer = timer;
-                    timer = temptimer - gameTime.ElapsedGameTime.TotalSeconds;
+                    //code for timer update
+                    
+                    currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
+
+                    if (currentTime >= countDuration)
+                    {
+                        counter++;
+                        currentTime -= countDuration; // "use up" the time
+                                                      //any actions to perform
+                    }
+                    if (counter >= limit)
+                    {
+                        counter = 0;//Reset the counter;
+                                    //any actions to perform
+                    }
+
                     //Background
                     for (int i = 0; i < environments.Count; i++)
                     {
@@ -421,8 +470,8 @@ namespace Terminal_Dusk
                     player.Draw(_spriteBatch);
                     slime1.Draw(_spriteBatch);
 
-                    _spriteBatch.DrawString(labelFont, "This is the Game Play State", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(labelFont, "Press P to pause", new Vector2(5, 25), Color.White);
+                    _spriteBatch.DrawString(labelFont, "" + counter, new Vector2(5, 5), Color.White);
+                    _spriteBatch.DrawString(labelFont, "" + currentTime, new Vector2(5, 25), Color.White);
                     break;
                 case GameState.PauseMenu:
                     _spriteBatch.DrawString(labelFont, "This is the pause Menu", new Vector2(5, 5), Color.White);
@@ -435,12 +484,18 @@ namespace Terminal_Dusk
                         buttons[3].Draw(_spriteBatch);
                         buttons[5].Draw(_spriteBatch);
                         buttons[6].Draw(_spriteBatch);
+                        buttons[7].Draw(_spriteBatch);
+                        buttons[8].Draw(_spriteBatch);
+                        buttons[9].Draw(_spriteBatch);
                     }
                     else
                     {
                         buttons[4].Draw(_spriteBatch);
                         buttons[5].Draw(_spriteBatch);
                         buttons[6].Draw(_spriteBatch);
+                        buttons[7].Draw(_spriteBatch);
+                        buttons[8].Draw(_spriteBatch);
+                        buttons[9].Draw(_spriteBatch);
                     }
                     break;
                 case GameState.ExitGame:
@@ -559,6 +614,22 @@ namespace Terminal_Dusk
             upMove = Keys.Up;
             usingWASD = false;
             usingArrow = true;
+        }
+
+        //methods for changing scale
+        private void ScaleTo3()
+        {
+            scale = 3;
+        }
+
+        private void ScaleTo4()
+        {
+            scale = 4;
+        }
+
+        private void ScaleTo6()
+        {
+            scale = 6;
         }
 
         //Save the screen to be loaded up when restarted

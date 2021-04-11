@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
 using Terminal_Dusk.Environments;
+using System.IO;
 
 namespace Terminal_Dusk
 {
@@ -29,6 +30,7 @@ namespace Terminal_Dusk
         //for the slime
         private Slime slime1;
         private Texture2D slimeSpriteSheet;
+        private List<Slime> slimeEnemies = new List<Slime>();
 
         // User input fields
         private KeyboardState kbState;
@@ -204,9 +206,11 @@ namespace Terminal_Dusk
             player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight);
 
             //slime enemy
-            slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScaled");
-            slime1 = new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height -150, 240, 240),currentState,player.State,1);
-
+            slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScale");
+            
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - 27*scale, 138, 102), currentState, player.State, 1));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 +20, GraphicsDevice.Viewport.Height - 27*scale, 138, 102), currentState, player.State, 1));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 20, GraphicsDevice.Viewport.Height - 27*scale, 138, 102), currentState, player.State, 1));
             //Loading to Environment Texture List
             envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
             envirImgs.Add(Content.Load<Texture2D>("Scroll background(update 2)"));
@@ -310,8 +314,11 @@ namespace Terminal_Dusk
                     {
                         environments[i].Update(gameTime);
                     }
-
-                    slime1.Update(gameTime);
+                    foreach (Slime slime in slimeEnemies)
+                    {
+                        slime.Update(gameTime);
+                    }
+                    
 
                     player.UpdateAnimation(gameTime);//animation update
                     //Logic should be moved and handled in Player class, just copy/pasted for ease
@@ -438,9 +445,12 @@ namespace Terminal_Dusk
             {
                 environments[i].PlayerState = player.State;
             }
-
-            slime1.State = currentState;
-            slime1.PlayerState = player.State;
+            foreach (Slime slime in slimeEnemies)
+            {
+                slime.State = currentState;
+                slime.PlayerState = player.State;
+            }
+            
 
 
             prevKbState = kbState;
@@ -473,7 +483,11 @@ namespace Terminal_Dusk
                     }
                     //Player
                     player.Draw(_spriteBatch);
-                    slime1.Draw(_spriteBatch);
+                    foreach(Slime slime in slimeEnemies)
+                    {
+                        slime.Draw(_spriteBatch);
+                    }
+                    
 
                     _spriteBatch.DrawString(labelFont, "" + counter, new Vector2(5, 5), Color.Black);
                     _spriteBatch.DrawString(labelFont, "Press P to pause", new Vector2(5, 25), Color.Black);
@@ -635,6 +649,71 @@ namespace Terminal_Dusk
         private void ScaleTo6()
         {
             scale = 6;
+        }
+
+        //Save the screen to be loaded up when restarted
+        public void SaveEnvironment(string filename)
+        {
+
+        }
+
+        //Loads the environment based off of the text file
+        public void LoadEnvironment(string filename)
+        {
+            int xPlacement = 0;
+            int yPlacement = -10 * scale;
+            StreamReader reader = new StreamReader(filename);
+
+            string line = null;
+            while ((line = reader.ReadLine()) != null)
+            {
+                yPlacement += 10 * scale;
+                foreach (char ch in line)
+{
+                    switch (ch)
+                    {
+                        case 'X':
+                            xPlacement += 10 * scale;
+                            break;
+                        case 'O':
+                            xPlacement += 10 * scale;
+                            break;
+                        case 'B':
+                            xPlacement += 10 * scale;
+                            break;
+                        case 'T':
+                            xPlacement += 10 * scale;
+                            break;
+                        case 'N':
+                            yPlacement = -10 * scale;
+                            break;
+                    }
+                }
+            }
+            reader.Close();
+            /*
+             * N - next
+             * X - none
+            O - ground
+            1 - wall (walls may be able to work as the same class as ground)
+            ^ - spikes
+
+            Platforms
+            \ - left platform side
+            / - right platform side
+            = - platform top (block)
+            _ - platform bottom (can be a thin platform)
+
+
+            Foliage
+            B - bush 3 tall 5 wide
+            T - tree 12 tall 11 wide
+
+            L - log cabin
+
+            + - health
+            $ - enemy
+            */
         }
     }
 }

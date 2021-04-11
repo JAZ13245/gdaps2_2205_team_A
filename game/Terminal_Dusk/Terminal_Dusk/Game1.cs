@@ -176,7 +176,7 @@ namespace Terminal_Dusk
 
             //slime enemy
             slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScaled");
-            slime1 = new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, 0, 240, 240));
+            slime1 = new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height -150, 240, 240),currentState,player.State,1);
 
             //Loading to Environment Texture List
             envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
@@ -388,6 +388,10 @@ namespace Terminal_Dusk
             {
                 environments[i].PlayerState = player.State;
             }
+
+            slime1.State = currentState;
+            slime1.PlayerState = player.State;
+
 
             prevKbState = kbState;
             base.Update(gameTime);

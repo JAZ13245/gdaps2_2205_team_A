@@ -35,6 +35,7 @@ namespace Terminal_Dusk
 
         public override void Draw(SpriteBatch sb)
         {
+            //138 x 102
             DrawJump(sb,flip);
         }
 
@@ -93,11 +94,11 @@ namespace Terminal_Dusk
                             switch (flip)
                             {
                                 case SpriteEffects.FlipHorizontally:
-                                    enemyLocation.X -= 18;
+                                    enemyLocation.X -= 10;
                                     
                                     break;
                                 case SpriteEffects.None:
-                                    enemyLocation.X += 18;
+                                    enemyLocation.X += 10;
                                     break;
                                 default:
                                     break;
@@ -105,11 +106,11 @@ namespace Terminal_Dusk
                         }
                         if (frame > 5 & frame < 9)
                         {
-                            enemyLocation.Y -= 9;
+                            enemyLocation.Y -= 5;
                         }
                         if (frame > 8 & frame < 12)
                         {
-                            enemyLocation.Y += 9;
+                            enemyLocation.Y += 5;
                         }
                         
                         
@@ -155,10 +156,10 @@ namespace Terminal_Dusk
                 image,                    // - The texture to draw
                 enemyLocation,                       // - The location to draw on the screen
                 new Rectangle(                  // - The "source" rectangle
-                    240*currentSprite,                          //   - This rectangle specifies
+                    138*currentSprite,                          //   - This rectangle specifies
                     0,                          //	   where "inside" the texture
-                    240,             //     to get pixels (We don't want to
-                    240),           //     draw the whole thing)
+                    138,             //     to get pixels (We don't want to
+                    102),           //     draw the whole thing)
                 Color.White,                    // - The color
                 0,                              // - Rotation (none currently)
                 Vector2.Zero,                   // - Origin inside the image (top left)

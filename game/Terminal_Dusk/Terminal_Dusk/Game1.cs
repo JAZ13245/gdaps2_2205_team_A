@@ -29,6 +29,7 @@ namespace Terminal_Dusk
         //for the slime
         private Slime slime1;
         private Texture2D slimeSpriteSheet;
+        private List<Slime> slimeEnemies = new List<Slime>();
 
         // User input fields
         private KeyboardState kbState;
@@ -204,9 +205,11 @@ namespace Terminal_Dusk
             player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight);
 
             //slime enemy
-            slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScaled");
-            slime1 = new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height -150, 240, 240),currentState,player.State,1);
-
+            slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScale");
+            
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - 27*scale, 138, 102), currentState, player.State, 1));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 +20, GraphicsDevice.Viewport.Height - 27*scale, 138, 102), currentState, player.State, 1));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 20, GraphicsDevice.Viewport.Height - 27*scale, 138, 102), currentState, player.State, 1));
             //Loading to Environment Texture List
             envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
             envirImgs.Add(Content.Load<Texture2D>("Scroll background(update 2)"));
@@ -309,8 +312,11 @@ namespace Terminal_Dusk
                     {
                         environments[i].Update(gameTime);
                     }
-
-                    slime1.Update(gameTime);
+                    foreach (Slime slime in slimeEnemies)
+                    {
+                        slime.Update(gameTime);
+                    }
+                    
 
                     player.UpdateAnimation(gameTime);//animation update
                     //Logic should be moved and handled in Player class, just copy/pasted for ease
@@ -437,9 +443,12 @@ namespace Terminal_Dusk
             {
                 environments[i].PlayerState = player.State;
             }
-
-            slime1.State = currentState;
-            slime1.PlayerState = player.State;
+            foreach (Slime slime in slimeEnemies)
+            {
+                slime.State = currentState;
+                slime.PlayerState = player.State;
+            }
+            
 
 
             prevKbState = kbState;
@@ -472,7 +481,11 @@ namespace Terminal_Dusk
                     }
                     //Player
                     player.Draw(_spriteBatch);
-                    slime1.Draw(_spriteBatch);
+                    foreach(Slime slime in slimeEnemies)
+                    {
+                        slime.Draw(_spriteBatch);
+                    }
+                    
 
                     _spriteBatch.DrawString(labelFont, "" + counter, new Vector2(5, 5), Color.White);
                     _spriteBatch.DrawString(labelFont, "" + currentTime, new Vector2(5, 25), Color.White);

@@ -227,7 +227,7 @@ namespace Terminal_Dusk
             envirConverter = (Environment)gameBackground;
             environments.Add(envirConverter);
 
-            //Ground
+            //TempGround
             for (int i = 0; i < 1000; i++)
             {
                 ground = new CollisionBlock(envirImgs[2], new Rectangle(i*scale, GraphicsDevice.Viewport.Height - 10*scale, 10 * scale, 10 * scale), currentState, player.State, 1);

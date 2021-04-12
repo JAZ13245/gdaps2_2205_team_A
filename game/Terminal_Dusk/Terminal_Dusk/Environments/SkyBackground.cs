@@ -32,8 +32,8 @@ namespace Terminal_Dusk.Environments
             if(state == GameState.GamePlayState)
             {
                 //Slows scroll speed
-                int timer = (int)gameTime.TotalGameTime.Ticks;
-                if (timer % 2 == 0)
+                double timer = (double)gameTime.TotalGameTime.Ticks;
+                if (timer % (10/3) == 0)
                 {
                     if (location.Y < 1350 * 3 - 2012 * 3) //to sunset
                     {

@@ -32,38 +32,41 @@ namespace Terminal_Dusk
          * JumpAttackRight
          */
     }
-
     enum PlayerJumpingState
     {
         Standing,
         Jumping
     }
-/* //Not all of these need to be created
- * //However, if this works the way I think it will in my head, combinations will work better than the 16 needed states in PlayerState
- * //If only two states don't use enum use bool
- * enum PlayerDirectionState
- * {
- *      Left,
- *      Right
- * }
- * 
- * enum PlayerMovementState
- * {
- *      Still,
- *      Crouching, //Could be seperate enum or put into the jump enum(jump may actually be better)
- *      Moving
- * }
- * 
- * //I would argue that these last two are close to necessary. Attack alone would get rid of the 8 states 
- * enum PlayerAttackState
- * {
- *      NotAttacking,
- *      Attacking
- * }
- * 
-
- */
-class Player 
+    /* //Not all of these need to be created
+     * //However, if this works the way I think it will in my head, combinations will work better than the 16 needed states in PlayerState
+     * //If only two states don't use enum use bool
+     * enum PlayerDirectionState
+     * {
+     *      Left,
+     *      Right
+     * }
+     * 
+     * enum PlayerMovementState
+     * {
+     *      Still,
+     *      Crouching, //Could be seperate enum or put into the jump enum(jump may actually be better)
+     *      Moving
+     * }
+     * 
+     * //I would argue that these last two are close to necessary. Attack alone would get rid of the 8 states 
+     * enum PlayerAttackState
+     * {
+     *      NotAttacking,
+     *      Attacking
+     * }
+     * 
+     * enum PlayerJumpingState
+     * {
+     *      Standing,
+     *      Jumping
+     * }
+     */
+    class Player 
     {
         Vector2 playerLoc;  // Mc's location on the screen
         PlayerState state;
@@ -78,6 +81,9 @@ class Player
         double fps;
         double timePerFrame;
         int frameListIndex;
+
+        //player stats
+        int health;
 
         //constants for walk rectangles
         const int walkFrameCount = 4;
@@ -118,19 +124,24 @@ class Player
             get { return state; }
             set { state = value; }
         }
-
+        
+        public int Health
+        {
+            get { return health; }
+        }
+        
         public PlayerJumpingState JumpingState
         {
             get { return jumpingState; }
             set { jumpingState = value; }
         }
-
         //the constructor
-        public Player(Texture2D spriteSheet, Vector2 playerLoc, PlayerState startingState) 
+        public Player(Texture2D spriteSheet, Vector2 playerLoc, PlayerState startingState, int health) 
         {
             this.spriteSheet = spriteSheet;
             this.playerLoc = playerLoc;
             this.state = startingState;
+            this.health = health;
 
             // Initialize
             fps = 5.0;                     // Will cycle through 5 walk frames per second

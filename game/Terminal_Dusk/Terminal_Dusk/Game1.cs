@@ -27,6 +27,10 @@ namespace Terminal_Dusk
         private Player player;
         private Texture2D playerSpreadSheet;
 
+        //for the player hp
+        private Health health;
+        private Texture2D healthSprite;
+
         //for the slime
         private Slime slime1;
         private Texture2D slimeSpriteSheet;
@@ -209,7 +213,11 @@ namespace Terminal_Dusk
             // Sets up the player location
             Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 47 * scale);//3 is scale
             playerSpreadSheet = Content.Load<Texture2D>("pixel_charTestScale");
-            player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight);
+            player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight,5);
+
+            //player HP
+            healthSprite = Content.Load<Texture2D>("hpScale");
+            health = new Health(healthSprite,new Rectangle(GraphicsDevice.Viewport.Width-healthSprite.Width, 0,healthSprite.Width,healthSprite.Height));
 
             //slime enemy
             slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScale");
@@ -253,7 +261,6 @@ namespace Terminal_Dusk
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
             kbState = Keyboard.GetState();
             mouseState = Mouse.GetState();
             switch (currentState)
@@ -455,13 +462,13 @@ namespace Terminal_Dusk
                                 }
                                 jumpingCounter++;
                                 //if the counter is greater then 10, the player goes down by 10 pixels
-                                if(jumpingCounter > 10)
+                                if (jumpingCounter > 10)
                                 {
                                     player.Y += 10;
                                 }
                                 //reset the timer to loop again
                                 jumpingCurrentTime -= jumpingCountDuration; // "use up" the time
-                                                              //any actions to perform
+                                                                            //any actions to perform
                             }
                             //if the counter is greater then our limit
                             //the jump has completed
@@ -474,9 +481,8 @@ namespace Terminal_Dusk
                             }
                             break;
                     }
-
+                    health.Update(gameTime, player.Health);
                     break;
-
                 case GameState.ExitGame:
                     break;
                 default:
@@ -539,6 +545,7 @@ namespace Terminal_Dusk
 
                     _spriteBatch.DrawString(labelFont, "" + counter, new Vector2(5, 5), Color.Black);
                     _spriteBatch.DrawString(labelFont, "Press P to pause", new Vector2(5, 25), Color.Black);
+                    health.Draw(_spriteBatch);
                     break;
                 case GameState.PauseMenu:
                     _spriteBatch.DrawString(labelFont, "This is the pause Menu", new Vector2(5, 5), Color.White);
@@ -568,6 +575,8 @@ namespace Terminal_Dusk
                 case GameState.ExitGame:
                     break;
             }
+
+            
 
             _spriteBatch.End();
 

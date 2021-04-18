@@ -66,11 +66,21 @@ namespace Terminal_Dusk
      *      Jumping
      * }
      */
+
+    enum DamageState
+    {
+        CanTakeDamage,
+        Invulnerable
+    }
+
+
+
     class Player 
     {
-        Vector2 playerLoc;  // Mc's location on the screen
+        Rectangle playerLoc;  // Mc's location on the screen
         PlayerState state;
         PlayerJumpingState jumpingState;
+        DamageState damageState;
 
         //for the character sheet
         Texture2D spriteSheet;
@@ -82,8 +92,12 @@ namespace Terminal_Dusk
         double timePerFrame;
         int frameListIndex;
 
-        //player stats
-        int health;
+        //fields for the health
+        private int health;
+        private Color damageColor;
+        private double timeCounterDamage;
+        private double timePerFrameDamage;
+        private double takeDamageCooldown;
 
         //constants for walk rectangles
         const int walkFrameCount = 4;
@@ -102,7 +116,7 @@ namespace Terminal_Dusk
             }
             set
             {
-                this.playerLoc.X = value;
+                this.playerLoc.X = (int)value;
             }
         }
 
@@ -115,7 +129,7 @@ namespace Terminal_Dusk
             }
             set
             {
-                this.playerLoc.Y = value;
+                this.playerLoc.Y = (int)value;
             }
         }
 
@@ -136,12 +150,16 @@ namespace Terminal_Dusk
             set { jumpingState = value; }
         }
         //the constructor
-        public Player(Texture2D spriteSheet, Vector2 playerLoc, PlayerState startingState, int health) 
+        public Player(Texture2D spriteSheet, Rectangle playerLoc, PlayerState startingState, int health) 
         {
             this.spriteSheet = spriteSheet;
             this.playerLoc = playerLoc;
             this.state = startingState;
             this.health = health;
+            damageState = DamageState.CanTakeDamage;
+            damageColor = Color.White;
+            timePerFrameDamage = 0.5 / fps;
+            takeDamageCooldown = 0;
 
             // Initialize
             fps = 5.0;                     // Will cycle through 5 walk frames per second
@@ -170,6 +188,38 @@ namespace Terminal_Dusk
 
                 timeCounter -= timePerFrame;
             }
+        }
+
+        public void UpdateDamageState(GameTime gameTime)
+        {
+            if (damageState == DamageState.Invulnerable)
+            {
+                if (timeCounterDamage >= timePerFrame)
+                {
+                    takeDamageCooldown++;
+                    if (takeDamageCooldown > 8)
+                    {
+                        damageColor = Color.White;
+                        takeDamageCooldown = 0;
+                        damageState = DamageState.CanTakeDamage;
+                    }
+                    else
+                    {
+                        if (damageColor == Color.White)
+                        {
+                            damageColor = Color.Red;
+                        }
+                        else
+                        {
+                            damageColor = Color.White;
+                        }
+                    }
+                    timeCounterDamage -= timePerFrame;
+                }
+            }
+            timeCounterDamage += gameTime.ElapsedGameTime.TotalSeconds;
+            
+            
         }
 
         //Added by James, feel free to delete/change
@@ -202,13 +252,13 @@ namespace Terminal_Dusk
         {
             spriteBatch.Draw(
                 spriteSheet,                    // - The texture to draw
-                playerLoc,                       // - The location to draw on the screen
+                new Vector2(playerLoc.X,playerLoc.Y),                       // - The location to draw on the screen
                 new Rectangle(                  // - The "source" rectangle
                     0,                          //   - This rectangle specifies
                     0,                          //	   where "inside" the texture
                     mainRectWidth,             //     to get pixels (We don't want to
                     mainRectHeight),           //     draw the whole thing)
-                Color.White,                    // - The color
+                damageColor,                    // - The color
                 0,                              // - Rotation (none currently)
                 Vector2.Zero,                   // - Origin inside the image (top left)
                 0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
@@ -220,14 +270,14 @@ namespace Terminal_Dusk
         {
             //Adjust rectangle to not get the odd clipping - done
             spriteBatch.Draw(
-                spriteSheet,                  
-                playerLoc,              
+                spriteSheet,
+                new Vector2(playerLoc.X, playerLoc.Y),              
                 new Rectangle(                 
                     frame * mainRectWidth,   
                     0,         
                     mainRectWidth,             
                     mainRectHeight),        
-                Color.White,               
+                damageColor,               
                 0,                            
                 Vector2.Zero,
                 0.5f,                    
@@ -245,13 +295,24 @@ namespace Terminal_Dusk
                     secondRow,
                     crouchWidth,
                     crouchHeight),
-                Color.White,
+                damageColor,
                 0,
                 Vector2.Zero,
                 0.5f,
                 flipSprite,
                 0);
         }
+
+        public void CheckEnemyCollisions(GameObject check)
+        {
+            if (damageState == DamageState.CanTakeDamage && playerLoc.Intersects(check.Position))
+            {
+                damageState = DamageState.Invulnerable;
+                health--;  
+            }
+        }
+
+
 
         public void Save() 
         { 

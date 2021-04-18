@@ -14,7 +14,6 @@ namespace Terminal_Dusk
         protected int speed;
         protected int[] drops;
         protected EnemyState currentState;
-        protected Vector2 enemyLocation;
         protected Random enemyRNG;
         protected GameState state;
         protected PlayerState playerState;

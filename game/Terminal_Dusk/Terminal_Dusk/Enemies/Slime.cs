@@ -18,7 +18,6 @@ namespace Terminal_Dusk
         {
             image = sprite;
             position = location;
-            enemyLocation = new Vector2(location.X, location.Y);
             timePerFrame = 0.08;
             currentState = EnemyState.Idle;
             frame = 0;
@@ -94,11 +93,11 @@ namespace Terminal_Dusk
                             switch (flip)
                             {
                                 case SpriteEffects.FlipHorizontally:
-                                    enemyLocation.X -= 10;
+                                    position.X -= 10;
                                     
                                     break;
                                 case SpriteEffects.None:
-                                    enemyLocation.X += 10;
+                                    position.X += 10;
                                     break;
                                 default:
                                     break;
@@ -106,11 +105,11 @@ namespace Terminal_Dusk
                         }
                         if (frame > 5 & frame < 9)
                         {
-                            enemyLocation.Y -= 5;
+                            position.Y -= 5;
                         }
                         if (frame > 8 & frame < 12)
                         {
-                            enemyLocation.Y += 5;
+                            position.Y += 5;
                         }
                         
                         
@@ -154,7 +153,7 @@ namespace Terminal_Dusk
         {
             sb.Draw(
                 image,                    // - The texture to draw
-                enemyLocation,                       // - The location to draw on the screen
+                new Vector2(position.X,position.Y),                       // - The location to draw on the screen
                 new Rectangle(                  // - The "source" rectangle
                     138*currentSprite,                          //   - This rectangle specifies
                     0,                          //	   where "inside" the texture
@@ -192,11 +191,11 @@ namespace Terminal_Dusk
             {
                 if (playerState == PlayerState.WalkRight)
                 {
-                    enemyLocation.X -= speed;
+                    position.X -= speed;
                 }
                 else if (playerState == PlayerState.WalkLeft)
                 {
-                    enemyLocation.X += speed;
+                    position.X += speed;
                 }
             }
         }

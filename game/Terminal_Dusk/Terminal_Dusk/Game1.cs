@@ -210,9 +210,9 @@ namespace Terminal_Dusk
 
             //Game State Loads
 
-            // Sets up the player location
-            Vector2 playerLoc = new Vector2(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 47 * scale);//3 is scale
+            // Sets up the player location      
             playerSpreadSheet = Content.Load<Texture2D>("pixel_charTestScale");
+            Rectangle playerLoc = new Rectangle(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 47 * scale, 10*scale, 37 * scale);//3 is scale
             player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight,5);
 
             //player HP
@@ -222,9 +222,9 @@ namespace Terminal_Dusk
             //slime enemy
             slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScale");
             
-            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - 27*scale, 138, 102), currentState, player.State, 1));
-            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 +20, GraphicsDevice.Viewport.Height - 27*scale, 138, 102), currentState, player.State, 1));
-            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 20, GraphicsDevice.Viewport.Height - 27*scale, 138, 102), currentState, player.State, 1));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - 27*scale, 23*scale, 17*scale), currentState, player.State, 1));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 +20, GraphicsDevice.Viewport.Height - 27*scale, 23 * scale, 17 * scale), currentState, player.State, 1));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 20, GraphicsDevice.Viewport.Height - 27*scale, 23 * scale, 34 * scale), currentState, player.State, 1));
             //Loading to Environment Texture List
             envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
             envirImgs.Add(Content.Load<Texture2D>("Scroll background(update 2)"));
@@ -330,12 +330,15 @@ namespace Terminal_Dusk
                     foreach (Slime slime in slimeEnemies)
                     {
                         slime.Update(gameTime);
+                        player.CheckEnemyCollisions(slime);
                     }
                     
+
 
                     player.UpdateAnimation(gameTime);//animation update
                     //Logic should be moved and handled in Player class, just copy/pasted for ease
                     //Should be able to go from walking to crouching more easily
+                    player.UpdateDamageState(gameTime);
                     switch (player.State)
                     {
                         case PlayerState.FaceLeft:

@@ -52,6 +52,12 @@ namespace Terminal_Dusk
         private float countDuration = 1f; //every  1s.
         private float currentTime = 0f;
 
+        //field for jumping
+        private int jumpingCounter = 0;
+        private int jumpingLimit = 21;
+        private float jumpingCountDuration = 0.03f; //every  1s.
+        private float jumpingCurrentTime = 0f;
+
         //Environment list
         private List<Environment> environments = new List<Environment>();
         private List<Texture2D> envirImgs = new List<Texture2D>();
@@ -427,6 +433,48 @@ namespace Terminal_Dusk
                             }
                             break;
                     }
+                    //jumping switch statement
+                    switch (player.JumpingState)
+                    {
+                        case PlayerJumpingState.Standing:
+                            if (kbState.IsKeyDown(upMove))
+                            {
+                                player.JumpingState = PlayerJumpingState.Jumping;
+                            }
+                            break;
+                        case PlayerJumpingState.Jumping:
+                            jumpingCurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
+                            //jumping timer to create a jumping animation
+                            //whenever the elapsed time gets lerger then jumpingCountDuration it runs through the loop
+                            if (jumpingCurrentTime >= jumpingCountDuration)
+                            {
+                                //if the counter is less then or equal to ten, the player goes up by 10 pixels
+                                if (jumpingCounter <= 10)
+                                {
+                                    player.Y -= 10;
+                                }
+                                jumpingCounter++;
+                                //if the counter is greater then 10, the player goes down by 10 pixels
+                                if(jumpingCounter > 10)
+                                {
+                                    player.Y += 10;
+                                }
+                                //reset the timer to loop again
+                                jumpingCurrentTime -= jumpingCountDuration; // "use up" the time
+                                                              //any actions to perform
+                            }
+                            //if the counter is greater then our limit
+                            //the jump has completed
+                            if (jumpingCounter >= jumpingLimit)
+                            {
+                                //reset the counter
+                                jumpingCounter = 0;
+                                //set the player to the standing state as they are no longer jumping
+                                player.JumpingState = PlayerJumpingState.Standing;
+                            }
+                            break;
+                    }
+
                     break;
 
                 case GameState.ExitGame:

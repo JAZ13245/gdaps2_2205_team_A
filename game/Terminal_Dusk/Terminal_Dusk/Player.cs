@@ -15,7 +15,8 @@ namespace Terminal_Dusk
         FaceRight,
         WalkRight,
         CrouchRight,
-        CrouchLeft // Add state(s) to support crouching
+        CrouchLeft,
+        // Add state(s) to support crouching
         //This is ridiculous
         //I think a total overhaul of the Player's State Machine is necessary
         //Especially because of the Jump/Attack states 
@@ -31,39 +32,42 @@ namespace Terminal_Dusk
          * JumpAttackRight
          */
     }
-    /* //Not all of these need to be created
-     * //However, if this works the way I think it will in my head, combinations will work better than the 16 needed states in PlayerState
-     * //If only two states don't use enum use bool
-     * enum PlayerDirectionState
-     * {
-     *      Left,
-     *      Right
-     * }
-     * 
-     * enum PlayerMovementState
-     * {
-     *      Still,
-     *      Crouching, //Could be seperate enum or put into the jump enum(jump may actually be better)
-     *      Moving
-     * }
-     * 
-     * //I would argue that these last two are close to necessary. Attack alone would get rid of the 8 states 
-     * enum PlayerAttackState
-     * {
-     *      NotAttacking,
-     *      Attacking
-     * }
-     * 
-     * enum PlayerJumpingState
-     * {
-     *      Standing,
-     *      Jumping
-     * }
-     */
-    class Player 
+
+    enum PlayerJumpingState
+    {
+        Standing,
+        Jumping
+    }
+/* //Not all of these need to be created
+ * //However, if this works the way I think it will in my head, combinations will work better than the 16 needed states in PlayerState
+ * //If only two states don't use enum use bool
+ * enum PlayerDirectionState
+ * {
+ *      Left,
+ *      Right
+ * }
+ * 
+ * enum PlayerMovementState
+ * {
+ *      Still,
+ *      Crouching, //Could be seperate enum or put into the jump enum(jump may actually be better)
+ *      Moving
+ * }
+ * 
+ * //I would argue that these last two are close to necessary. Attack alone would get rid of the 8 states 
+ * enum PlayerAttackState
+ * {
+ *      NotAttacking,
+ *      Attacking
+ * }
+ * 
+
+ */
+class Player 
     {
         Vector2 playerLoc;  // Mc's location on the screen
         PlayerState state;
+        PlayerJumpingState jumpingState;
 
         //for the character sheet
         Texture2D spriteSheet;
@@ -113,6 +117,12 @@ namespace Terminal_Dusk
         {
             get { return state; }
             set { state = value; }
+        }
+
+        public PlayerJumpingState JumpingState
+        {
+            get { return jumpingState; }
+            set { jumpingState = value; }
         }
 
         //the constructor

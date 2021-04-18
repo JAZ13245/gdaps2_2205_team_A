@@ -7,15 +7,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Terminal_Dusk.Environments
 {
-    class CollisionBlock : Environment
+    class Forground : Environment
     {
-        private Texture2D spriteSheet;
+        private Texture2D sprite;
         private Rectangle location;
         GameState state;
         PlayerState playerState;
         int speed;
-
-        //Should all be base 10X10
 
         public override GameState State
         {
@@ -27,9 +25,9 @@ namespace Terminal_Dusk.Environments
             set { playerState = value; }
         }
 
-        public CollisionBlock(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
+        public Forground(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
         {
-            this.spriteSheet = sprite;
+            this.sprite = sprite;
             this.location = location;
             this.state = state;
             this.playerState = playerState;
@@ -57,7 +55,7 @@ namespace Terminal_Dusk.Environments
 
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(spriteSheet, location, Color.White);
+            sb.Draw(sprite, location, Color.White);
         }
 
         public void Reset()
@@ -66,5 +64,6 @@ namespace Terminal_Dusk.Environments
             location.Y = 0;
         }
     }
+    
 }
 

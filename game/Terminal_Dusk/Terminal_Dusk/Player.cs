@@ -60,6 +60,10 @@ namespace Terminal_Dusk
      *      Jumping
      * }
      */
+
+
+
+
     class Player 
     {
         Vector2 playerLoc;  // Mc's location on the screen
@@ -74,6 +78,9 @@ namespace Terminal_Dusk
         double fps;
         double timePerFrame;
         int frameListIndex;
+
+        //player stats
+        int health;
 
         //constants for walk rectangles
         const int walkFrameCount = 4;
@@ -115,12 +122,18 @@ namespace Terminal_Dusk
             set { state = value; }
         }
 
+        public int Health
+        {
+            get { return health; }
+        }
+
         //the constructor
-        public Player(Texture2D spriteSheet, Vector2 playerLoc, PlayerState startingState) 
+        public Player(Texture2D spriteSheet, Vector2 playerLoc, PlayerState startingState, int health) 
         {
             this.spriteSheet = spriteSheet;
             this.playerLoc = playerLoc;
             this.state = startingState;
+            this.health = health;
 
             // Initialize
             fps = 5.0;                     // Will cycle through 5 walk frames per second

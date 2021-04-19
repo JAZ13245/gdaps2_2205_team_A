@@ -443,7 +443,7 @@ namespace Terminal_Dusk
             {
                 check.CurrentState = EnemyState.Dying;
             }
-            else if (damageState == DamageState.CanTakeDamage && playerLoc.Intersects(check.Position) && attackingState!=PlayerAttackingState.IsNotAttacking)
+            else if (damageState == DamageState.CanTakeDamage && playerLoc.Intersects(check.Position) && attackingState==PlayerAttackingState.IsNotAttacking)
             {
                 damageState = DamageState.Invulnerable;
                 health--;  

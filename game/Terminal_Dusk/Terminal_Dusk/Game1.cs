@@ -90,6 +90,7 @@ namespace Terminal_Dusk
         private Keys leftMove = Keys.A;
         private Keys crouchMove = Keys.S;
         private Keys upMove = Keys.W;
+        private Keys attack = Keys.Space;
         private bool usingWASD = true;
         private bool usingArrow = false;
 
@@ -531,13 +532,13 @@ namespace Terminal_Dusk
                     switch (player.AttackingState)
                     {
                         case PlayerAttackingState.IsNotAttacking:
-                            if (prevKbState.IsKeyDown(Keys.Space))
+                            if (SingleKeyPress(attack, kbState))
                             {
                                 player.AttackingState = PlayerAttackingState.IsAttacking;
                             }
                             break;
                         case PlayerAttackingState.IsAttacking:
-                            if(prevKbState.IsKeyUp(Keys.Space))
+                            if(prevKbState.IsKeyUp(attack))
                             {
                                 player.AttackingState = PlayerAttackingState.IsNotAttacking;
                             }

@@ -27,6 +27,7 @@ namespace Terminal_Dusk.Environments
             this.state = state;
         }
 
+        // TODO: Eventually fix the odd jump
         public override void Update(GameTime gameTime)
         {
             if(state == GameState.GamePlayState)

@@ -18,7 +18,7 @@ namespace Terminal_Dusk
         {
             image = sprite;
             position = location;
-            timePerFrame = 0.08;
+            timePerFrame = 0.15;
             currentState = EnemyState.Idle;
             frame = 0;
             currentSprite = 0;

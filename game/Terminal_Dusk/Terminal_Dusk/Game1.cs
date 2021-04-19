@@ -228,9 +228,9 @@ namespace Terminal_Dusk
             //slime enemy
             slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScale");
             
-            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - 27*scale, 23*scale, 17*scale), currentState, player.State, 2));
-            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 +20, GraphicsDevice.Viewport.Height - 27*scale, 23 * scale, 17 * scale), currentState, player.State, 2));
-            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 20, GraphicsDevice.Viewport.Height - 27*scale, 23 * scale, 34 * scale), currentState, player.State, 2));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - 27*scale, 23*scale, 17*scale), currentState, player.State, 1));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 +20, GraphicsDevice.Viewport.Height - 27*scale, 23 * scale, 17 * scale), currentState, player.State, 1));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 20, GraphicsDevice.Viewport.Height - 27*scale, 23 * scale, 34 * scale), currentState, player.State, 1));
             //Loading to Environment Texture List
             envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
             envirImgs.Add(Content.Load<Texture2D>("Scroll background(update 2)"));

@@ -250,7 +250,7 @@ namespace Terminal_Dusk
                 i += 9;
             }
 
-            //
+            // TODO: finish forground class
             //Shrubs //Needs more suitable class
             /*shrubs = new EnvironmentBackground(envirImgs[3], new Rectangle(0, 0, 50*scale, 90*scale), currentState, player.State, 2); //2 is speed
             envirConverter = (Environment)shrubs;
@@ -326,6 +326,18 @@ namespace Terminal_Dusk
                     //Background
                     for (int i = 0; i < environments.Count; i++)
                     {
+                        environments[i].Update(gameTime);
+                    }
+                    // TODO: Should upcast slime to Enemy so that Imps can be included in this update
+                    foreach (Slime slime in slimeEnemies)
+                    {
+                        slime.Update(gameTime);
+                        player.CheckEnemyCollisions(slime);
+                    }
+                    /*
+                    //Background
+                    for (int i = 0; i < environments.Count; i++)
+                    {
                         //Updates
                         environments[i].Update(gameTime);
                         //Updates the game state for environments
@@ -342,8 +354,8 @@ namespace Terminal_Dusk
                         //Updates PlayerState
                         slime.State = currentState;
                         slime.PlayerState = player.State;
-                    }
-            
+                    }*/
+
 
                     player.Update(gameTime);
                     // TODO: Logic should be moved and handled in Player class, just copy/pasted for ease
@@ -456,7 +468,7 @@ namespace Terminal_Dusk
                     switch (player.JumpingState)
                     {
                         case PlayerJumpingState.Standing:
-                            if (SingleKeyPress(Keys.W, kbState))
+                            if (SingleKeyPress(upMove, kbState))
                             {
                                 player.JumpingState = PlayerJumpingState.Jumping;
                             }
@@ -500,6 +512,21 @@ namespace Terminal_Dusk
                 default:
                     break;
             }
+
+            for (int i = 0; i < environments.Count; i++)
+            {
+                //Updates the game state for environments
+                environments[i].State = currentState;
+                //Updates the player state for environments
+                environments[i].PlayerState = player.State;
+            }
+            
+            foreach (Slime slime in slimeEnemies)
+            {
+                slime.State = currentState;
+                slime.PlayerState = player.State;
+            }
+            
 
 
             prevKbState = kbState;

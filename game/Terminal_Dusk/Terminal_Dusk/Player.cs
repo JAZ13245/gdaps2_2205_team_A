@@ -66,7 +66,7 @@ namespace Terminal_Dusk
     }
 
 
-
+    // TODO: should inheirt form GameObject
     class Player 
     {
         Rectangle playerLoc;  // Mc's location on the screen
@@ -189,6 +189,8 @@ namespace Terminal_Dusk
             }
         }
 
+        // TODO: Make sure that when the player is crouching that their hit box gets smaller
+        //Maybe not the place for this comment but it is needed
         public void UpdateDamageState(GameTime gameTime)
         {
             if (damageState == DamageState.Invulnerable)
@@ -223,7 +225,7 @@ namespace Terminal_Dusk
         }
 
         //Added by James, feel free to delete/change
-        //Should be if statements to account for new enums
+        // TODO: Should be if statements to account for new enums
         public void Draw(SpriteBatch sb)
         {
             switch (state)

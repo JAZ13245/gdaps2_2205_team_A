@@ -35,6 +35,11 @@ namespace Terminal_Dusk
         Standing,
         Jumping
     }
+    enum PlayerAttackingState
+    {
+        IsNotAttacking,
+        IsAttacking
+    }
     /* //Not all of these need to be created
      * //However, if this works the way I think it will in my head, combinations will work better than the 16 needed states in PlayerState
      * //If only two states don't use enum use bool
@@ -72,6 +77,7 @@ namespace Terminal_Dusk
         Rectangle playerLoc;  // Mc's location on the screen
         PlayerState state;
         PlayerJumpingState jumpingState;
+        PlayerAttackingState attackingState;
         DamageState damageState;
 
         //for the character sheet
@@ -96,8 +102,14 @@ namespace Terminal_Dusk
         const int mainRectHeight = 37*6;
         const int mainRectWidth = 10*6;
         const int secondRow = 37*6;
+        const int thirdRow = 65*6;
+        const int fourthRow = 102 * 6;
         const int crouchWidth = 12*6;
         const int crouchHeight = 28*6;
+        const int attackHeight = 37 * 6;
+        const int attackWidth = 28 * 6;
+        const int attackCrouchHeight = 28 * 6;
+        const int attackCrouchWidth = 28 * 6;
 
         // Properties to get & set player's current location and animation state
         public float X
@@ -141,6 +153,12 @@ namespace Terminal_Dusk
             get { return jumpingState; }
             set { jumpingState = value; }
         }
+
+        public PlayerAttackingState AttackingState
+        {
+            get { return attackingState; }
+            set { attackingState = value; }
+        }
         //the constructor
         public Player(Texture2D spriteSheet, Rectangle playerLoc, PlayerState startingState, int health) 
         {
@@ -148,6 +166,7 @@ namespace Terminal_Dusk
             this.playerLoc = playerLoc;
             this.state = startingState;
             this.health = health;
+            this.jumpingState = PlayerJumpingState.Standing;
             damageState = DamageState.CanTakeDamage;
             damageColor = Color.White;
             timePerFrameDamage = 1 / fps;
@@ -251,6 +270,42 @@ namespace Terminal_Dusk
 
         private void DrawStanding(SpriteEffects flipSprite, SpriteBatch spriteBatch)
         {
+            switch (attackingState)
+            {
+                case PlayerAttackingState.IsNotAttacking:
+                    spriteBatch.Draw(
+                        spriteSheet,                    // - The texture to draw
+                        new Vector2(playerLoc.X, playerLoc.Y),                       // - The location to draw on the screen
+                        new Rectangle(                  // - The "source" rectangle
+                            0,                          //   - This rectangle specifies
+                            0,                          //	   where "inside" the texture
+                            mainRectWidth,             //     to get pixels (We don't want to
+                            mainRectHeight),           //     draw the whole thing)
+                        damageColor,                    // - The color
+                        0,                              // - Rotation (none currently)
+                        Vector2.Zero,                   // - Origin inside the image (top left)
+                        0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
+                        flipSprite,                     // - Can be used to flip the image
+                        0);                             // - Layer depth (unused)
+                    break;
+                case PlayerAttackingState.IsAttacking:
+                    spriteBatch.Draw(
+                        spriteSheet,                    // - The texture to draw
+                        new Vector2(playerLoc.X, playerLoc.Y),                       // - The location to draw on the screen
+                        new Rectangle(                  // - The "source" rectangle
+                            0,                          //   - This rectangle specifies
+                            thirdRow,                          //	   where "inside" the texture
+                            attackWidth,             //     to get pixels (We don't want to
+                            attackHeight),           //     draw the whole thing)
+                        damageColor,                    // - The color
+                        0,                              // - Rotation (none currently)
+                        Vector2.Zero,                   // - Origin inside the image (top left)
+                        0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
+                        flipSprite,                     // - Can be used to flip the image
+                        0);
+                    break;
+            }
+            /*
             spriteBatch.Draw(
                 spriteSheet,                    // - The texture to draw
                 new Vector2(playerLoc.X,playerLoc.Y),                       // - The location to draw on the screen
@@ -265,10 +320,48 @@ namespace Terminal_Dusk
                 0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
                 flipSprite,                     // - Can be used to flip the image
                 0);                             // - Layer depth (unused)
+            */
         }
 
         private void DrawWalking(SpriteEffects flipSprite, SpriteBatch spriteBatch)
         {
+            switch (attackingState)
+            {
+                case PlayerAttackingState.IsNotAttacking:
+                    spriteBatch.Draw(
+                        spriteSheet,
+                        new Vector2(playerLoc.X, playerLoc.Y),
+                        new Rectangle(
+                            frame * mainRectWidth,
+                            0,
+                            mainRectWidth,
+                            mainRectHeight),
+                        damageColor,
+                        0,
+                        Vector2.Zero,
+                        0.5f,
+                        flipSprite,
+                        0);
+                    break;
+                case PlayerAttackingState.IsAttacking:
+                    spriteBatch.Draw(
+                        spriteSheet,                    // - The texture to draw
+                        new Vector2(playerLoc.X, playerLoc.Y),                       // - The location to draw on the screen
+                        new Rectangle(                  // - The "source" rectangle
+                            0,                          //   - This rectangle specifies
+                            thirdRow,                          //	   where "inside" the texture
+                            attackWidth,             //     to get pixels (We don't want to
+                            attackHeight),           //     draw the whole thing)
+                        damageColor,                    // - The color
+                        0,                              // - Rotation (none currently)
+                        Vector2.Zero,                   // - Origin inside the image (top left)
+                        0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
+                        flipSprite,                     // - Can be used to flip the image
+                        0);
+                    break;
+            }
+
+            /*
             //Adjust rectangle to not get the odd clipping - done
             spriteBatch.Draw(
                 spriteSheet,
@@ -283,11 +376,48 @@ namespace Terminal_Dusk
                 Vector2.Zero,
                 0.5f,                    
                 flipSprite,                 
-                0);                     
+                0);  
+            */
         }
 
         private void DrawCrouching(SpriteEffects flipSprite, SpriteBatch spriteBatch)
         {
+            switch (attackingState)
+            {
+                case PlayerAttackingState.IsNotAttacking:
+                    spriteBatch.Draw(
+                        spriteSheet,
+                        new Vector2(X, Y + 9 * 3),
+                        new Rectangle(
+                            0,
+                            secondRow,
+                            crouchWidth,
+                            crouchHeight),
+                        damageColor,
+                        0,
+                        Vector2.Zero,
+                        0.5f,
+                        flipSprite,
+                        0);
+                    break;
+                case PlayerAttackingState.IsAttacking:
+                    spriteBatch.Draw(
+                        spriteSheet,                    // - The texture to draw
+                        new Vector2(X, Y + 9 * 3),                       // - The location to draw on the screen
+                        new Rectangle(                  // - The "source" rectangle
+                            0,                          //   - This rectangle specifies
+                            fourthRow,                          //	   where "inside" the texture
+                            attackCrouchWidth,             //     to get pixels (We don't want to
+                            attackCrouchHeight),           //     draw the whole thing)
+                        damageColor,                    // - The color
+                        0,                              // - Rotation (none currently)
+                        Vector2.Zero,                   // - Origin inside the image (top left)
+                        0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
+                        flipSprite,                     // - Can be used to flip the image
+                        0);
+                    break;
+            }
+            /*
             spriteBatch.Draw(
                 spriteSheet,
                 new Vector2(X, Y + 9*3),
@@ -302,11 +432,16 @@ namespace Terminal_Dusk
                 0.5f,
                 flipSprite,
                 0);
+            */
         }
 
-        public void CheckEnemyCollisions(GameObject check)
+        public void CheckEnemyCollisions(Enemy check)
         {
-            if (damageState == DamageState.CanTakeDamage && playerLoc.Intersects(check.Position))
+            if(playerLoc.Intersects(check.Position) && attackingState == PlayerAttackingState.IsAttacking)
+            {
+                check.CurrentState = EnemyState.Dying;
+            }
+            else if (damageState == DamageState.CanTakeDamage && playerLoc.Intersects(check.Position) && attackingState!=PlayerAttackingState.IsNotAttacking)
             {
                 damageState = DamageState.Invulnerable;
                 health--;  

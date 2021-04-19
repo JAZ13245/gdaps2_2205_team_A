@@ -59,8 +59,14 @@ namespace Terminal_Dusk
         //field for jumping
         private int jumpingCounter = 0;
         private int jumpingLimit = 21;
-        private float jumpingCountDuration = 0.03f; //every  1s.
+        private float jumpingCountDuration = 0.03f; //every  .03s.
         private float jumpingCurrentTime = 0f;
+
+        //fields for attacking
+        private int attackingCounter = 0;
+        private int attackingLimit = 2;
+        private float attackingCountDuration = 1f; //every  1s.
+        private float attackingCurrentTime = 0f;
 
         //Environment list
         private List<Environment> environments = new List<Environment>();
@@ -334,16 +340,34 @@ namespace Terminal_Dusk
                         environments[i].PlayerState = player.State;
                     }
                     // TODO: Should upcast slime to Enemy so that Imps can be included in this update
-                    foreach (Slime slime in slimeEnemies)
+                    /*foreach (Slime slime in slimeEnemies)
                     {
                         //Update
                         slime.Update(gameTime);
                         player.CheckEnemyCollisions(slime);
+                        if(slime.CurrentState == EnemyState.Dying)
+                        {
+                            slimeEnemies.RemoveAt(slime);
+                        }
                         //Updates PlayerState
                         slime.State = currentState;
                         slime.PlayerState = player.State;
                     }
-            
+                    */
+                    for (int i = 0; i < slimeEnemies.Count; i++)
+                    {
+                        //Update
+                        slimeEnemies[i].Update(gameTime);
+                        player.CheckEnemyCollisions(slimeEnemies[i]);
+                        //Updates PlayerState
+                        slimeEnemies[i].State = currentState;
+                        slimeEnemies[i].PlayerState = player.State;
+                        if (slimeEnemies[i].CurrentState == EnemyState.Dying)
+                        {
+                            slimeEnemies.RemoveAt(i);
+                        }
+                    }
+
 
                     player.Update(gameTime);
                     // TODO: Logic should be moved and handled in Player class, just copy/pasted for ease
@@ -493,6 +517,22 @@ namespace Terminal_Dusk
                             }
                             break;
                     }
+                    switch (player.AttackingState)
+                    {
+                        case PlayerAttackingState.IsNotAttacking:
+                            if (prevKbState.IsKeyDown(Keys.Space))
+                            {
+                                player.AttackingState = PlayerAttackingState.IsAttacking;
+                            }
+                            break;
+                        case PlayerAttackingState.IsAttacking:
+                            if(prevKbState.IsKeyUp(Keys.Space))
+                            {
+                                player.AttackingState = PlayerAttackingState.IsNotAttacking;
+                            }
+                            break;
+                    }
+
                     health.Update(gameTime, player.Health);
                     break;
                 case GameState.ExitGame:

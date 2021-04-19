@@ -7,6 +7,14 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Terminal_Dusk
 {
+    enum EnemyState
+    {
+        Idle,
+        IdleBehaviour,
+        Hostile,
+        Attacking,
+        Dying
+    }
     class Enemy : GameObject
     {
         protected int health;
@@ -17,13 +25,11 @@ namespace Terminal_Dusk
         protected Random enemyRNG;
         protected GameState state;
         protected PlayerState playerState;
-        protected enum EnemyState
+        
+        public EnemyState CurrentState
         {
-            Idle,
-            IdleBehaviour,
-            Hostile,
-            Attacking,
-            Dying
+            get { return currentState; }
+            set { currentState = value; }
         }
 
 

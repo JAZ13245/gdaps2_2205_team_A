@@ -134,6 +134,7 @@ namespace Terminal_Dusk
                         break;
 
                     case EnemyState.Dying:
+
                         break;
 
                     default:

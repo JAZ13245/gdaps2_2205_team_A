@@ -150,7 +150,7 @@ namespace Terminal_Dusk
             this.health = health;
             damageState = DamageState.CanTakeDamage;
             damageColor = Color.White;
-            timePerFrameDamage = 0.5 / fps;
+            timePerFrameDamage = 1 / fps;
             takeDamageCooldown = 0;
 
             // Initialize
@@ -215,8 +215,9 @@ namespace Terminal_Dusk
                     }
                     timeCounterDamage -= timePerFrame;
                 }
+                timeCounterDamage += gameTime.ElapsedGameTime.TotalSeconds;
             }
-            timeCounterDamage += gameTime.ElapsedGameTime.TotalSeconds;
+            
             
             
         }

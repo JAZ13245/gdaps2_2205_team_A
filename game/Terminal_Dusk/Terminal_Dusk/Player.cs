@@ -20,9 +20,7 @@ namespace Terminal_Dusk
         //This is ridiculous
         //I think a total overhaul of the Player's State Machine is necessary
         //Especially because of the Jump/Attack states 
-        /*JumpLeft
-         * JumpRight
-         * StandAttackLeft
+        /* StandAttackLeft
          * StandAttackRight
          * WalkAttackLeft
          * WalkAttackRight
@@ -58,12 +56,6 @@ namespace Terminal_Dusk
      * {
      *      NotAttacking,
      *      Attacking
-     * }
-     * 
-     * enum PlayerJumpingState
-     * {
-     *      Standing,
-     *      Jumping
      * }
      */
 
@@ -167,6 +159,13 @@ namespace Terminal_Dusk
             frameListIndex = 0;
         }
 
+        //Handles any updates and keeps game clean
+        public void Update(GameTime gameTime)
+        {
+            UpdateAnimation(gameTime);
+            UpdateDamageState(gameTime);
+        }
+
         //updating the player's animation
         public void UpdateAnimation(GameTime gameTime)
         {
@@ -223,6 +222,7 @@ namespace Terminal_Dusk
         }
 
         //Added by James, feel free to delete/change
+        //Should be if statements to account for new enums
         public void Draw(SpriteBatch sb)
         {
             switch (state)

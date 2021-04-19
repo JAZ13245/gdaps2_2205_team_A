@@ -222,9 +222,9 @@ namespace Terminal_Dusk
             //slime enemy
             slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScale");
             
-            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - 27*scale, 23*scale, 17*scale), currentState, player.State, 1));
-            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 +20, GraphicsDevice.Viewport.Height - 27*scale, 23 * scale, 17 * scale), currentState, player.State, 1));
-            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 20, GraphicsDevice.Viewport.Height - 27*scale, 23 * scale, 34 * scale), currentState, player.State, 1));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - 27*scale, 23*scale, 17*scale), currentState, player.State, 2));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 +20, GraphicsDevice.Viewport.Height - 27*scale, 23 * scale, 17 * scale), currentState, player.State, 2));
+            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 20, GraphicsDevice.Viewport.Height - 27*scale, 23 * scale, 34 * scale), currentState, player.State, 2));
             //Loading to Environment Texture List
             envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
             envirImgs.Add(Content.Load<Texture2D>("Scroll background(update 2)"));
@@ -244,7 +244,7 @@ namespace Terminal_Dusk
             //TempGround
             for (int i = 0; i < 1000; i++)
             {
-                ground = new CollisionBlock(envirImgs[2], new Rectangle(i*scale, GraphicsDevice.Viewport.Height - 10*scale, 10 * scale, 10 * scale), currentState, player.State, 1);
+                ground = new CollisionBlock(envirImgs[2], new Rectangle(i*scale, GraphicsDevice.Viewport.Height - 10*scale, 10 * scale, 10 * scale), currentState, player.State, 2);
                 envirConverter = (Environment)ground;
                 environments.Add(envirConverter);
                 i += 9;
@@ -332,13 +332,11 @@ namespace Terminal_Dusk
                         slime.Update(gameTime);
                         player.CheckEnemyCollisions(slime);
                     }
-                    
 
 
-                    player.UpdateAnimation(gameTime);//animation update
+
+                    player.Update(gameTime);
                     //Logic should be moved and handled in Player class, just copy/pasted for ease
-                    //Should be able to go from walking to crouching more easily
-                    player.UpdateDamageState(gameTime);
                     switch (player.State)
                     {
                         case PlayerState.FaceLeft:
@@ -444,10 +442,11 @@ namespace Terminal_Dusk
                             break;
                     }
                     //jumping switch statement
+                    //Needs to be completely rewritten. No physics, no animation, improper user input.
                     switch (player.JumpingState)
                     {
                         case PlayerJumpingState.Standing:
-                            if (kbState.IsKeyDown(upMove))
+                            if (SingleKeyPress(Keys.W, kbState))
                             {
                                 player.JumpingState = PlayerJumpingState.Jumping;
                             }

@@ -94,6 +94,9 @@ namespace Terminal_Dusk
         private bool usingWASD = true;
         private bool usingArrow = false;
 
+        //FileIO
+        private string levelFile = "..\\..\\levelFile.txt";
+
 
         public Game1()
         {
@@ -248,6 +251,7 @@ namespace Terminal_Dusk
             envirConverter = (Environment)gameBackground;
             environments.Add(envirConverter);
 
+            
             //TempGround
             for (int i = 0; i < 1000; i++)
             {
@@ -256,6 +260,7 @@ namespace Terminal_Dusk
                 environments.Add(envirConverter);
                 i += 9;
             }
+            //LoadEnvironment(levelFile);
 
             // TODO: finish forground class
             //Shrubs //Needs more suitable class
@@ -791,11 +796,12 @@ namespace Terminal_Dusk
 {
                     switch (ch)
                     {
+                        // TODO: slime load at 150 - 2
                         case 'X':
                             xPlacement += 10 * scale;
                             break;
                         case 'O':
-                            ground = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 1);
+                            ground = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement * scale, yPlacement * scale, 10 * scale, 10 * scale), currentState, player.State, 1);
                             envirConverter = (Environment)ground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;

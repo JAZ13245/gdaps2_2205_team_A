@@ -117,7 +117,7 @@ namespace Terminal_Dusk
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //background images
-            backImgs.Add(Content.Load<Texture2D>("TitleScreen1Scale"));
+            backImgs.Add(Content.Load<Texture2D>("newTitleScale"));
             // TODO: use this.Content to load your game content here
             labelFont = this.Content.Load<SpriteFont>("LabelFont");
 

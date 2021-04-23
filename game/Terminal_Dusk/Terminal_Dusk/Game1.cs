@@ -253,14 +253,14 @@ namespace Terminal_Dusk
 
             
             //TempGround
-            for (int i = 0; i < 1000; i++)
+            /*for (int i = 0; i < 1000; i++)
             {
                 ground = new CollisionBlock(envirImgs[2], new Rectangle(i*scale, GraphicsDevice.Viewport.Height - 10*scale, 10 * scale, 10 * scale), currentState, player.State, 2);
                 envirConverter = (Environment)ground;
                 environments.Add(envirConverter);
                 i += 9;
-            }
-            //LoadEnvironment(levelFile);
+            }*/
+            LoadEnvironment(levelFile);
 
             // TODO: finish forground class
             //Shrubs //Needs more suitable class
@@ -786,12 +786,15 @@ namespace Terminal_Dusk
         {
             int xPlacement = 0;
             int yPlacement = -10 * scale;
+            int lastX = xPlacement;
+
             StreamReader reader = new StreamReader(filename);
 
             string line = null;
             while ((line = reader.ReadLine()) != null)
             {
                 yPlacement += 10 * scale;
+                xPlacement = lastX;
                 foreach (char ch in line)
 {
                     switch (ch)
@@ -801,7 +804,7 @@ namespace Terminal_Dusk
                             xPlacement += 10 * scale;
                             break;
                         case 'O':
-                            ground = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement * scale, yPlacement * scale, 10 * scale, 10 * scale), currentState, player.State, 1);
+                            ground = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
                             envirConverter = (Environment)ground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
@@ -814,6 +817,7 @@ namespace Terminal_Dusk
                             break;
                         case 'N':
                             yPlacement = -10 * scale;
+                            lastX = xPlacement + (320 * scale);
                             break;
                     }
                 }

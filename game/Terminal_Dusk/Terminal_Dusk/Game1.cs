@@ -240,6 +240,7 @@ namespace Terminal_Dusk
             envirImgs.Add(Content.Load<Texture2D>("Scroll background(update 2)"));
             envirImgs.Add(Content.Load<Texture2D>("DirtWithGrassScale"));
             envirImgs.Add(Content.Load<Texture2D>("treeScale"));
+            envirImgs.Add(Content.Load<Texture2D>("ShrubsScale"));
 
             //Sky Background
             skyBackground = new SkyBackground(envirImgs[0], new Rectangle(0, 90*scale - 2012*scale, 320*scale, 2012*scale), currentState);//3 is scale
@@ -806,46 +807,46 @@ namespace Terminal_Dusk
                             break;
                         //Bushes
                         case '0':
-                            foreground = new Forground(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
-                                currentState, player.State, 2, 50*scale, 30*scale,0);
+                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                                currentState, player.State, 2, 50, 30,0);
                             foreground.Flipped = false;
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
                         case '1':
-                            foreground = new Forground(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
-                                currentState, player.State, 2, 50 * scale, 30 * scale, 1);
+                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                                currentState, player.State, 2, 50, 30, 1);
                             foreground.Flipped = false;
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
                         case '2':
-                            foreground = new Forground(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
-                                currentState, player.State, 2, 50 * scale, 30 * scale, 2);
+                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                                currentState, player.State, 2, 50, 30, 2);
                             foreground.Flipped = false;
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
                         case '3':
-                            foreground = new Forground(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
-                               currentState, player.State, 2, 50 * scale, 30 * scale, 0);
+                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                               currentState, player.State, 2, 50, 30, 0);
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
                         case '4':
-                            foreground = new Forground(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
-                                currentState, player.State, 2, 50 * scale, 30 * scale, 1);
+                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                                currentState, player.State, 2, 50, 30, 1);
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
                         case '5':
-                            foreground = new Forground(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
-                                currentState, player.State, 2, 50 * scale, 30 * scale, 2);
+                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                                currentState, player.State, 2, 50, 30, 2);
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;

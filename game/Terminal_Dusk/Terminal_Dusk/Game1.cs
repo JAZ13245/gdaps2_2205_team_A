@@ -853,7 +853,7 @@ namespace Terminal_Dusk
                         //trees
                         case '6':
                             foreground = new Forground(envirImgs[3], new Rectangle(xPlacement, yPlacement, 110 * scale, 120 * scale),
-                                currentState, player.State, 2, 110, 120d, 0);
+                                currentState, player.State, 2, 110, 120, 0);
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;

@@ -111,18 +111,6 @@
 /processorParam:TextureFormat=Color
 /build:Scroll background(update 2).png
 
-#begin ShrubsScale.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:ShrubsScale.png
-
 #begin SkyBackground.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -206,4 +194,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:TitleScreen1Scale.png
+
+#begin treeScale.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:treeScale.png
 

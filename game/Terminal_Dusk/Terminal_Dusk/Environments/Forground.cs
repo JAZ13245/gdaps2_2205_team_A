@@ -9,11 +9,19 @@ namespace Terminal_Dusk.Environments
 {
     class Forground : Environment
     {
-        private Texture2D sprite;
+        private Texture2D spriteSheet;
         private Rectangle location;
         GameState state;
         PlayerState playerState;
-        int speed;
+        private int speed;
+        //Size of rectangle
+        private int xSize;
+        private int ySize;
+        //number in sprite sheet
+        private int objectNumber;
+
+        //allows access so it can be flipped in LoadEnvironment
+        public bool Flipped { get; set; }
 
         public override GameState State
         {
@@ -25,13 +33,17 @@ namespace Terminal_Dusk.Environments
             set { playerState = value; }
         }
 
-        public Forground(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
+        public Forground(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed, int xSize, int ySize, int objectNumber) : base(sprite, location)
         {
-            this.sprite = sprite;
+            this.spriteSheet = sprite;
             this.location = location;
             this.state = state;
             this.playerState = playerState;
             this.speed = speed;
+            this.xSize = xSize;
+            this.ySize = ySize;
+            this.objectNumber = objectNumber;
+            Flipped = true;
         }
 
         public override void Update(GameTime gameTime)
@@ -55,7 +67,27 @@ namespace Terminal_Dusk.Environments
 
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(sprite, location, Color.White);
+            if (Flipped)
+            {
+                FlipDraw(SpriteEffects.FlipHorizontally, sb);
+            }
+            else
+            {
+                FlipDraw(SpriteEffects.None, sb);
+            }
+        }
+
+        private void FlipDraw(SpriteEffects flipSprite, SpriteBatch sb)
+        {
+            sb.Draw(spriteSheet,
+            new Vector2(location.X, location.Y),
+            new Rectangle(objectNumber * xSize*6, 0, xSize*6, ySize*6),
+            Color.White,
+            0,
+            Vector2.Zero,
+            0.5f, //scale should be changed with screen size
+            flipSprite,
+            0);
         }
 
         public void Reset()

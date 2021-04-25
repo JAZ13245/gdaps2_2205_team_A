@@ -382,7 +382,7 @@ namespace Terminal_Dusk
             */
         }
 
-        private void DrawCrouching(SpriteEffects flipSprite, SpriteBatch spriteBatch)
+        public void DrawCrouching(SpriteEffects flipSprite, SpriteBatch spriteBatch)
         {
             switch (attackingState)
             {

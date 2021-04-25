@@ -424,9 +424,11 @@ namespace Terminal_Dusk
                         0);
                     break;
                 case PlayerAttackingState.IsAttacking:
-                    spriteBatch.Draw(
+                    if (flipSprite == SpriteEffects.FlipHorizontally)
+                    {
+                        spriteBatch.Draw(
                         spriteSheet,                    // - The texture to draw
-                        new Vector2(X, Y + 9 * 3),                       // - The location to draw on the screen
+                        new Vector2(X - 20 * 3, Y + 9 * 3),                       // - The location to draw on the screen
                         new Rectangle(                  // - The "source" rectangle
                             0,                          //   - This rectangle specifies
                             fourthRow,                          //	   where "inside" the texture
@@ -438,6 +440,24 @@ namespace Terminal_Dusk
                         0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
                         flipSprite,                     // - Can be used to flip the image
                         0);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(
+                            spriteSheet,                    // - The texture to draw
+                            new Vector2(X, Y + 9 * 3),                       // - The location to draw on the screen
+                            new Rectangle(                  // - The "source" rectangle
+                                0,                          //   - This rectangle specifies
+                                fourthRow,                          //	   where "inside" the texture
+                                attackCrouchWidth,             //     to get pixels (We don't want to
+                                attackCrouchHeight),           //     draw the whole thing)
+                            damageColor,                    // - The color
+                            0,                              // - Rotation (none currently)
+                            Vector2.Zero,                   // - Origin inside the image (top left)
+                            0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
+                            flipSprite,                     // - Can be used to flip the image
+                            0);
+                    }
                     break;
             }
             /*

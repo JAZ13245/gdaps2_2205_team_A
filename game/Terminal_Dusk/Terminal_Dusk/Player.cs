@@ -312,7 +312,26 @@ namespace Terminal_Dusk
                         0);                             // - Layer depth (unused)
                     break;
                 case PlayerAttackingState.IsAttacking:
-                    spriteBatch.Draw(
+                    if (flipSprite == SpriteEffects.FlipHorizontally)
+                    {
+                        spriteBatch.Draw(
+                        spriteSheet,                    // - The texture to draw
+                        new Vector2(playerLoc.X - 19 * 3, playerLoc.Y),                       // - The location to draw on the screen
+                        new Rectangle(                  // - The "source" rectangle
+                            0,                          //   - This rectangle specifies
+                            thirdRow,                          //	   where "inside" the texture
+                            attackWidth,             //     to get pixels (We don't want to
+                            attackHeight),           //     draw the whole thing)
+                        damageColor,                    // - The color
+                        0,                              // - Rotation (none currently)
+                        Vector2.Zero,                   // - Origin inside the image (top left)
+                        0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
+                        flipSprite,                     // - Can be used to flip the image
+                        0);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(
                         spriteSheet,                    // - The texture to draw
                         new Vector2(playerLoc.X, playerLoc.Y),                       // - The location to draw on the screen
                         new Rectangle(                  // - The "source" rectangle
@@ -326,6 +345,7 @@ namespace Terminal_Dusk
                         0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
                         flipSprite,                     // - Can be used to flip the image
                         0);
+                    }
                     break;
             }
             /*
@@ -367,7 +387,26 @@ namespace Terminal_Dusk
                         0);
                     break;
                 case PlayerAttackingState.IsAttacking:
-                    spriteBatch.Draw(
+                    if (flipSprite == SpriteEffects.FlipHorizontally)
+                    {
+                        spriteBatch.Draw(
+                        spriteSheet,                    // - The texture to draw
+                        new Vector2(playerLoc.X - 19 * 3, playerLoc.Y),                       // - The location to draw on the screen
+                        new Rectangle(                  // - The "source" rectangle
+                            0,                          //   - This rectangle specifies
+                            thirdRow,                          //	   where "inside" the texture
+                            attackWidth,             //     to get pixels (We don't want to
+                            attackHeight),           //     draw the whole thing)
+                        damageColor,                    // - The color
+                        0,                              // - Rotation (none currently)
+                        Vector2.Zero,                   // - Origin inside the image (top left)
+                        0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
+                        flipSprite,                     // - Can be used to flip the image
+                        0);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(
                         spriteSheet,                    // - The texture to draw
                         new Vector2(playerLoc.X, playerLoc.Y),                       // - The location to draw on the screen
                         new Rectangle(                  // - The "source" rectangle
@@ -381,6 +420,7 @@ namespace Terminal_Dusk
                         0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
                         flipSprite,                     // - Can be used to flip the image
                         0);
+                    }
                     break;
             }
 
@@ -428,7 +468,7 @@ namespace Terminal_Dusk
                     {
                         spriteBatch.Draw(
                         spriteSheet,                    // - The texture to draw
-                        new Vector2(X - 20 * 3, Y + 9 * 3),                       // - The location to draw on the screen
+                        new Vector2(X - 18 * 3, Y + 9 * 3),                       // - The location to draw on the screen
                         new Rectangle(                  // - The "source" rectangle
                             0,                          //   - This rectangle specifies
                             fourthRow,                          //	   where "inside" the texture
@@ -445,7 +485,7 @@ namespace Terminal_Dusk
                     {
                         spriteBatch.Draw(
                             spriteSheet,                    // - The texture to draw
-                            new Vector2(X, Y + 9 * 3),                       // - The location to draw on the screen
+                            new Vector2(X + 3 * 3, Y + 9 * 3),                       // - The location to draw on the screen
                             new Rectangle(                  // - The "source" rectangle
                                 0,                          //   - This rectangle specifies
                                 fourthRow,                          //	   where "inside" the texture

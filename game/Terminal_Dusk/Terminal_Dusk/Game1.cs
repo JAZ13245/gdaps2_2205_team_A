@@ -227,7 +227,7 @@ namespace Terminal_Dusk
 
             //player HP
             healthSprite = Content.Load<Texture2D>("hpScale");
-            health = new Health(healthSprite,new Rectangle(GraphicsDevice.Viewport.Width-healthSprite.Width, 0,healthSprite.Width,healthSprite.Height));
+            health = new Health(healthSprite,new Rectangle(GraphicsDevice.Viewport.Width-healthSprite.Width -(5*scale), (5 * scale), healthSprite.Width,healthSprite.Height));
 
             //slime enemy
             slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScale");

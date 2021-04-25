@@ -16,19 +16,6 @@ namespace Terminal_Dusk
         WalkRight,
         CrouchRight,
         CrouchLeft,
-        // Add state(s) to support crouching
-        //This is ridiculous
-        //I think a total overhaul of the Player's State Machine is necessary
-        //Especially because of the Jump/Attack states 
-        /* StandAttackLeft
-         * StandAttackRight
-         * WalkAttackLeft
-         * WalkAttackRight
-         * CrouchAttackLeft
-         * CrouchAttackRight
-         * JumpAttackLeft
-         * JumpAttackRight
-         */
     }
     enum PlayerJumpingState
     {
@@ -71,7 +58,7 @@ namespace Terminal_Dusk
     }
 
 
-    // TODO: should inheirt form GameObject
+    // TODO: should inheirt from GameObject
     class Player 
     {
         Rectangle playerLoc;  // Mc's location on the screen

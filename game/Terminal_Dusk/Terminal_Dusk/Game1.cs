@@ -368,7 +368,7 @@ namespace Terminal_Dusk
                       }*/
 
 
-            for (int i = 0; i < enemies.Count; i++)
+                    for (int i = 0; i < enemies.Count; i++)
                     {
                         //Update
                         enemies[i].Update(gameTime);

@@ -168,8 +168,8 @@ namespace Terminal_Dusk
                 0);                             // - Layer depth (unused)
         }
 
-
-        public GameState State
+        //Moved to Enemy
+        /*public GameState State
         {
             set { state = value; }
         }
@@ -177,7 +177,7 @@ namespace Terminal_Dusk
         public PlayerState PlayerState
         {
             set { playerState = value; }
-        }
+        }*/
 
 
 

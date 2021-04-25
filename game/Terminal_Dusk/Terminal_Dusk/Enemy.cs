@@ -32,6 +32,15 @@ namespace Terminal_Dusk
             set { currentState = value; }
         }
 
+        public GameState State
+        {
+            set { state = value; }
+        }
+
+        public PlayerState PlayerState
+        {
+            set { playerState = value; }
+        }
 
         public Enemy(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
         {

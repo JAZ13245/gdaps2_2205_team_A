@@ -34,7 +34,8 @@ namespace Terminal_Dusk
         //for the slime
         private Slime slime1;
         private Texture2D slimeSpriteSheet;
-        private List<Slime> slimeEnemies = new List<Slime>();
+        //Enemies List
+        private List<Enemy> enemies = new List<Enemy>();
 
         // User input fields
         private KeyboardState kbState;
@@ -333,12 +334,13 @@ namespace Terminal_Dusk
                     {
                         environments[i].Update(gameTime);
                     }
-                    // TODO: Should upcast slime to Enemy so that Imps can be included in this update
-                    foreach (Slime slime in slimeEnemies)
+                    
+                    foreach (Enemy enemy in enemies)
                     {
-                        slime.Update(gameTime);
-                        player.CheckEnemyCollisions(slime);
+                        enemy.Update(gameTime);
+                        player.CheckEnemyCollisions(enemy);
                     }
+                    //TODO: see if these single loops can replace the double loops that are implemented
                     /*
                     //Background
                     for (int i = 0; i < environments.Count; i++)
@@ -350,7 +352,7 @@ namespace Terminal_Dusk
                         //Updates the player state for environments
                         environments[i].PlayerState = player.State;
                     }
-                    // TODO: Should upcast slime to Enemy so that Imps can be included in this update
+                    
                     /*foreach (Slime slime in slimeEnemies)
                     {
                         //Update
@@ -366,17 +368,17 @@ namespace Terminal_Dusk
                       }*/
 
 
-            for (int i = 0; i < slimeEnemies.Count; i++)
+            for (int i = 0; i < enemies.Count; i++)
                     {
                         //Update
-                        slimeEnemies[i].Update(gameTime);
-                        player.CheckEnemyCollisions(slimeEnemies[i]);
+                        enemies[i].Update(gameTime);
+                        player.CheckEnemyCollisions(enemies[i]);
                         //Updates PlayerState
-                        slimeEnemies[i].State = currentState;
-                        slimeEnemies[i].PlayerState = player.State;
-                        if (slimeEnemies[i].CurrentState == EnemyState.Dying)
+                        enemies[i].State = currentState;
+                        enemies[i].PlayerState = player.State;
+                        if (enemies[i].CurrentState == EnemyState.Dying)
                         {
-                            slimeEnemies.RemoveAt(i);
+                            enemies.RemoveAt(i);
                         }
                     }
                     player.Update(gameTime);
@@ -559,10 +561,10 @@ namespace Terminal_Dusk
                 environments[i].PlayerState = player.State;
             }
             
-            foreach (Slime slime in slimeEnemies)
+            foreach (Enemy enemy in enemies)
             {
-                slime.State = currentState;
-                slime.PlayerState = player.State;
+                enemy.State = currentState;
+                enemy.PlayerState = player.State;
             }
             
 
@@ -597,9 +599,9 @@ namespace Terminal_Dusk
                     }
                     //Player
                     player.Draw(_spriteBatch);
-                    foreach(Slime slime in slimeEnemies)
+                    foreach(Enemy enemy in enemies)
                     {
-                        slime.Draw(_spriteBatch);
+                        enemy.Draw(_spriteBatch);
                     }
                     
 
@@ -885,7 +887,8 @@ namespace Terminal_Dusk
                         //Enemies
                         //Slime
                         case '*':
-                            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(xPlacement, yPlacement + (3 * scale), 23 * scale, 17 * scale), currentState, player.State, 1));
+                            slime1 = new Slime(slimeSpriteSheet, new Rectangle(xPlacement, yPlacement + (3 * scale), 23 * scale, 17 * scale), currentState, player.State, 1);
+                            enemies.Add((Enemy)slime1);
                             xPlacement += 10 * scale;
                             break;
                         //Imp

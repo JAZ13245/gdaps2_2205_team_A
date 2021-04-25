@@ -247,25 +247,46 @@ namespace Terminal_Dusk
         // TODO: Should be if statements to account for new enums
         public void Draw(SpriteBatch sb)
         {
-            switch (state)
+            switch (jumpingState)
             {
-                case PlayerState.FaceLeft:
-                    DrawStanding(SpriteEffects.FlipHorizontally, sb);
+                case PlayerJumpingState.Jumping:
+                    switch (state)
+                    {
+                        case PlayerState.FaceLeft:
+                        case PlayerState.WalkLeft:
+                        case PlayerState.CrouchLeft:
+                            DrawCrouching(SpriteEffects.FlipHorizontally, sb);
+                            break;
+                        case PlayerState.FaceRight:
+                        case PlayerState.WalkRight:
+                        case PlayerState.CrouchRight:
+                            DrawCrouching(SpriteEffects.None, sb);
+                            break;
+                    }
                     break;
-                case PlayerState.WalkLeft:
-                    DrawWalking(SpriteEffects.FlipHorizontally, sb);
-                    break;
-                case PlayerState.FaceRight:
-                    DrawStanding(SpriteEffects.None, sb);
-                    break;
-                case PlayerState.WalkRight:
-                    DrawWalking(SpriteEffects.None, sb);
-                    break;
-                case PlayerState.CrouchLeft:
-                    DrawCrouching(SpriteEffects.FlipHorizontally, sb);
-                    break;
-                case PlayerState.CrouchRight:
-                    DrawCrouching(SpriteEffects.None, sb);
+                
+                case PlayerJumpingState.Standing:
+                    switch (state)
+                    {
+                        case PlayerState.FaceLeft:
+                            DrawStanding(SpriteEffects.FlipHorizontally, sb);
+                            break;
+                        case PlayerState.WalkLeft:
+                            DrawWalking(SpriteEffects.FlipHorizontally, sb);
+                            break;
+                        case PlayerState.FaceRight:
+                            DrawStanding(SpriteEffects.None, sb);
+                            break;
+                        case PlayerState.WalkRight:
+                            DrawWalking(SpriteEffects.None, sb);
+                            break;
+                        case PlayerState.CrouchLeft:
+                            DrawCrouching(SpriteEffects.FlipHorizontally, sb);
+                            break;
+                        case PlayerState.CrouchRight:
+                            DrawCrouching(SpriteEffects.None, sb);
+                            break;
+                    }
                     break;
             }
         }

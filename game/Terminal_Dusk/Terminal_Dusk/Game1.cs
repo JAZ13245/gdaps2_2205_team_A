@@ -232,9 +232,6 @@ namespace Terminal_Dusk
             //slime enemy
             slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScale");
             
-            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height - 27*scale, 23*scale, 17*scale), currentState, player.State, 1));
-            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 +20, GraphicsDevice.Viewport.Height - 27*scale, 23 * scale, 17 * scale), currentState, player.State, 1));
-            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(GraphicsDevice.Viewport.Width / 2 - 20, GraphicsDevice.Viewport.Height - 27*scale, 23 * scale, 34 * scale), currentState, player.State, 1));
             //Loading to Environment Texture List
             envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
             envirImgs.Add(Content.Load<Texture2D>("Scroll background(update 2)"));
@@ -576,7 +573,7 @@ namespace Terminal_Dusk
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Purple);
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
@@ -702,6 +699,10 @@ namespace Terminal_Dusk
             {
                 currentState = GameState.PauseMenu;
             }
+            if(player.Health == 0)
+            {
+                currentState = GameState.MainMenu;
+            }
         }
 
         //method to go to save menu with the button
@@ -799,6 +800,7 @@ namespace Terminal_Dusk
                         case 'X':
                             xPlacement += 10 * scale;
                             break;
+                        //Ground
                         case 'O':
                             ground = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
                             envirConverter = (Environment)ground;
@@ -851,7 +853,7 @@ namespace Terminal_Dusk
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
-                        //trees
+                        //Trees
                         case '6':
                             foreground = new Forground(envirImgs[3], new Rectangle(xPlacement, yPlacement, 110 * scale, 120 * scale),
                                 currentState, player.State, 2, 110, 120, 0);
@@ -880,6 +882,17 @@ namespace Terminal_Dusk
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
+                        //Enemies
+                        //Slime
+                        case '*':
+                            slimeEnemies.Add(new Slime(slimeSpriteSheet, new Rectangle(xPlacement, yPlacement + (3 * scale), 23 * scale, 17 * scale), currentState, player.State, 1));
+                            xPlacement += 10 * scale;
+                            break;
+                        //Imp
+                        case '$':
+                            xPlacement += 10 * scale;
+                            break;
+                        //Next screen load
                         case 'N':
                             yPlacement = -10 * scale;
                             lastX = xPlacement + (320 * scale);

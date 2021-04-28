@@ -96,7 +96,7 @@ namespace Terminal_Dusk
         private bool usingArrow = false;
 
         //FileIO
-        private string levelFile = "..\\..\\levelFile.txt";
+        private string levelFile = "..\\..\\..\\FileIO\\levelFile.txt";
 
 
         public Game1()

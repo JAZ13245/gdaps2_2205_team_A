@@ -506,13 +506,13 @@ namespace Terminal_Dusk
                                 //if the counter is less then or equal to ten, the player goes up by 10 pixels
                                 if (jumpingCounter <= 10)
                                 {
-                                    player.Y -= 15;
+                                    player.Y -= 14;
                                 }
                                 jumpingCounter++;
                                 //if the counter is greater then 10, the player goes down by 10 pixels
                                 if (jumpingCounter > 10)
                                 {
-                                    player.Y += 15;
+                                    player.Y += 14;
                                 }
                                 //reset the timer to loop again
                                 jumpingCurrentTime -= jumpingCountDuration; // "use up" the time

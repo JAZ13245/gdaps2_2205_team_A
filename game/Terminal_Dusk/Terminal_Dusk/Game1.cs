@@ -540,7 +540,7 @@ namespace Terminal_Dusk
 
                             /*player.Y += jumpspeed;
                             jumpspeed += 1; //Acts as the physics accelerating/deccelerating
-                            if (charPos.Y >= startY)
+                            if (player.Y >= startY)
                             //If it's farther than ground
                                 {
                                 player.Y = startY;//Then set it on

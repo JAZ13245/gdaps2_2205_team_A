@@ -34,6 +34,9 @@ namespace Terminal_Dusk
         //for the slime
         private Slime slime1;
         private Texture2D slimeSpriteSheet;
+        //For imps
+        private Imp imp1;
+        private Texture2D impSpriteSheet;
         //Enemies List
         private List<Enemy> enemies = new List<Enemy>();
 
@@ -232,7 +235,9 @@ namespace Terminal_Dusk
 
             //slime enemy
             slimeSpriteSheet = Content.Load<Texture2D>("slimeEnemyScale");
-            
+            //imp enemy
+            impSpriteSheet = Content.Load<Texture2D>("eye boi-1.png");
+
             //Loading to Environment Texture List
             envirImgs.Add(Content.Load<Texture2D>("SkyBackgroundScale"));
             envirImgs.Add(Content.Load<Texture2D>("Scroll background(update 2)"));
@@ -893,6 +898,8 @@ namespace Terminal_Dusk
                             break;
                         //Imp
                         case '$':
+                            imp1 = new Imp(impSpriteSheet, new Rectangle(xPlacement, yPlacement, 50 * scale, 50 * scale), currentState, player.State, 1);
+                            enemies.Add((Enemy)imp1);
                             xPlacement += 10 * scale;
                             break;
                         //Next screen load

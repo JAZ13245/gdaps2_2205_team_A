@@ -500,11 +500,9 @@ namespace Terminal_Dusk
                             if (SingleKeyPress(upMove, kbState))
                             {
                                 player.JumpingState = PlayerJumpingState.Jumping;
-                                /*if (keyState.IsKeyDown(Keys.Space)) 
-    {
-                                jumping = true;
+                                /*
                                 jumpspeed = -14;//Give it upward thrust
-    }                           */
+                                */
                             }
                             break;
                         case PlayerJumpingState.Jumping:
@@ -538,13 +536,15 @@ namespace Terminal_Dusk
                                 player.JumpingState = PlayerJumpingState.Standing;
                             }
                             //Would need to be edited to work with collision
-                            /*charPos.Y += jumpspeed;//Making it go up
-                            jumpspeed += 1;//Some math (explained later)
+                            //Will be jank with falling of edges. Not perfect fit but a good start to having better jumping
+
+                            /*player.Y += jumpspeed;
+                            jumpspeed += 1; //Acts as the physics accelerating/deccelerating
                             if (charPos.Y >= startY)
                             //If it's farther than ground
                                 {
-                                charPos.Y = startY;//Then set it on
-                                jumping = false;
+                                player.Y = startY;//Then set it on
+                                player.JumpingState = PlayerJumpingState.Standing;
                                 }*/
                             break;
                     }

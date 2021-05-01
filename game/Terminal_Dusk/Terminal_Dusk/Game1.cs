@@ -62,7 +62,7 @@ namespace Terminal_Dusk
 
         //field for jumping
         private int jumpingCounter = 0;
-        private int jumpingLimit = 21;
+        private int jumpingLimit = 1;
         private float jumpingCountDuration = 0.03f; //every  .03s.
         private float jumpingCurrentTime = 0f;
         //new jump
@@ -495,7 +495,6 @@ namespace Terminal_Dusk
                             break;
                     }
                     //jumping switch statement
-                    // TODO: Needs to be completely rewritten. No physics
                     switch (player.JumpingState)
                     {
                         case PlayerJumpingState.Standing:
@@ -507,56 +506,40 @@ namespace Terminal_Dusk
                                 jumpingCurrentTime = 0f;
                             }
                             break;
-                        case PlayerJumpingState.Jumping:
-                            //James - deleted setting current time. Sorry about that if you're looking through this again.
 
-                            //jumping timer to create a jumping animation
-                            //whenever the elapsed time gets lerger then jumpingCountDuration it runs through the loop
-                            /*if (jumpingCurrentTime >= jumpingCountDuration)
-                            {
-                                //if the counter is less then or equal to ten, the player goes up by 10 pixels
-                                if (jumpingCounter <= 10)
-                                {
-                                    player.Y -= 14;
-                                }
-                                jumpingCounter++;
-                                //if the counter is greater then 10, the player goes down by 10 pixels
-                                if (jumpingCounter > 10)
-                                {
-                                    player.Y += 14;
-                                }
-                                //reset the timer to loop again
-                                jumpingCurrentTime -= jumpingCountDuration; // "use up" the time
-                                                                            //any actions to perform
-                            }
-                            //if the counter is greater then our limit
-                            //the jump has completed
-                            if (jumpingCounter >= jumpingLimit)
-                            {
-                                //reset the counter
-                                jumpingCounter = 0;
-                                //set the player to the standing state as they are no longer jumping
-                                player.JumpingState = PlayerJumpingState.Standing;
-                            }*/
+                        case PlayerJumpingState.Jumping:
+                            
 
                             //Would need to be edited to work with collision
                             //Will be jank with falling of edges. Not perfect fit but a good start to having better jumping
-                            //if (player.Y != GraphicsDevice.Viewport.Height - (92 * scale))
-                           // {
+                            if (player.Y != GraphicsDevice.Viewport.Height - (92 * scale))
+                            {
                                 player.Y += jumpSpeed;
                                 jumpSpeed += 1; //Acts as the physics accelerating/deccelerating
-                           // }
-                            //else
-                           // {
-                                // TODO: Implement a timer
-                                //Should last maybe .25 seconds/15 ticks
-                                //Once it is done use
-                                /*
-                                 player.Y += jumpSpeed;
-                                 jumpSpeed += 1;
-                                 */
-                                //this should move it out of the else and continue in the above if statement
-                           // }
+                            }
+
+                            //Keeps player a peak for a small amount of time
+                            else                   
+                            {     
+                                jumpingCurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                
+                                if (jumpingCurrentTime >= jumpingCountDuration)
+                                {
+                                    jumpingCounter++;
+                                    //reset the timer to loop again
+                                    jumpingCurrentTime -= jumpingCountDuration; // "use up" the time
+                                }
+                                //if the counter is greater then our limit
+                                //the pause has completed
+                                if (jumpingCounter >= jumpingLimit)
+                                {
+                                    //reset the counter
+                                    jumpingCounter = 0;
+                                    //continues movement
+                                    player.Y += jumpSpeed;
+                                    jumpSpeed += 1;
+                                }
+                            }
 
 
                             if (player.Y >= GraphicsDevice.Viewport.Height - (47 * scale))

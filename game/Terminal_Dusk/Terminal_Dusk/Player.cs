@@ -231,7 +231,6 @@ namespace Terminal_Dusk
         }
 
         //Added by James, feel free to delete/change
-        // TODO: Should be if statements to account for new enums
         public void Draw(SpriteBatch sb)
         {
             switch (jumpingState)

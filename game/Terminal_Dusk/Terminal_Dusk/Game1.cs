@@ -71,7 +71,7 @@ namespace Terminal_Dusk
         //fields for attacking
         private int attackingCounter = 0;
         private int attackingLimit = 2;
-        private float attackingCountDuration = 1f; //every  1s.
+        private float attackingCountDuration = .13f; //every  .15s.
         private float attackingCurrentTime = 0f;
 
         //Environment list
@@ -515,7 +515,7 @@ namespace Terminal_Dusk
                             if (player.Y != GraphicsDevice.Viewport.Height - (92 * scale))
                             {
                                 player.Y += jumpSpeed;
-                                jumpSpeed += 1; //Acts as the physics accelerating/deccelerating
+                                jumpSpeed++; //Acts as the physics accelerating/deccelerating
                             }
 
                             //Keeps player a peak for a small amount of time
@@ -537,7 +537,7 @@ namespace Terminal_Dusk
                                     jumpingCounter = 0;
                                     //continues movement
                                     player.Y += jumpSpeed;
-                                    jumpSpeed += 1;
+                                    jumpSpeed++;
                                 }
                             }
 
@@ -559,8 +559,21 @@ namespace Terminal_Dusk
                             }
                             break;
                         case PlayerAttackingState.IsAttacking:
-                            if(prevKbState.IsKeyUp(attack))
+
+                            attackingCurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                            if (attackingCurrentTime >= attackingCountDuration)
                             {
+                                attackingCounter++;
+                                //reset the timer to loop again
+                                attackingCurrentTime -= attackingCountDuration; // "use up" the time
+                            }
+                            //if the counter is greater then our limit
+                            //the pause has completed
+                            if (attackingCounter >= attackingLimit)
+                            {
+                                //reset the counter
+                                attackingCounter = 0;
                                 player.AttackingState = PlayerAttackingState.IsNotAttacking;
                             }
                             break;

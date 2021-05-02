@@ -5,11 +5,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-
 namespace Terminal_Dusk.Environments
 {
-    class SkyBackground : Environment
+    class Sun : Environment
     {
+        private Game1 game = new Game1();
         private Texture2D sprite;
         private Rectangle location;
         GameState state;
@@ -19,7 +19,7 @@ namespace Terminal_Dusk.Environments
             set { state = value; }
         }
 
-        public SkyBackground(Texture2D sprite, Rectangle location, GameState state) : base(sprite, location)
+        public Sun(Texture2D sprite, Rectangle location, GameState state) : base(sprite, location)
         {
             this.sprite = sprite;
             this.location = location;
@@ -29,31 +29,20 @@ namespace Terminal_Dusk.Environments
 
         public override void Update(GameTime gameTime)
         {
-            if(state == GameState.GamePlayState)
+            if (state == GameState.GamePlayState)
             {
                 //Slows scroll speed
                 double timer = (double)gameTime.TotalGameTime.Ticks;
-                if (timer % (10/3) == 0)
+                if (timer % (10 / 3) == 0)
                 {
-                    if (location.Y < 1350 * 3 - 2012 * 3) //to sunset
-                    {
-                        location.Y += 1;
-                    }
-                    else if (location.Y >= 1350 * 3 - 2012 * 3 && location.Y < 1422 * 3 - 2012 * 3) //-651 -579
-                    {
-                        location.Y = 1512 * 3 - 2012 * 3; //-489
-                    }
-                    else if (location.Y >= 1512 * 3 - 2012 * 3 && !(location.Y >= 0))
-                    {
-                        location.Y += 1;
-                    }
+                    location.Y++;
                 }
             }
             if (state == GameState.MainMenu)
             {
-                    Reset();
+                Reset();
             }
-                
+
         }
 
         public override void Draw(SpriteBatch sb)
@@ -63,8 +52,8 @@ namespace Terminal_Dusk.Environments
 
         public void Reset()
         {
-            location.X = 0;
-            location.Y = 90 * 3 - 2012 * 3;
+            location.X = 40 * game.Scale;
+            location.Y = -20 * game.Scale;
         }
     }
 }

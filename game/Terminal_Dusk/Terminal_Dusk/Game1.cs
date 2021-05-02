@@ -90,6 +90,8 @@ namespace Terminal_Dusk
 
         //A scale for changing the size of the screen
         private int scale = 3;
+        //Property so that constructors don't need to hold the scale
+        public int Scale { get { return scale; } }
 
         //options for keyboard controls
         private Keys rightMove = Keys.D;
@@ -832,7 +834,7 @@ namespace Terminal_Dusk
 {
                     switch (ch)
                     {
-                        // TODO: slime load at 150 - 2
+                       
                         case 'X':
                             xPlacement += 10 * scale;
                             break;
@@ -840,6 +842,15 @@ namespace Terminal_Dusk
                         case 'O':
                             ground = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
                             envirConverter = (Environment)ground;
+                            environments.Add(envirConverter);
+                            xPlacement += 10 * scale;
+                            break;
+                        //Start Cabin
+                        case 'L':
+                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                                currentState, player.State, 2, 70, 80, 0);
+                            foreground.Flipped = false;
+                            envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
@@ -921,6 +932,7 @@ namespace Terminal_Dusk
                         //Enemies
                         //Slime
                         case '*':
+                            //slime load at 150 + 3
                             slime1 = new Slime(slimeSpriteSheet, new Rectangle(xPlacement, yPlacement + (3 * scale), 23 * scale, 17 * scale), currentState, player.State, 1);
                             enemies.Add((Enemy)slime1);
                             xPlacement += 10 * scale;

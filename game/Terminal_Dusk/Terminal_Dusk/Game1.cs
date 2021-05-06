@@ -11,7 +11,7 @@ namespace Terminal_Dusk
     //enumertaion for all the different game states
     enum GameState
     {
-        MainMenu, SaveFileMenu, OptionsMenu, ExitGame, GamePlayState, PauseMenu
+        MainMenu, SaveFileMenu, OptionsMenu, ExitGame, GamePlayState, PauseMenu, GameOverMenu, Winner
     }
 
     public class Game1 : Game
@@ -214,7 +214,7 @@ namespace Terminal_Dusk
                     Color.Purple));
 
             //main menu buttons
-            buttons[0].OnLeftButtonClick += GoToSaveMenu;
+            buttons[0].OnLeftButtonClick += StartGame;
             buttons[1].OnLeftButtonClick += ExitGame;
             buttons[2].OnLeftButtonClick += MainOptions;
             //options menu buttons
@@ -323,7 +323,7 @@ namespace Terminal_Dusk
                     break;
 
                 case GameState.SaveFileMenu:
-                    ProcessSaveFileMenu(kbState, mouseState);
+                    //ProcessSaveFileMenu(kbState, mouseState);
                     break;
 
                 case GameState.GamePlayState:
@@ -342,7 +342,7 @@ namespace Terminal_Dusk
                     {
                         counter = 0;//Reset the counter;
                         //any actions to perform
-                        currentState = GameState.MainMenu;
+                        currentState = GameState.GameOverMenu;
                     }
 
                     //Background
@@ -624,6 +624,12 @@ namespace Terminal_Dusk
 
                     health.Update(gameTime, player.Health);
                     break;
+                case GameState.GameOverMenu:
+                    ProcessGameOverAndWinMenu(kbState, mouseState);
+                    break;
+                case GameState.Winner:
+                    ProcessGameOverAndWinMenu(kbState, mouseState);
+                    break;
                 case GameState.ExitGame:
                     break;
                 default:
@@ -712,6 +718,14 @@ namespace Terminal_Dusk
                         buttons[9].Draw(_spriteBatch);
                     }
                     break;
+                case GameState.GameOverMenu:
+                    _spriteBatch.DrawString(labelFont, "Game Over!", new Vector2(5, 5), Color.White);
+                    _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the main menu", new Vector2(5, 25), Color.White);
+                    break;
+                case GameState.Winner;
+                    _spriteBatch.DrawString(labelFont, "You Win!", new Vector2(5, 5), Color.White);
+                    _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the main menu", new Vector2(5, 25), Color.White);
+                    break;
                 case GameState.ExitGame:
                     break;
             }
@@ -757,18 +771,14 @@ namespace Terminal_Dusk
             }
         }
 
-        //helper method for SaveFileMenu
-        private void ProcessSaveFileMenu(KeyboardState kbState, MouseState mouseState)
+        //helper method for Game Over and Win
+        private void ProcessGameOverAndWinMenu(KeyboardState kbState, MouseState mouseState)
         {
             kbState = Keyboard.GetState();
             mouseState = Mouse.GetState();
             if (SingleKeyPress(Keys.M, kbState))
             {
                 currentState = GameState.MainMenu;
-            }
-            if (SingleKeyPress(Keys.G, kbState))
-            {
-                currentState = GameState.GamePlayState;
             }
         }
         //helper method for GamePlayState
@@ -789,6 +799,11 @@ namespace Terminal_Dusk
         private void GoToSaveMenu()
         {
             currentState = GameState.SaveFileMenu;
+        }
+        //method to start the game
+        private void StartGame()
+        {
+            currentState = GameState.GamePlayState;
         }
         //method to exit the game with the button
         private void ExitGame()

@@ -32,9 +32,9 @@ namespace Terminal_Dusk
         public abstract void Update(GameTime gameTime);
 
         //abstract method for save (file IO)
-        public abstract void Save(string filename);
+        public abstract void Save(string fileName);
         
         //abstract method for load (file IO)
-        public abstract void Load(string filename);
+        public abstract void Load(string fileName);
     }
 }

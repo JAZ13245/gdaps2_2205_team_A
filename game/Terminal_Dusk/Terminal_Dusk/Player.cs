@@ -59,7 +59,7 @@ namespace Terminal_Dusk
 
 
     // TODO: should inheirt from GameObject
-    class Player 
+    class Player : GameObject
     {
         Rectangle playerLoc;  // Mc's location on the screen
         PlayerState state;
@@ -147,7 +147,7 @@ namespace Terminal_Dusk
             set { attackingState = value; }
         }
         //the constructor
-        public Player(Texture2D spriteSheet, Rectangle playerLoc, PlayerState startingState, int health) 
+        public Player(Texture2D spriteSheet, Rectangle playerLoc, PlayerState startingState, int health) : base(spriteSheet, playerLoc)
         {
             this.spriteSheet = spriteSheet;
             this.playerLoc = playerLoc;
@@ -166,7 +166,7 @@ namespace Terminal_Dusk
         }
 
         //Handles any updates and keeps game clean
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             UpdateAnimation(gameTime);
             UpdateDamageState(gameTime);
@@ -517,10 +517,20 @@ namespace Terminal_Dusk
             }
         }
 
+        public bool CheckCollision(Environments.CollisionBlock check)//some class or object inside the parantehses 
+        {
+            if (this.Position.Intersects(check.Position))
+            {
+                return true;
+            }
+            return false;
+        }
 
-
-        public void Save() 
+        public override void Save(string fileName) 
         { 
+        }
+        public override void Load(string fileName)
+        {
         }
     }
 }

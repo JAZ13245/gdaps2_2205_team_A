@@ -17,6 +17,11 @@ namespace Terminal_Dusk.Environments
 
         //Should all be base 10X10
 
+        public int LocationX
+        {
+            get { return location.X; }
+            set { location.X = value; }
+        }
         public override GameState State
         {
             set { state = value; }

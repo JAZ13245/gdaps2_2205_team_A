@@ -81,6 +81,8 @@ namespace Terminal_Dusk
 
         //SkyBackground object
         private SkyBackground skyBackground;
+        //Sun object
+        private Sun sun;
         //GameBackground
         private EnvironmentBackground gameBackground;
         //Forground objects
@@ -253,10 +255,16 @@ namespace Terminal_Dusk
             envirImgs.Add(Content.Load<Texture2D>("ShrubsScale"));
             envirImgs.Add(Content.Load<Texture2D>("LogCabinScale"));
             envirImgs.Add(Content.Load<Texture2D>("Transparent10X10"));
+            envirImgs.Add(Content.Load<Texture2D>("SunScale"));
 
             //Sky Background
             skyBackground = new SkyBackground(envirImgs[0], new Rectangle(0, 90*scale - 2012*scale, 320*scale, 2012*scale), currentState);//3 is scale
             envirConverter = (Environment)skyBackground;
+            environments.Add(envirConverter);
+
+            //Sun
+            sun = new Sun(envirImgs[7], new Rectangle(90 * scale, -20 * scale, 50 * scale, 50 * scale), currentState);
+            envirConverter = (Environment)sun;
             environments.Add(envirConverter);
 
             //Background
@@ -386,7 +394,7 @@ namespace Terminal_Dusk
                     //Check collision with the invisible wall
                     //Should be fixed over the summer to fit in line with other planned collision
                     bool wallCollide = false;
-                    foreach(CollisionBlock c in startWall)
+                    /*foreach(CollisionBlock c in startWall)
                     {
                         if (c.CheckCollision(player))
                         {
@@ -394,7 +402,24 @@ namespace Terminal_Dusk
                             break;
                         }
                         else { wallCollide = false; }
-                    }
+                    }*/
+                    //Position doesn't update
+                    /*Rectangle position;
+                    for( int i = 5; i < 16; i++)
+                    {
+                        //Posito
+                        position = environments[i].Position;
+                        if (player.Position.Intersects(position))
+                        {
+                            wallCollide = true;
+                            break;
+                        }
+                        else { wallCollide = false; }
+                        if (i == 10)
+                        {
+                            i = 14;
+                        }
+                    }*/
 
 
                     for (int i = 0; i < enemies.Count; i++)
@@ -610,6 +635,13 @@ namespace Terminal_Dusk
                     }
 
                     health.Update(gameTime, player.Health);
+
+                    //TODO: Move to appropiate section of code if there is a better place.
+                    //Win condition
+                    if(enemies.Count == 0)
+                    {
+                        currentState = GameState.Winner;
+                    }
                     break;
                 case GameState.GameOverMenu:
                     ProcessGameOverAndWinMenu(kbState, mouseState);
@@ -778,7 +810,7 @@ namespace Terminal_Dusk
             }
             if(player.Health == 0)
             {
-                currentState = GameState.MainMenu;
+                currentState = GameState.GameOverMenu;
             }
         }
 
@@ -890,7 +922,7 @@ namespace Terminal_Dusk
                             xPlacement += 10 * scale;
                             break;
                         case '|':
-                            startWallBlock = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
+                            startWallBlock = new CollisionBlock(envirImgs[6], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
                             startWall.Add(startWallBlock);
                             envirConverter = (Environment)startWallBlock;
                             environments.Add(envirConverter);

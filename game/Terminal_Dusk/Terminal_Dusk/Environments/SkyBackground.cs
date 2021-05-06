@@ -41,9 +41,9 @@ namespace Terminal_Dusk.Environments
                     }
                     else if (location.Y >= 1350 * 3 - 2012 * 3 && location.Y < 1422 * 3 - 2012 * 3) //-651 -579
                     {
-                        location.Y = 1512 * 3 - 2012 * 3; //-489
+                        location.Y = 1514 * 3 - 2012 * 3; //-489
                     }
-                    else if (location.Y >= 1512 * 3 - 2012 * 3 && !(location.Y >= 0))
+                    else if (location.Y >= 1514 * 3 - 2012 * 3 && !(location.Y >= 0))
                     {
                         location.Y += 1;
                     }

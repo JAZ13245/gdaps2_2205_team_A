@@ -59,6 +59,58 @@ namespace Terminal_Dusk
         {
             ScrollWithPlayer();
             timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+            /*case PlayerJumpingState.Standing:
+                            if (SingleKeyPress(upMove, kbState))
+            {
+                player.JumpingState = PlayerJumpingState.Jumping;
+
+                jumpSpeed = -16;//Give it upward thrust
+                jumpingCurrentTime = 0f;
+            }
+            break;
+
+                        case PlayerJumpingState.Jumping:
+                            
+
+                            //Would need to be edited to work with collision
+                            //Will be jank with falling of edges. Not perfect fit but a good start to having better jumping
+                            if (player.Y != GraphicsDevice.Viewport.Height - (92 * scale))
+            {
+                player.Y += jumpSpeed;
+                jumpSpeed++; //Acts as the physics accelerating/deccelerating
+            }
+
+            //Keeps player a peak for a small amount of time
+            else
+            {
+                jumpingCurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (jumpingCurrentTime >= jumpingCountDuration)
+                {
+                    jumpingCounter++;
+                    //reset the timer to loop again
+                    jumpingCurrentTime -= jumpingCountDuration; // "use up" the time
+                }
+                //if the counter is greater then our limit
+                //the pause has completed
+                if (jumpingCounter >= jumpingLimit)
+                {
+                    //reset the counter
+                    jumpingCounter = 0;
+                    //continues movement
+                    player.Y += jumpSpeed;
+                    jumpSpeed++;
+                }
+            }
+
+
+            if (player.Y >= GraphicsDevice.Viewport.Height - (47 * scale))
+            //If it's farther than ground
+            {
+                player.Y = GraphicsDevice.Viewport.Height - (47 * scale);//Then set it on
+                player.JumpingState = PlayerJumpingState.Standing;
+            }*/
+
             /*if (timeCounter >= timePerFrame)
             {
 

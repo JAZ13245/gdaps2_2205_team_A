@@ -14,6 +14,7 @@ namespace Terminal_Dusk
         GameState state;
         PlayerState playerState;
 
+         
         public virtual GameState State
         {
             set { state = value; }

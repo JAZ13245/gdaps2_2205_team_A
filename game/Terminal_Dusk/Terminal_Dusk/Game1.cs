@@ -87,6 +87,9 @@ namespace Terminal_Dusk
         private Forground foreground;
         //Ground
         private CollisionBlock ground;
+        //Invisible wall at the begining of the game 
+        private CollisionBlock startWallBlock;
+        private List<CollisionBlock> startWall;
 
         //A scale for changing the size of the screen
         private int scale = 3;
@@ -248,6 +251,8 @@ namespace Terminal_Dusk
             envirImgs.Add(Content.Load<Texture2D>("DirtWithGrassScale"));
             envirImgs.Add(Content.Load<Texture2D>("treeScale"));
             envirImgs.Add(Content.Load<Texture2D>("ShrubsScale"));
+            envirImgs.Add(Content.Load<Texture2D>("LogCabinScale"));
+            envirImgs.Add(Content.Load<Texture2D>("Transparent10X10"));
 
             //Sky Background
             skyBackground = new SkyBackground(envirImgs[0], new Rectangle(0, 90*scale - 2012*scale, 320*scale, 2012*scale), currentState);//3 is scale
@@ -259,7 +264,9 @@ namespace Terminal_Dusk
             envirConverter = (Environment)gameBackground;
             environments.Add(envirConverter);
 
-            
+            //Creates wall list
+            startWall = new List<CollisionBlock>();
+
             //TempGround
             /*for (int i = 0; i < 1000; i++)
             {
@@ -376,6 +383,19 @@ namespace Terminal_Dusk
                         slime.PlayerState = player.State;
                       }*/
 
+                    //Check collision with the invisible wall
+                    //Should be fixed over the summer to fit in line with other planned collision
+                    bool wallCollide = false;
+                    foreach(CollisionBlock c in startWall)
+                    {
+                        if (c.CheckCollision(player))
+                        {
+                            wallCollide = true;
+                            break;
+                        }
+                        else { wallCollide = false; }
+                    }
+
 
                     for (int i = 0; i < enemies.Count; i++)
                     {
@@ -403,7 +423,11 @@ namespace Terminal_Dusk
                             //Transitions to walking
                             else if (kbState.IsKeyDown(leftMove) && prevKbState.IsKeyDown(leftMove))
                             {
-                                player.State = PlayerState.WalkLeft;
+                                //Stops player seeing empty left screen
+                                if (!wallCollide)
+                                {
+                                    player.State = PlayerState.WalkLeft;
+                                }
                             }
                             //Transitions to crouching
                             else if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
@@ -413,6 +437,10 @@ namespace Terminal_Dusk
 
                             break;
                         case PlayerState.WalkLeft:
+                            if (wallCollide)
+                            {
+                                player.State = PlayerState.FaceLeft;
+                            }
                             //Transitions to crouch
                             if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
                             {
@@ -629,6 +657,7 @@ namespace Terminal_Dusk
                     _spriteBatch.DrawString(labelFont, "Press M for the Main Menu or G to go to GamePlay", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.GamePlayState:
+                    
                     for(int i=0; i < environments.Count; i++)
                     {
                         environments[i].Draw(_spriteBatch);
@@ -639,7 +668,7 @@ namespace Terminal_Dusk
                     {
                         enemy.Draw(_spriteBatch);
                     }
-                    
+
 
                     _spriteBatch.DrawString(labelFont, "" + counter, new Vector2(5, 5), Color.Black);
                     _spriteBatch.DrawString(labelFont, "Press P to pause", new Vector2(5, 25), Color.Black);
@@ -845,9 +874,16 @@ namespace Terminal_Dusk
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
+                        case '|':
+                            startWallBlock = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
+                            startWall.Add(startWallBlock);
+                            envirConverter = (Environment)startWallBlock;
+                            environments.Add(envirConverter);
+                            xPlacement += 10 * scale;
+                            break;
                         //Start Cabin
                         case 'L':
-                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                            foreground = new Forground(envirImgs[5], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
                                 currentState, player.State, 2, 70, 80, 0);
                             foreground.Flipped = false;
                             envirConverter = (Environment)foreground;

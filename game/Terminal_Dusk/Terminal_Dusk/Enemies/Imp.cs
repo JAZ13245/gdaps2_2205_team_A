@@ -143,9 +143,6 @@ namespace Terminal_Dusk
                 case EnemyState.IdleBehaviour:
                     break;
 
-                case EnemyState.Hostile:
-                    break;
-
                 case EnemyState.Attacking:
                     int randomDirection = enemyRNG.Next(0, 2);
                     if (randomDirection == 0)

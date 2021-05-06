@@ -9,7 +9,7 @@ namespace Terminal_Dusk.Environments
 {
     class Sun : Environment
     {
-        private Game1 game = new Game1();
+        //private Game1 game = new Game1();
         private Texture2D sprite;
         private Rectangle location;
         GameState state;
@@ -33,14 +33,14 @@ namespace Terminal_Dusk.Environments
             {
                 //Slows scroll speed
                 double timer = (double)gameTime.TotalGameTime.Ticks;
-                if (timer % (10 / 3) == 0)
+                if (timer % (36) == 0)
                 {
                     location.Y++;
                 }
             }
             if (state == GameState.MainMenu)
             {
-                Reset();
+                //Reset();
             }
 
         }
@@ -52,8 +52,8 @@ namespace Terminal_Dusk.Environments
 
         public void Reset()
         {
-            location.X = 40 * game.Scale;
-            location.Y = -20 * game.Scale;
+            //location.X = 40 * game.Scale;
+            //location.Y = -20 * game.Scale;
         }
     }
 }

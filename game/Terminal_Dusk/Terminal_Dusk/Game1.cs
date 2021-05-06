@@ -81,6 +81,8 @@ namespace Terminal_Dusk
 
         //SkyBackground object
         private SkyBackground skyBackground;
+        //Sun object
+        private Sun sun;
         //GameBackground
         private EnvironmentBackground gameBackground;
         //Forground objects
@@ -253,10 +255,16 @@ namespace Terminal_Dusk
             envirImgs.Add(Content.Load<Texture2D>("ShrubsScale"));
             envirImgs.Add(Content.Load<Texture2D>("LogCabinScale"));
             envirImgs.Add(Content.Load<Texture2D>("Transparent10X10"));
+            envirImgs.Add(Content.Load<Texture2D>("SunScale"));
 
             //Sky Background
             skyBackground = new SkyBackground(envirImgs[0], new Rectangle(0, 90*scale - 2012*scale, 320*scale, 2012*scale), currentState);//3 is scale
             envirConverter = (Environment)skyBackground;
+            environments.Add(envirConverter);
+
+            //Sun
+            sun = new Sun(envirImgs[7], new Rectangle(90 * scale, -20 * scale, 50 * scale, 50 * scale), currentState);
+            envirConverter = (Environment)sun;
             environments.Add(envirConverter);
 
             //Background
@@ -627,6 +635,13 @@ namespace Terminal_Dusk
                     }
 
                     health.Update(gameTime, player.Health);
+
+                    //TODO: Move to appropiate section of code if there is a better place.
+                    //Win condition
+                    if(enemies.Count == 0)
+                    {
+                        currentState = GameState.Winner;
+                    }
                     break;
                 case GameState.GameOverMenu:
                     ProcessGameOverAndWinMenu(kbState, mouseState);
@@ -907,7 +922,7 @@ namespace Terminal_Dusk
                             xPlacement += 10 * scale;
                             break;
                         case '|':
-                            startWallBlock = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
+                            startWallBlock = new CollisionBlock(envirImgs[6], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
                             startWall.Add(startWallBlock);
                             envirConverter = (Environment)startWallBlock;
                             environments.Add(envirConverter);

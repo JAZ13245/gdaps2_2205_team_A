@@ -17,11 +17,13 @@ namespace Terminal_Dusk
 
         private int swoopCounter = 0;
         private int pauseLimit = 100;
-        private int swoopLimit = 10;
+        private int swoopLimit = 15;
         private float swoopDurration = 0.03f; //every  .03s.
         private float swoopTime = 0f;
         private int swoopSpeed = 18;
+
         private int randomDirection;
+        private int attackSpeed = 3;
 
         public Imp(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location, state, playerState, speed)
         {
@@ -149,15 +151,41 @@ namespace Terminal_Dusk
                 case EnemyState.Attacking:
                     if (randomDirection == 0)
                     {
-                        position.X += 5;
+                        position.X += attackSpeed;
                         
                     }
                     else if (randomDirection == 1)
                     {
-                        position.X -= 5;
+                        position.X -= attackSpeed;
                     }
 
-                    if (swoopSpeed == 0)
+                    if (swoopSpeed < 0)
+                    {
+                        if (randomDirection == 0)
+                        {
+                            position.X += attackSpeed;
+
+                        }
+                        else if (randomDirection == 1)
+                        {
+                            position.X -= attackSpeed;
+                        }
+                    }
+
+                    else if (swoopSpeed > 0)
+                    {
+                        if (randomDirection == 0)
+                        {
+                            position.X += attackSpeed;
+
+                        }
+                        else if (randomDirection == 1)
+                        {
+                            position.X -= attackSpeed;
+                        }
+                    }
+
+                    else if (swoopSpeed == 0)
                     {
                         swoopTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 

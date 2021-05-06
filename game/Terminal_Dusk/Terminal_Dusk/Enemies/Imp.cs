@@ -143,9 +143,6 @@ namespace Terminal_Dusk
                 case EnemyState.IdleBehaviour:
                     break;
 
-                case EnemyState.Hostile:
-                    break;
-
                 case EnemyState.Attacking:
                     int randomDirection = enemyRNG.Next(0, 2);
                     if (randomDirection == 0)
@@ -178,11 +175,12 @@ namespace Terminal_Dusk
                             swoopSpeed--;
                         }
                     }
-                    if (swoopSpeed == 14)
+                    if (swoopSpeed == -14)
                     {
+                        swoopSpeed = 14;
                         currentState = EnemyState.Idle;
                     }
-                    position.Y -= swoopSpeed;
+                    position.Y += swoopSpeed;
                     swoopSpeed--;
                     break;
 

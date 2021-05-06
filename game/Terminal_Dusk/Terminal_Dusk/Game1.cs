@@ -120,7 +120,7 @@ namespace Terminal_Dusk
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            //sets the size of the game window
             currentState = GameState.MainMenu;
             _graphics.PreferredBackBufferWidth = 320 * scale;
             _graphics.PreferredBackBufferHeight = 180 * scale;
@@ -134,7 +134,7 @@ namespace Terminal_Dusk
 
             //background images
             backImgs.Add(Content.Load<Texture2D>("newTitleScale"));
-            // TODO: use this.Content to load your game content here
+            //font used for the menu text
             labelFont = this.Content.Load<SpriteFont>("LabelFont");
 
             //font for the button
@@ -146,11 +146,11 @@ namespace Terminal_Dusk
             //adding buttons
             //main menu start button
             buttons.Add(new Button(
-                    _graphics.GraphicsDevice,           // device to create a custom texture
-                    new Rectangle((10/3) * scale, (40/3) * scale, (100/3) * scale, (50/3) * scale),    // where to put the button
-                    "Start",                        // button label
-                    buttonFont,                               // label font
-                    Color.Purple));
+                    _graphics.GraphicsDevice, //device to create a custom texture
+                    new Rectangle((10/3) * scale, (40/3) * scale, (100/3) * scale, (50/3) * scale), //where to put the button
+                    "Start", //button label
+                    buttonFont, //label font
+                    Color.Purple)); //button color
             //main menu exit button
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
@@ -171,7 +171,7 @@ namespace Terminal_Dusk
                     new Rectangle((10 / 3) * scale, (40 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
                     "Return to Main Menu",
                     buttonFont,
-                    Color.Purple));
+                    Color.Black));
             //options menu go to pause'
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
@@ -185,14 +185,15 @@ namespace Terminal_Dusk
                     new Rectangle((10 / 3) * scale, (150 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
                     "Change WASD Control",
                     buttonFont,
-                    Color.Purple));
+                    Color.Black));
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
                     new Rectangle((10 / 3) * scale, (260 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
                     "Change Arrow Keys Control",
                     buttonFont,
-                    Color.Purple));
-            //options menu scale change controls
+                    Color.Black));
+            //options menu scale change controls - not implemented
+            /*
             //scale equals 3
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
@@ -213,7 +214,7 @@ namespace Terminal_Dusk
                     new Rectangle((700 / 3) * scale, (260 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
                     "Set to 1920 * 1080",
                     buttonFont,
-                    Color.Purple));
+                    Color.Purple)); */
 
             //main menu buttons
             buttons[0].OnLeftButtonClick += StartGame;
@@ -225,10 +226,10 @@ namespace Terminal_Dusk
             //buttons that change controls
             buttons[5].OnLeftButtonClick += ChangeToWASD;
             buttons[6].OnLeftButtonClick += ChangeToArrows;
-            //buttons that change scale
-            buttons[7].OnLeftButtonClick += ScaleTo3;
-            buttons[8].OnLeftButtonClick += ScaleTo4;
-            buttons[9].OnLeftButtonClick += ScaleTo6;
+            //buttons that change scale - not implemented
+            //buttons[7].OnLeftButtonClick += ScaleTo3;
+            //buttons[8].OnLeftButtonClick += ScaleTo4;
+            //buttons[9].OnLeftButtonClick += ScaleTo6;
 
 
             //Game State Loads
@@ -313,18 +314,18 @@ namespace Terminal_Dusk
                         buttons[3].Update();
                         buttons[5].Update();
                         buttons[6].Update();
-                        buttons[7].Update();
-                        buttons[8].Update();
-                        buttons[9].Update();
+                        //buttons[7].Update(); - currently not implemented
+                        //buttons[8].Update();
+                        //buttons[9].Update();
                     }
                     else
                     {
                         buttons[4].Update();
                         buttons[5].Update();
                         buttons[6].Update();
-                        buttons[7].Update();
-                        buttons[8].Update();
-                        buttons[9].Update();
+                        //buttons[7].Update();
+                        //buttons[8].Update();
+                        //buttons[9].Update();
                     }
 
                     //add a way for the player to change the scale of the screen
@@ -723,18 +724,18 @@ namespace Terminal_Dusk
                         buttons[3].Draw(_spriteBatch);
                         buttons[5].Draw(_spriteBatch);
                         buttons[6].Draw(_spriteBatch);
-                        buttons[7].Draw(_spriteBatch);
-                        buttons[8].Draw(_spriteBatch);
-                        buttons[9].Draw(_spriteBatch);
+                        //buttons[7].Draw(_spriteBatch); - not implemented
+                        //buttons[8].Draw(_spriteBatch);
+                        //buttons[9].Draw(_spriteBatch);
                     }
                     else
                     {
                         buttons[4].Draw(_spriteBatch);
                         buttons[5].Draw(_spriteBatch);
                         buttons[6].Draw(_spriteBatch);
-                        buttons[7].Draw(_spriteBatch);
-                        buttons[8].Draw(_spriteBatch);
-                        buttons[9].Draw(_spriteBatch);
+                        //buttons[7].Draw(_spriteBatch);
+                        //buttons[8].Draw(_spriteBatch);
+                        //buttons[9].Draw(_spriteBatch);
                     }
                     break;
                 case GameState.GameOverMenu:

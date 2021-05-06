@@ -123,10 +123,6 @@ namespace Terminal_Dusk
                         
                         break;
 
-                    case EnemyState.Hostile:
-                        frame = 0;
-                        break;
-
                     case EnemyState.Attacking:
                         frame++;
                         if (frame == 15)

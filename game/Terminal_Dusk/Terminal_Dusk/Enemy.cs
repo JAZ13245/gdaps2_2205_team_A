@@ -7,24 +7,24 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Terminal_Dusk
 {
+    //declares the different states the enemy can be in
     enum EnemyState
     {
-        Idle,
-        IdleBehaviour,
-        Hostile,
-        Attacking,
-        Dying
+        Idle, //standing still, picks random direction to move in (slime)
+        IdleBehaviour, //slime - jumps in chosen direction
+        Attacking, //imp - swoops down towards player
+        Dying //self explanatory, enemy dies after taking a hit
     }
     class Enemy : GameObject
     {
+        //all fields used for enemy
         protected int health;
-        protected int strength;
+        protected int strength; 
         protected int speed;
-        protected int[] drops;
         protected EnemyState currentState;
         protected Random enemyRNG;
         protected GameState state;
-        protected PlayerState playerState;
+        protected PlayerState playerState; //enemy must use playerstate to determine if it's being attacked
         
         public EnemyState CurrentState
         {
@@ -42,6 +42,7 @@ namespace Terminal_Dusk
             set { playerState = value; }
         }
 
+        //standard constructor for all enemies
         public Enemy(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
         {
             image = sprite;
@@ -76,9 +77,6 @@ namespace Terminal_Dusk
                 case EnemyState.IdleBehaviour:
                     break;
 
-                case EnemyState.Hostile:
-                    break;
-                
                 case EnemyState.Attacking:
                     break;
                 
@@ -98,9 +96,6 @@ namespace Terminal_Dusk
                     break;
 
                 case EnemyState.IdleBehaviour:
-                    break;
-
-                case EnemyState.Hostile:
                     break;
 
                 case EnemyState.Attacking:

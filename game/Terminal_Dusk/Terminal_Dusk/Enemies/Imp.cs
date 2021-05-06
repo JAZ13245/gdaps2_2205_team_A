@@ -15,12 +15,19 @@ namespace Terminal_Dusk
         private SpriteEffects flip;
         private int currentSprite;
 
+        private int swoopCounter = 0;
+        private int pauseLimit = 50;
+        private int swoopLimit = 25;
+        private float swoopDurration = 0.03f; //every  .03s.
+        private float swoopTime = 0f;
+        private int swoopSpeed = 14;
+
         public Imp(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location, state, playerState, speed)
         {
             image = sprite;
             position = location;
             timePerFrame = 0.15;
-            currentState = EnemyState.Idle;
+            currentState = EnemyState.Attacking;
             frame = 0;
             currentSprite = 0;
             enemyRNG = new Random();
@@ -37,7 +44,7 @@ namespace Terminal_Dusk
         {
             //138 x 102
             //DrawJump(sb, flip);
-            sb.Draw(image, Position, Color.White); //Draws no animation, delete once animation added
+            sb.Draw(image, position, Color.White); //Draws no animation, delete once animation added
         }
 
         public override void Load(string filename)
@@ -110,93 +117,81 @@ namespace Terminal_Dusk
                 player.Y = GraphicsDevice.Viewport.Height - (47 * scale);//Then set it on
                 player.JumpingState = PlayerJumpingState.Standing;
             }*/
+            
 
-            /*if (timeCounter >= timePerFrame)
+            switch (currentState)
             {
+                case EnemyState.Idle:
+                    swoopTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                switch (currentState)
-                {
-                    case EnemyState.Idle:
+                    if (swoopTime >= swoopDurration)
+                    {
+                        swoopCounter++;
+                        //reset the timer to loop again
+                        swoopTime -= swoopDurration; // "use up" the time
+                    }
+                    //if the counter is greater then our limit
+                    //the pause has completed
+                    if (swoopCounter >= pauseLimit)
+                    {
+                        //reset the counter
+                        swoopCounter = 0;
+                        currentState = EnemyState.Attacking;
+                    }
+                    break;
 
-                        currentSprite = 0;
-                        frame++;
-                        if (frame == 5)
+                case EnemyState.IdleBehaviour:
+                    break;
+
+                case EnemyState.Hostile:
+                    break;
+
+                case EnemyState.Attacking:
+                    int randomDirection = enemyRNG.Next(0, 2);
+                    if (randomDirection == 0)
+                    {
+                        position.X += 2;
+                        
+                    }
+                    else if (randomDirection == 1)
+                    {
+                        position.X -= 2;
+                    }
+
+                    if (swoopSpeed == 0)
+                    {
+                        swoopTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                        if (swoopTime >= swoopDurration)
                         {
-                            frame = 0;
-                            int randomDirection = enemyRNG.Next(0, 2);
-                            if (randomDirection == 0)
-                            {
-                                flip = SpriteEffects.FlipHorizontally;
-                            }
-                            else if (randomDirection == 1)
-                            {
-                                flip = SpriteEffects.None;
-                            }
-                            currentState = EnemyState.IdleBehaviour;
+                            swoopCounter++;
+                            //reset the timer to loop again
+                            swoopTime -= swoopDurration; // "use up" the time
                         }
-
-                        break;
-
-                    case EnemyState.IdleBehaviour:
-
-
-                        frame++;
-
-                        if (frame > 5 & frame < 15)
+                        //if the counter is greater then our limit
+                        //the pause has completed
+                        if (swoopCounter >= swoopLimit)
                         {
-                            switch (flip)
-                            {
-                                case SpriteEffects.FlipHorizontally:
-                                    position.X -= 10;
-
-                                    break;
-                                case SpriteEffects.None:
-                                    position.X += 10;
-                                    break;
-                                default:
-                                    break;
-                            }
+                            //reset the counter
+                            swoopCounter = 0;
+                            position.Y += swoopSpeed;
+                            swoopSpeed--;
                         }
-                        if (frame > 5 & frame < 9)
-                        {
-                            position.Y -= 5;
-                        }
-                        if (frame > 8 & frame < 12)
-                        {
-                            position.Y += 5;
-                        }
+                    }
+                    if (swoopSpeed == 14)
+                    {
+                        currentState = EnemyState.Idle;
+                    }
+                    position.Y -= swoopSpeed;
+                    swoopSpeed--;
+                    break;
 
+                case EnemyState.Dying:
+                    break;
 
-                        currentSprite++;
-                        if (frame == 15)
-                        {
-                            frame = 0;
-                            currentSprite = 0;
-                            currentState = EnemyState.Idle;
-                        }
-
-                        break;
-
-                    case EnemyState.Hostile:
-                        frame = 0;
-                        break;
-
-                    case EnemyState.Attacking:
-                        frame++;
-                        if (frame == 15)
-                        { frame = 0; }
-                        break;
-
-                    case EnemyState.Dying:
-
-                        break;
-
-                    default:
-                        break;
-
-                }
-                timeCounter -= timePerFrame;
-            }*/
+                default:
+                    break;
+            }
 
 
 

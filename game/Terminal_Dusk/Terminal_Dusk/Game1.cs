@@ -386,7 +386,7 @@ namespace Terminal_Dusk
                     //Check collision with the invisible wall
                     //Should be fixed over the summer to fit in line with other planned collision
                     bool wallCollide = false;
-                    foreach(CollisionBlock c in startWall)
+                    /*foreach(CollisionBlock c in startWall)
                     {
                         if (c.CheckCollision(player))
                         {
@@ -394,6 +394,19 @@ namespace Terminal_Dusk
                             break;
                         }
                         else { wallCollide = false; }
+                    }*/
+                    for( int i = 5; i < 16; i++)
+                    {
+                        if (environments[i].CheckCollision(player))
+                        {
+                            wallCollide = true;
+                            break;
+                        }
+                        else { wallCollide = false; }
+                        if (i == 10)
+                        {
+                            i = 14;
+                        }
                     }
 
 

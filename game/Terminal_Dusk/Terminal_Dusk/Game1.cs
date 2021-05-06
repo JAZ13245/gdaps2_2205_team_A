@@ -810,7 +810,7 @@ namespace Terminal_Dusk
             }
             if(player.Health == 0)
             {
-                currentState = GameState.MainMenu;
+                currentState = GameState.GameOverMenu;
             }
         }
 

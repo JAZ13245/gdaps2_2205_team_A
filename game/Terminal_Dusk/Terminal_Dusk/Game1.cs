@@ -395,9 +395,13 @@ namespace Terminal_Dusk
                         }
                         else { wallCollide = false; }
                     }*/
+                    //Position doesn't update
+                    /*Rectangle position;
                     for( int i = 5; i < 16; i++)
                     {
-                        if (environments[i].CheckCollision(player))
+                        //Posito
+                        position = environments[i].Position;
+                        if (player.Position.Intersects(position))
                         {
                             wallCollide = true;
                             break;
@@ -407,7 +411,7 @@ namespace Terminal_Dusk
                         {
                             i = 14;
                         }
-                    }
+                    }*/
 
 
                     for (int i = 0; i < enemies.Count; i++)
@@ -722,7 +726,7 @@ namespace Terminal_Dusk
                     _spriteBatch.DrawString(labelFont, "Game Over!", new Vector2(5, 5), Color.White);
                     _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the main menu", new Vector2(5, 25), Color.White);
                     break;
-                case GameState.Winner;
+                case GameState.Winner:
                     _spriteBatch.DrawString(labelFont, "You Win!", new Vector2(5, 5), Color.White);
                     _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the main menu", new Vector2(5, 25), Color.White);
                     break;

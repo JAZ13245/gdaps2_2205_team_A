@@ -709,7 +709,7 @@ namespace Terminal_Dusk
                     _spriteBatch.DrawString(labelFont, "Game Over!", new Vector2(5, 5), Color.White);
                     _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the main menu", new Vector2(5, 25), Color.White);
                     break;
-                case GameState.Winner;
+                case GameState.Winner:
                     _spriteBatch.DrawString(labelFont, "You Win!", new Vector2(5, 5), Color.White);
                     _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the main menu", new Vector2(5, 25), Color.White);
                     break;

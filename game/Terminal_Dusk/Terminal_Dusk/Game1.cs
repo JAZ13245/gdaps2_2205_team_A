@@ -1023,7 +1023,7 @@ namespace Terminal_Dusk
                             break;
                         //Imp
                         case '$':
-                            imp1 = new Imp(impSpriteSheet, new Rectangle(xPlacement, yPlacement, 40 * scale, 50 * scale), currentState, player.State, 1);
+                            imp1 = new Imp(impSpriteSheet, new Rectangle(xPlacement, yPlacement, 20 * scale, 25 * scale), currentState, player.State, 1);
                             enemies.Add((Enemy)imp1);
                             xPlacement += 10 * scale;
                             break;

@@ -16,11 +16,12 @@ namespace Terminal_Dusk
         private int currentSprite;
 
         private int swoopCounter = 0;
-        private int pauseLimit = 50;
-        private int swoopLimit = 25;
+        private int pauseLimit = 100;
+        private int swoopLimit = 10;
         private float swoopDurration = 0.03f; //every  .03s.
         private float swoopTime = 0f;
-        private int swoopSpeed = 14;
+        private int swoopSpeed = 18;
+        private int randomDirection;
 
         public Imp(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location, state, playerState, speed)
         {
@@ -122,6 +123,8 @@ namespace Terminal_Dusk
             switch (currentState)
             {
                 case EnemyState.Idle:
+                    randomDirection = enemyRNG.Next(0, 2);
+
                     swoopTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                     if (swoopTime >= swoopDurration)
@@ -144,15 +147,14 @@ namespace Terminal_Dusk
                     break;
 
                 case EnemyState.Attacking:
-                    int randomDirection = enemyRNG.Next(0, 2);
                     if (randomDirection == 0)
                     {
-                        position.X += 2;
+                        position.X += 5;
                         
                     }
                     else if (randomDirection == 1)
                     {
-                        position.X -= 2;
+                        position.X -= 5;
                     }
 
                     if (swoopSpeed == 0)
@@ -175,13 +177,16 @@ namespace Terminal_Dusk
                             swoopSpeed--;
                         }
                     }
-                    if (swoopSpeed == -14)
+                    else if (swoopSpeed == -19)
                     {
-                        swoopSpeed = 14;
+                        swoopSpeed = 18;
                         currentState = EnemyState.Idle;
                     }
-                    position.Y += swoopSpeed;
-                    swoopSpeed--;
+                    else
+                    {
+                        position.Y += swoopSpeed;
+                        swoopSpeed--;
+                    }
                     break;
 
                 case EnemyState.Dying:

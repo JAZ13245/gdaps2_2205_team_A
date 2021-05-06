@@ -175,11 +175,12 @@ namespace Terminal_Dusk
                             swoopSpeed--;
                         }
                     }
-                    if (swoopSpeed == 14)
+                    if (swoopSpeed == -14)
                     {
+                        swoopSpeed = 14;
                         currentState = EnemyState.Idle;
                     }
-                    position.Y -= swoopSpeed;
+                    position.Y += swoopSpeed;
                     swoopSpeed--;
                     break;
 

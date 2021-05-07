@@ -11,7 +11,17 @@ namespace Terminal_Dusk
 
         //health of the player
         private int playerHealth;
-        //constructor
+        public int PlayerHealth
+        {
+            get
+            {
+                return this.playerHealth;
+            }
+            set
+            {
+                this.playerHealth = value;
+            }
+        }
         public Health(Texture2D image, Rectangle position) :base(image,position)
         {
             this.image = image;

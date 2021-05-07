@@ -85,8 +85,8 @@ namespace Terminal_Dusk
         private Sun sun;
         //GameBackground
         private EnvironmentBackground gameBackground;
-        //Forground objects
-        private Forground foreground;
+        //Foreground objects
+        private Foreground foreground;
         //Ground
         private CollisionBlock ground;
         //Invisible wall at the begining of the game 
@@ -797,6 +797,15 @@ namespace Terminal_Dusk
             mouseState = Mouse.GetState();
             if (SingleKeyPress(Keys.M, kbState))
             {
+                //environment
+                LoadEnvironment(levelFile);
+                //sun
+                sun.LocationX = 40 * Scale;
+                sun.LocationY = -20 * Scale;
+                //skybackground
+                //normal background
+                //player values
+                health.PlayerHealth = 5;
                 currentState = GameState.MainMenu;
             }
         }
@@ -930,7 +939,7 @@ namespace Terminal_Dusk
                             break;
                         //Start Cabin
                         case 'L':
-                            foreground = new Forground(envirImgs[5], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                            foreground = new Foreground(envirImgs[5], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
                                 currentState, player.State, 2, 70, 80, 0);
                             foreground.Flipped = false;
                             envirConverter = (Environment)foreground;
@@ -939,7 +948,7 @@ namespace Terminal_Dusk
                             break;
                         //Bushes
                         case '0':
-                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                            foreground = new Foreground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
                                 currentState, player.State, 2, 50, 30,0);
                             foreground.Flipped = false;
                             envirConverter = (Environment)foreground;
@@ -947,7 +956,7 @@ namespace Terminal_Dusk
                             xPlacement += 10 * scale;
                             break;
                         case '1':
-                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                            foreground = new Foreground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
                                 currentState, player.State, 2, 50, 30, 1);
                             foreground.Flipped = false;
                             envirConverter = (Environment)foreground;
@@ -955,7 +964,7 @@ namespace Terminal_Dusk
                             xPlacement += 10 * scale;
                             break;
                         case '2':
-                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                            foreground = new Foreground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
                                 currentState, player.State, 2, 50, 30, 2);
                             foreground.Flipped = false;
                             envirConverter = (Environment)foreground;
@@ -963,21 +972,21 @@ namespace Terminal_Dusk
                             xPlacement += 10 * scale;
                             break;
                         case '3':
-                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                            foreground = new Foreground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
                                currentState, player.State, 2, 50, 30, 0);
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
                         case '4':
-                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                            foreground = new Foreground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
                                 currentState, player.State, 2, 50, 30, 1);
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
                         case '5':
-                            foreground = new Forground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
+                            foreground = new Foreground(envirImgs[4], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale),
                                 currentState, player.State, 2, 50, 30, 2);
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
@@ -985,28 +994,28 @@ namespace Terminal_Dusk
                             break;
                         //Trees
                         case '6':
-                            foreground = new Forground(envirImgs[3], new Rectangle(xPlacement, yPlacement, 110 * scale, 120 * scale),
+                            foreground = new Foreground(envirImgs[3], new Rectangle(xPlacement, yPlacement, 110 * scale, 120 * scale),
                                 currentState, player.State, 2, 110, 120, 0);
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
                         case '7':
-                            foreground = new Forground(envirImgs[3], new Rectangle(xPlacement, yPlacement, 110 * scale, 120 * scale),
+                            foreground = new Foreground(envirImgs[3], new Rectangle(xPlacement, yPlacement, 110 * scale, 120 * scale),
                                 currentState, player.State, 2, 110, 120, 1);
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
                         case '8':
-                            foreground = new Forground(envirImgs[3], new Rectangle(xPlacement, yPlacement, 110 * scale, 120 * scale),
+                            foreground = new Foreground(envirImgs[3], new Rectangle(xPlacement, yPlacement, 110 * scale, 120 * scale),
                                 currentState, player.State, 2, 110, 120, 2);
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;
                             break;
                         case '9':
-                            foreground = new Forground(envirImgs[3], new Rectangle(xPlacement, yPlacement, 110*scale, 120*scale),
+                            foreground = new Foreground(envirImgs[3], new Rectangle(xPlacement, yPlacement, 110*scale, 120*scale),
                                 currentState, player.State, 2, 110, 120, 3);
                             envirConverter = (Environment)foreground;
                             environments.Add(envirConverter);
@@ -1022,7 +1031,7 @@ namespace Terminal_Dusk
                             break;
                         //Imp
                         case '$':
-                            imp1 = new Imp(impSpriteSheet, new Rectangle(xPlacement, yPlacement, 20 * scale, 25 * scale), currentState, player.State, 1);
+                            imp1 = new Imp(impSpriteSheet, new Rectangle(xPlacement, yPlacement, 20 * scale, 30 * scale), currentState, player.State, 1);
                             enemies.Add((Enemy)imp1);
                             xPlacement += 10 * scale;
                             break;

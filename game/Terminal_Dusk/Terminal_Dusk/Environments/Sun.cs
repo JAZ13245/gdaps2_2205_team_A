@@ -19,6 +19,30 @@ namespace Terminal_Dusk.Environments
             set { state = value; }
         }
 
+        public int LocationX
+        {
+            get
+            {
+                return this.location.X;
+            }
+            set
+            {
+                this.location.X = value;
+            }
+        }
+
+        public int LocationY
+        {
+            get
+            {
+                return this.location.Y;
+            }
+            set
+            {
+                this.location.Y = value;
+            }
+        }
+
         public Sun(Texture2D sprite, Rectangle location, GameState state) : base(sprite, location)
         {
             this.sprite = sprite;

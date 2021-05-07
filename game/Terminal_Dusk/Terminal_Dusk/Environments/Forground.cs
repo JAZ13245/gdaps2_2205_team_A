@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Terminal_Dusk.Environments
 {
-    class Forground : Environment
+    class Foreground : Environment
     {
         private Texture2D spriteSheet;
         private Rectangle location;
@@ -33,7 +33,7 @@ namespace Terminal_Dusk.Environments
             set { playerState = value; }
         }
 
-        public Forground(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed, int xSize, int ySize, int objectNumber) : base(sprite, location)
+        public Foreground(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed, int xSize, int ySize, int objectNumber) : base(sprite, location)
         {
             this.spriteSheet = sprite;
             this.location = location;

@@ -134,6 +134,7 @@ namespace Terminal_Dusk
 
             //background images
             backImgs.Add(Content.Load<Texture2D>("newTitleScale"));
+            backImgs.Add(Content.Load<Texture2D>("gameoverScale"));
             //font used for the menu text
             labelFont = this.Content.Load<SpriteFont>("LabelFont");
 
@@ -142,6 +143,8 @@ namespace Terminal_Dusk
 
             //adding background(s)
             backgrounds.Add(new Environment(backImgs[0],
+                    new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height)));
+            backgrounds.Add(new Environment(backImgs[1],
                     new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height)));
             //adding buttons
             //main menu start button
@@ -738,7 +741,7 @@ namespace Terminal_Dusk
                     }
                     break;
                 case GameState.GameOverMenu:
-                    _spriteBatch.DrawString(labelFont, "Game Over!", new Vector2(5, 5), Color.White);
+                    backgrounds[1].Draw(_spriteBatch);
                     _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the Main Menu.", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.Winner:

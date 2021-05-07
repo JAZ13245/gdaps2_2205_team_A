@@ -195,7 +195,7 @@ namespace Terminal_Dusk
             //returns to main menu from game over
             buttons.Add(new Button(
                     _graphics.GraphicsDevice,
-                    new Rectangle((10 / 3) * scale, (40 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
+                    new Rectangle((380 / 3) * scale, (450 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
                     "Return to Main Menu",
                     buttonFont,
                     Color.Black));

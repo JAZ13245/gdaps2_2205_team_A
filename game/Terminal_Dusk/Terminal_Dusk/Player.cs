@@ -133,6 +133,7 @@ namespace Terminal_Dusk
         public int Health
         {
             get { return health; }
+            set { health = value; }
         }
         
         public PlayerJumpingState JumpingState

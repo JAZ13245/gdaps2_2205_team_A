@@ -714,7 +714,7 @@ namespace Terminal_Dusk
                     break;
                 case GameState.PauseMenu:
                     _spriteBatch.DrawString(labelFont, "This is the Pause Menu.", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(labelFont, "Press M for the Main Menu, O for Options, or Escape to Exit.", new Vector2(5, 25), Color.White);
+                    _spriteBatch.DrawString(labelFont, "Press M for the Main Menu, O for Options, P to go back, or Escape to Exit.", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.OptionsMenu:
                     _spriteBatch.DrawString(labelFont, "This is the Options Menu.", new Vector2(5, 5), Color.White);
@@ -797,15 +797,18 @@ namespace Terminal_Dusk
             mouseState = Mouse.GetState();
             if (SingleKeyPress(Keys.M, kbState))
             {
+                enemies.Clear();
                 //environment
                 LoadEnvironment(levelFile);
                 //sun
                 sun.LocationX = 40 * Scale;
                 sun.LocationY = -20 * Scale;
                 //skybackground
+                skyBackground.Reset();
                 //normal background
+                gameBackground.Reset();
                 //player values
-                health.PlayerHealth = 5;
+                player.Health = 5;
                 currentState = GameState.MainMenu;
             }
         }

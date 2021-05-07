@@ -810,6 +810,10 @@ namespace Terminal_Dusk
                 gameBackground.Reset();
                 //player values
                 player.Health = 5;
+                //Stops red blinking
+                player.DamageState = DamageState.CanTakeDamage;
+                //Faces right
+                player.State = PlayerState.FaceRight;
                 currentState = GameState.MainMenu;
             }
         }

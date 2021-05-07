@@ -195,6 +195,13 @@ namespace Terminal_Dusk
                     "Change Arrow Keys Control",
                     buttonFont,
                     Color.Black));
+            //returns to main menu from game over
+            buttons.Add(new Button(
+                    _graphics.GraphicsDevice,
+                    new Rectangle((380 / 3) * scale, (450 / 3) * scale, (200 / 3) * scale, (50 / 3) * scale),
+                    "Return to Main Menu",
+                    buttonFont,
+                    Color.Black));
             //options menu scale change controls - not implemented
             /*
             //scale equals 3
@@ -229,6 +236,7 @@ namespace Terminal_Dusk
             //buttons that change controls
             buttons[5].OnLeftButtonClick += ChangeToWASD;
             buttons[6].OnLeftButtonClick += ChangeToArrows;
+            buttons[7].OnLeftButtonClick += ReturnToMenu;
             //buttons that change scale - not implemented
             //buttons[7].OnLeftButtonClick += ScaleTo3;
             //buttons[8].OnLeftButtonClick += ScaleTo4;
@@ -648,10 +656,10 @@ namespace Terminal_Dusk
                     }
                     break;
                 case GameState.GameOverMenu:
-                    ProcessGameOverAndWinMenu(kbState, mouseState);
+                    buttons[7].Update();
                     break;
                 case GameState.Winner:
-                    ProcessGameOverAndWinMenu(kbState, mouseState);
+                    buttons[7].Update();
                     break;
                 case GameState.ExitGame:
                     break;
@@ -705,6 +713,7 @@ namespace Terminal_Dusk
                     }
                     //Player
                     player.Draw(_spriteBatch);
+                    //Enemies
                     foreach(Enemy enemy in enemies)
                     {
                         enemy.Draw(_spriteBatch);
@@ -745,8 +754,7 @@ namespace Terminal_Dusk
                     _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the Main Menu.", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.Winner:
-                    _spriteBatch.DrawString(labelFont, "You Win!", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the Main Menu.", new Vector2(5, 25), Color.White);
+                    buttons[7].Draw(_spriteBatch);
                     break;
                 case GameState.ExitGame:
                     break;
@@ -793,27 +801,37 @@ namespace Terminal_Dusk
             }
         }
 
-        //helper method for Game Over and Win
-        private void ProcessGameOverAndWinMenu(KeyboardState kbState, MouseState mouseState)
+        //return to main menu for button
+        private void ReturnToMenu()
         {
-            kbState = Keyboard.GetState();
-            mouseState = Mouse.GetState();
-            if (SingleKeyPress(Keys.M, kbState))
-            {
-                enemies.Clear();
-                //environment
-                LoadEnvironment(levelFile);
-                //sun
-                sun.LocationX = 40 * Scale;
-                sun.LocationY = -20 * Scale;
-                //skybackground
-                skyBackground.Reset();
-                //normal background
-                gameBackground.Reset();
-                //player values
-                player.Health = 5;
-                currentState = GameState.MainMenu;
-            }
+            enemies.Clear();
+            environments.Clear();
+            //environment
+            //Adds objects back to environments
+            //skybackground
+            skyBackground.Reset();
+            envirConverter = (Environment)skyBackground;
+            environments.Add(envirConverter);
+
+            //sun
+            sun.LocationX = 40 * Scale;
+            sun.LocationY = -20 * Scale;
+            envirConverter = (Environment)sun;
+            environments.Add(envirConverter);
+
+            //normal background
+            gameBackground.Reset();
+            envirConverter = (Environment)gameBackground;
+            environments.Add(envirConverter);
+            LoadEnvironment(levelFile);
+
+            //Player values
+            player.Health = 5;
+            //Stops red blinking
+            player.DamageState = DamageState.CanTakeDamage;
+            //Faces right
+            player.State = PlayerState.FaceRight;
+            currentState = GameState.MainMenu;
         }
         //helper method for GamePlayState
         private void ProcessGamePlayState(KeyboardState kbState)

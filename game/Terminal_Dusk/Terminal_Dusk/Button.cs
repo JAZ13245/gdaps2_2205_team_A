@@ -23,7 +23,21 @@ namespace Terminal_Dusk
 
         //event for left button click
         public event OnButtonClickDelegate OnLeftButtonClick;
-
+        //properties for the position of the rectangle
+        public int PositionX
+        {
+            get
+            {
+                return this.position.X;
+            }
+        }
+        public int PositionY
+        {
+            get
+            {
+                return this.position.Y;
+            }
+        }
         //constructor for button
         public Button(GraphicsDevice device, Rectangle position, String text, SpriteFont font, Color color)
         {

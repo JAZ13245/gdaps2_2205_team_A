@@ -9,6 +9,7 @@ namespace Terminal_Dusk.Environments
 {
     class Foreground : Environment
     {
+        //envirnoments in the foreground
         private Texture2D spriteSheet;
         private Rectangle location;
         GameState state;
@@ -33,6 +34,7 @@ namespace Terminal_Dusk.Environments
             set { playerState = value; }
         }
 
+        //constructor
         public Foreground(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed, int xSize, int ySize, int objectNumber) : base(sprite, location)
         {
             this.spriteSheet = sprite;
@@ -46,6 +48,7 @@ namespace Terminal_Dusk.Environments
             Flipped = true;
         }
 
+        //updates according to game and player state
         public override void Update(GameTime gameTime)
         {
             if (state == GameState.MainMenu)
@@ -65,6 +68,7 @@ namespace Terminal_Dusk.Environments
             }
         }
 
+        //draws foreground
         public override void Draw(SpriteBatch sb)
         {
             if (Flipped)
@@ -77,6 +81,7 @@ namespace Terminal_Dusk.Environments
             }
         }
 
+        //draws flipped
         private void FlipDraw(SpriteEffects flipSprite, SpriteBatch sb)
         {
             sb.Draw(spriteSheet,

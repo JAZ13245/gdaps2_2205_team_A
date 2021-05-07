@@ -8,6 +8,8 @@ namespace Terminal_Dusk
 {
     class Health : GameObject
     {
+
+        //health of the player
         private int playerHealth;
         public int PlayerHealth
         {
@@ -26,6 +28,7 @@ namespace Terminal_Dusk
             this.position = position;
         }
 
+        //hypothetically this would load in and save the current player health
         public override void Load(string filename)
         {
             throw new NotImplementedException();
@@ -41,11 +44,13 @@ namespace Terminal_Dusk
             throw new NotImplementedException();
         }
 
+        //sets the player health
         public void Update(GameTime gameTime, int health)
         {
             playerHealth = health;
         }
 
+        //for as many pieces of health the player has, draws a heart to represent it
         public override void Draw(SpriteBatch sb)
         {
             for (int i = 0; i < playerHealth; i++)

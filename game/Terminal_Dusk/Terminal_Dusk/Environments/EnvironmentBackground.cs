@@ -9,12 +9,14 @@ namespace Terminal_Dusk.Environments
 {
     class EnvironmentBackground : Environment
     {
+        //thhings in the background
         private Texture2D sprite;
         private Rectangle location;
         GameState state;
         PlayerState playerState;
         int speed;
 
+        //properties for the gamestate and player's state
         public override GameState State
         {
             set { state = value; }
@@ -25,6 +27,7 @@ namespace Terminal_Dusk.Environments
             set { playerState = value; }
         }
 
+        //constructor
         public EnvironmentBackground(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
         {
             this.sprite = sprite;
@@ -34,6 +37,7 @@ namespace Terminal_Dusk.Environments
             this.speed = speed;
         }
 
+        //updates based on the game state and player state
         public override void Update(GameTime gameTime)
         {
             //Slows speed
@@ -59,6 +63,7 @@ namespace Terminal_Dusk.Environments
             }
         }
 
+        //draws background
         public override void Draw(SpriteBatch sb)
         {
             sb.Draw(sprite, location, Color.White);

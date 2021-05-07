@@ -23,7 +23,7 @@ namespace Terminal_Dusk
         private int swoopSpeed = 18;
 
         private int randomDirection;
-        private int attackSpeed = 3;
+        private int attackSpeed = 2;
 
         public Imp(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location, state, playerState, speed)
         {
@@ -68,60 +68,8 @@ namespace Terminal_Dusk
         public override void Update(GameTime gameTime)
         {
             ScrollWithPlayer();
-            timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
-            /*case PlayerJumpingState.Standing:
-                            if (SingleKeyPress(upMove, kbState))
-            {
-                player.JumpingState = PlayerJumpingState.Jumping;
-
-                jumpSpeed = -16;//Give it upward thrust
-                jumpingCurrentTime = 0f;
-            }
-            break;
-
-                        case PlayerJumpingState.Jumping:
-                            
-
-                            //Would need to be edited to work with collision
-                            //Will be jank with falling of edges. Not perfect fit but a good start to having better jumping
-                            if (player.Y != GraphicsDevice.Viewport.Height - (92 * scale))
-            {
-                player.Y += jumpSpeed;
-                jumpSpeed++; //Acts as the physics accelerating/deccelerating
-            }
-
-            //Keeps player a peak for a small amount of time
-            else
-            {
-                jumpingCurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (jumpingCurrentTime >= jumpingCountDuration)
-                {
-                    jumpingCounter++;
-                    //reset the timer to loop again
-                    jumpingCurrentTime -= jumpingCountDuration; // "use up" the time
-                }
-                //if the counter is greater then our limit
-                //the pause has completed
-                if (jumpingCounter >= jumpingLimit)
-                {
-                    //reset the counter
-                    jumpingCounter = 0;
-                    //continues movement
-                    player.Y += jumpSpeed;
-                    jumpSpeed++;
-                }
-            }
-
-
-            if (player.Y >= GraphicsDevice.Viewport.Height - (47 * scale))
-            //If it's farther than ground
-            {
-                player.Y = GraphicsDevice.Viewport.Height - (47 * scale);//Then set it on
-                player.JumpingState = PlayerJumpingState.Standing;
-            }*/
+            //timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
             
-
             switch (currentState)
             {
                 case EnemyState.Idle:
@@ -159,33 +107,16 @@ namespace Terminal_Dusk
                         position.X -= attackSpeed;
                     }
 
-                    if (swoopSpeed < 0)
+
+                    if (swoopSpeed < 0 && swoopSpeed % 6 == 0)
                     {
-                        if (randomDirection == 0)
-                        {
-                            position.X += attackSpeed;
-
-                        }
-                        else if (randomDirection == 1)
-                        {
-                            position.X -= attackSpeed;
-                        }
+                        attackSpeed--;
                     }
-
-                    else if (swoopSpeed > 0)
+                    else if (swoopSpeed > 0 && swoopSpeed % 6 == 0)
                     {
-                        if (randomDirection == 0)
-                        {
-                            position.X += attackSpeed;
-
-                        }
-                        else if (randomDirection == 1)
-                        {
-                            position.X -= attackSpeed;
-                        }
+                        attackSpeed++;
                     }
-
-                    else if (swoopSpeed == 0)
+                    if (swoopSpeed == 0)
                     {
                         swoopTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 

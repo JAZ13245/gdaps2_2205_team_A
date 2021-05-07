@@ -8,12 +8,14 @@ namespace Terminal_Dusk
 {
     class Slime : Enemy
     {
+        //basic properties
         private int frame;
         private double timeCounter;
         private double timePerFrame;
         private SpriteEffects flip;
         private int currentSprite;
 
+        //constructor
         public Slime(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) :base (sprite, location, state,playerState,speed)
         {
             image = sprite;
@@ -38,16 +40,19 @@ namespace Terminal_Dusk
             DrawJump(sb,flip);
         }
 
+        //loads in the slimes via file io
         public override void Load(string filename)
         {
             base.Load(filename);
         }
 
+        //doesn't do anything at the moment- hypothetically saves
         public override void Save(string filename)
         {
             base.Save(filename);
         }
 
+        //for saving the position, health, and state of the slime
         public override string ToString()
         {
             return ($"Enemy:Slime({position}) - HP:{health} - State:{currentState}");
@@ -145,7 +150,7 @@ namespace Terminal_Dusk
             base.Update(gameTime);
         }
 
-
+        //for animating the slime jumping
         private void DrawJump(SpriteBatch sb,SpriteEffects flip)
         {
             sb.Draw(
@@ -177,7 +182,7 @@ namespace Terminal_Dusk
 
 
 
-
+        //for scrolling as the player moves
         public override void ScrollWithPlayer()
         {
             if (state == GameState.MainMenu)

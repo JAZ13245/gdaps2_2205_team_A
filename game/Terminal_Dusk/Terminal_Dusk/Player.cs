@@ -41,16 +41,9 @@ namespace Terminal_Dusk
      *      Still,
      *      Crouching, //Could be seperate enum or put into the jump enum(jump may actually be better)
      *      Moving
-     * }
-     * 
-     * //I would argue that these last two are close to necessary. Attack alone would get rid of the 8 states 
-     * enum PlayerAttackState
-     * {
-     *      NotAttacking,
-     *      Attacking
-     * }
-     */
+     * } */
 
+    //to tell if the player is taking damage or not
     enum DamageState
     {
         CanTakeDamage,
@@ -58,7 +51,7 @@ namespace Terminal_Dusk
     }
 
 
-    // TODO: should inheirt from GameObject
+    //inherits from GameObject
     class Player : GameObject
     {
         Rectangle playerLoc;  // Mc's location on the screen
@@ -124,6 +117,7 @@ namespace Terminal_Dusk
             }
         }
 
+        //public properties for other fields
         public PlayerState State
         {
             get { return state; }
@@ -196,8 +190,7 @@ namespace Terminal_Dusk
             }
         }
 
-        // TODO: Make sure that when the player is crouching that their hit box gets smaller
-        //Maybe not the place for this comment but it is needed
+        //updates to tell whether or not the player has been hit
         public void UpdateDamageState(GameTime gameTime)
         {
             if (damageState == DamageState.Invulnerable)
@@ -231,7 +224,7 @@ namespace Terminal_Dusk
             
         }
 
-        //Added by James, feel free to delete/change
+        //draws the player depending on their current state
         public void Draw(SpriteBatch sb)
         {
             switch (jumpingState)
@@ -278,6 +271,7 @@ namespace Terminal_Dusk
             }
         }
 
+        //draws the regular standing sprites
         private void DrawStanding(SpriteEffects flipSprite, SpriteBatch spriteBatch)
         {
             switch (attackingState)
@@ -353,6 +347,7 @@ namespace Terminal_Dusk
             */
         }
 
+        //draws the walking sprites
         private void DrawWalking(SpriteEffects flipSprite, SpriteBatch spriteBatch)
         {
             switch (attackingState)
@@ -430,6 +425,7 @@ namespace Terminal_Dusk
             */
         }
 
+        //draws the crouching sprites
         public void DrawCrouching(SpriteEffects flipSprite, SpriteBatch spriteBatch)
         {
             switch (attackingState)
@@ -505,12 +501,15 @@ namespace Terminal_Dusk
             */
         }
 
+        //checks to see if the player is touching an enemy
         public void CheckEnemyCollisions(Enemy check)
         {
+            //if player is attacking, enemy dies
             if(playerLoc.Intersects(check.Position) && attackingState == PlayerAttackingState.IsAttacking)
             {
                 check.CurrentState = EnemyState.Dying;
             }
+            //if player isn't attacking, they were hit, they take damage
             else if (damageState == DamageState.CanTakeDamage && playerLoc.Intersects(check.Position) && attackingState==PlayerAttackingState.IsNotAttacking)
             {
                 damageState = DamageState.Invulnerable;
@@ -518,6 +517,7 @@ namespace Terminal_Dusk
             }
         }
 
+        //checks to see if player is colliding with environment blocks
         public bool CheckCollision(Environments.CollisionBlock check)//some class or object inside the parantehses 
         {
             if (this.Position.Intersects(check.Position))
@@ -527,6 +527,7 @@ namespace Terminal_Dusk
             return false;
         }
 
+        //not currently implemented
         public override void Save(string fileName) 
         { 
         }

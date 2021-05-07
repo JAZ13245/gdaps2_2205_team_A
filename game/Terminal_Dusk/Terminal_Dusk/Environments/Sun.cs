@@ -19,6 +19,7 @@ namespace Terminal_Dusk.Environments
             set { state = value; }
         }
 
+        //properties for x and y locations
         public int LocationX
         {
             get
@@ -43,6 +44,7 @@ namespace Terminal_Dusk.Environments
             }
         }
 
+        //similar to sky but moves more slowly
         public Sun(Texture2D sprite, Rectangle location, GameState state) : base(sprite, location)
         {
             this.sprite = sprite;
@@ -51,6 +53,7 @@ namespace Terminal_Dusk.Environments
             this.state = state;
         }
 
+        //slowly moves down as time goes on
         public override void Update(GameTime gameTime)
         {
             if (state == GameState.GamePlayState)

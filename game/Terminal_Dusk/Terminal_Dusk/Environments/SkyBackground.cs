@@ -10,15 +10,18 @@ namespace Terminal_Dusk.Environments
 {
     class SkyBackground : Environment
     {
+        //fields
         private Texture2D sprite;
         private Rectangle location;
         GameState state;
 
+        //only takes in the game state
         public override GameState State
         {
             set { state = value; }
         }
 
+        //sky scrolls vertically regardless of player input so it has its own class
         public SkyBackground(Texture2D sprite, Rectangle location, GameState state) : base(sprite, location)
         {
             this.sprite = sprite;
@@ -27,6 +30,7 @@ namespace Terminal_Dusk.Environments
             this.state = state;
         }
 
+        //slowly scrolls as time goes on
         public override void Update(GameTime gameTime)
         {
             if(state == GameState.GamePlayState)
@@ -56,6 +60,7 @@ namespace Terminal_Dusk.Environments
                 
         }
 
+        //draws sky
         public override void Draw(SpriteBatch sb)
         {
             sb.Draw(sprite, location, Color.White);

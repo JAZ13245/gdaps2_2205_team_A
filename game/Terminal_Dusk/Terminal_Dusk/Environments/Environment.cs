@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Terminal_Dusk
 {
+    //inherits from gameobject
     class Environment : GameObject
     {
         private Texture2D sprite;
@@ -14,7 +15,7 @@ namespace Terminal_Dusk
         GameState state;
         PlayerState playerState;
 
-         
+        //
         public virtual GameState State
         {
             set { state = value; }
@@ -42,6 +43,7 @@ namespace Terminal_Dusk
             return false;
         }
 
+        //all currently not implemented
         public override void Update(GameTime gameTime)
         {
 

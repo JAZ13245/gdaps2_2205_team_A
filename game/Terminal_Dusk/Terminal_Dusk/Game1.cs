@@ -702,6 +702,7 @@ namespace Terminal_Dusk
                     }
                     //Player
                     player.Draw(_spriteBatch);
+                    //Enemies
                     foreach(Enemy enemy in enemies)
                     {
                         enemy.Draw(_spriteBatch);

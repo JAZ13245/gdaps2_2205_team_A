@@ -797,6 +797,15 @@ namespace Terminal_Dusk
             mouseState = Mouse.GetState();
             if (SingleKeyPress(Keys.M, kbState))
             {
+                //environment
+                LoadEnvironment(levelFile);
+                //sun
+                sun.LocationX = 40 * Scale;
+                sun.LocationY = -20 * Scale;
+                //skybackground
+                //normal background
+                //player values
+                health.PlayerHealth = 5;
                 currentState = GameState.MainMenu;
             }
         }

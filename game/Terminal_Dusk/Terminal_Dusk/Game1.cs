@@ -799,16 +799,27 @@ namespace Terminal_Dusk
             if (SingleKeyPress(Keys.M, kbState))
             {
                 enemies.Clear();
+                environments.Clear();
                 //environment
-                LoadEnvironment(levelFile);
+                //Adds objects back to environments
+                //skybackground
+                skyBackground.Reset();
+                envirConverter = (Environment)skyBackground;
+                environments.Add(envirConverter);
+
                 //sun
                 sun.LocationX = 40 * Scale;
                 sun.LocationY = -20 * Scale;
-                //skybackground
-                skyBackground.Reset();
+                envirConverter = (Environment)sun;
+                environments.Add(envirConverter);
+
                 //normal background
                 gameBackground.Reset();
-                //player values
+                envirConverter = (Environment)gameBackground;
+                environments.Add(envirConverter);
+                LoadEnvironment(levelFile);
+                
+                //Player values
                 player.Health = 5;
                 //Stops red blinking
                 player.DamageState = DamageState.CanTakeDamage;

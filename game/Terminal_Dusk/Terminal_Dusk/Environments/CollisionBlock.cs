@@ -9,6 +9,7 @@ namespace Terminal_Dusk.Environments
 {
     class CollisionBlock : Environment
     {
+        //works as a collision block
         private Texture2D spriteSheet;
         private Rectangle location;
         GameState state;
@@ -32,6 +33,7 @@ namespace Terminal_Dusk.Environments
             set { playerState = value; }
         }
 
+        //inherits from environment
         public CollisionBlock(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
         {
             this.spriteSheet = sprite;
@@ -41,6 +43,7 @@ namespace Terminal_Dusk.Environments
             this.speed = speed;
         }
 
+        //updates based on player 'location'
         public override void Update(GameTime gameTime)
         {
             if (state == GameState.MainMenu)

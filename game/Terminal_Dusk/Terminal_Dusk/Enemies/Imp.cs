@@ -25,6 +25,7 @@ namespace Terminal_Dusk
         private int randomDirection;
         private int attackSpeed = 2;
 
+        //constructor
         public Imp(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location, state, playerState, speed)
         {
             image = sprite;
@@ -50,6 +51,7 @@ namespace Terminal_Dusk
             sb.Draw(image, position, Color.White); //Draws no animation, delete once animation added
         }
 
+        //save and load not currently implemented
         public override void Load(string filename)
         {
             base.Load(filename);
@@ -60,6 +62,7 @@ namespace Terminal_Dusk
             base.Save(filename);
         }
 
+        //saves the current position, health, and state
         public override string ToString()
         {
             return ($"Enemy:Imp({position}) - HP:{health} - State:{currentState}");
@@ -160,7 +163,7 @@ namespace Terminal_Dusk
             base.Update(gameTime);
         }
 
-
+        /*
         private void DrawJump(SpriteBatch sb, SpriteEffects flip)
         {
             sb.Draw(
@@ -190,9 +193,7 @@ namespace Terminal_Dusk
             set { playerState = value; }
         }*/
 
-
-
-
+        //scrolls as the player moves
         public override void ScrollWithPlayer()
         {
             if (state == GameState.MainMenu)

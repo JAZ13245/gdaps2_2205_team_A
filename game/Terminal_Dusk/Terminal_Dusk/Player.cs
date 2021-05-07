@@ -60,6 +60,8 @@ namespace Terminal_Dusk
         PlayerAttackingState attackingState;
         DamageState damageState;
 
+        public DamageState DamageState { set { damageState = value; } }
+
         //for the character sheet
         Texture2D spriteSheet;
 

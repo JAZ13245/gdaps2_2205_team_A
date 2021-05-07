@@ -680,7 +680,6 @@ namespace Terminal_Dusk
         {
             GraphicsDevice.Clear(Color.Purple);
 
-            // TODO: Add your drawing code here
             _spriteBatch.Begin();
             switch (currentState)
             {
@@ -710,15 +709,15 @@ namespace Terminal_Dusk
 
 
                     _spriteBatch.DrawString(labelFont, "" + counter, new Vector2(5, 5), Color.Black);
-                    _spriteBatch.DrawString(labelFont, "Press P to pause", new Vector2(5, 25), Color.Black);
+                    _spriteBatch.DrawString(labelFont, "Press P to Pause.", new Vector2(5, 25), Color.Black);
                     health.Draw(_spriteBatch);
                     break;
                 case GameState.PauseMenu:
-                    _spriteBatch.DrawString(labelFont, "This is the pause Menu", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(labelFont, "Press M for the Main Menu, O for options, or Escape to Exit", new Vector2(5, 25), Color.White);
+                    _spriteBatch.DrawString(labelFont, "This is the Pause Menu.", new Vector2(5, 5), Color.White);
+                    _spriteBatch.DrawString(labelFont, "Press M for the Main Menu, O for Options, or Escape to Exit.", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.OptionsMenu:
-                    _spriteBatch.DrawString(labelFont, "This is the Options Menu", new Vector2(5, 5), Color.White);
+                    _spriteBatch.DrawString(labelFont, "This is the Options Menu.", new Vector2(5, 5), Color.White);
                     if (wasMainOrPause)
                     {
                         buttons[3].Draw(_spriteBatch);
@@ -740,11 +739,11 @@ namespace Terminal_Dusk
                     break;
                 case GameState.GameOverMenu:
                     _spriteBatch.DrawString(labelFont, "Game Over!", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the main menu", new Vector2(5, 25), Color.White);
+                    _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the Main Menu.", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.Winner:
                     _spriteBatch.DrawString(labelFont, "You Win!", new Vector2(5, 5), Color.White);
-                    _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the main menu", new Vector2(5, 25), Color.White);
+                    _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the Main Menu.", new Vector2(5, 25), Color.White);
                     break;
                 case GameState.ExitGame:
                     break;
@@ -1032,7 +1031,7 @@ namespace Terminal_Dusk
                             break;
                         //Imp
                         case '$':
-                            imp1 = new Imp(impSpriteSheet, new Rectangle(xPlacement, yPlacement, 40 * scale, 50 * scale), currentState, player.State, 1);
+                            imp1 = new Imp(impSpriteSheet, new Rectangle(xPlacement, yPlacement, 20 * scale, 25 * scale), currentState, player.State, 1);
                             enemies.Add((Enemy)imp1);
                             xPlacement += 10 * scale;
                             break;

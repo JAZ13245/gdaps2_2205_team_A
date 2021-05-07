@@ -9,7 +9,7 @@ namespace Terminal_Dusk
 {
     class Item : GameObject
     {
-        //uncomment code and change as necessary
+        //This class is not currently being used.
         public Item(Texture2D sprite, Rectangle location) : base(sprite, location)
         {
         }

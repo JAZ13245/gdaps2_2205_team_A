@@ -9,6 +9,17 @@ namespace Terminal_Dusk
     class Health : GameObject
     {
         private int playerHealth;
+        public int PlayerHealth
+        {
+            get
+            {
+                return this.playerHealth;
+            }
+            set
+            {
+                this.playerHealth = value;
+            }
+        }
         public Health(Texture2D image, Rectangle position) :base(image,position)
         {
             this.image = image;

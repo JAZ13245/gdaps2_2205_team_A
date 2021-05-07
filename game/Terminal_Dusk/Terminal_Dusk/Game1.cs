@@ -751,7 +751,7 @@ namespace Terminal_Dusk
                     break;
                 case GameState.GameOverMenu:
                     backgrounds[1].Draw(_spriteBatch);
-                    _spriteBatch.DrawString(labelFont, "Press \"M\" to go back to the Main Menu.", new Vector2(5, 25), Color.White);
+                    buttons[7].Draw(_spriteBatch);
                     break;
                 case GameState.Winner:
                     buttons[7].Draw(_spriteBatch);

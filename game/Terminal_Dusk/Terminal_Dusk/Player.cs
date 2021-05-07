@@ -60,7 +60,6 @@ namespace Terminal_Dusk
         PlayerAttackingState attackingState;
         DamageState damageState;
 
-        public DamageState DamageState { set { damageState = value; } }
 
         //for the character sheet
         Texture2D spriteSheet;
@@ -143,6 +142,8 @@ namespace Terminal_Dusk
             get { return attackingState; }
             set { attackingState = value; }
         }
+
+        public DamageState DamageState { set { damageState = value; } }
         //the constructor
         public Player(Texture2D spriteSheet, Rectangle playerLoc, PlayerState startingState, int health) : base(spriteSheet, playerLoc)
         {
@@ -227,7 +228,7 @@ namespace Terminal_Dusk
         }
 
         //draws the player depending on their current state
-        public void Draw(SpriteBatch sb)
+        public override void Draw(SpriteBatch sb)
         {
             switch (jumpingState)
             {

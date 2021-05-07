@@ -797,58 +797,36 @@ namespace Terminal_Dusk
             }
         }
 
-        //helper method for Game Over and Win
-        private void ProcessGameOverAndWinMenu(KeyboardState kbState, MouseState mouseState)
-        {
-            kbState = Keyboard.GetState();
-            mouseState = Mouse.GetState();
-            if (SingleKeyPress(Keys.M, kbState))
-            {
-                enemies.Clear();
-                environments.Clear();
-                //environment
-                //Adds objects back to environments
-                //skybackground
-                skyBackground.Reset();
-                envirConverter = (Environment)skyBackground;
-                environments.Add(envirConverter);
-
-                //sun
-                sun.LocationX = 40 * Scale;
-                sun.LocationY = -20 * Scale;
-                envirConverter = (Environment)sun;
-                environments.Add(envirConverter);
-
-                //normal background
-                gameBackground.Reset();
-                envirConverter = (Environment)gameBackground;
-                environments.Add(envirConverter);
-                LoadEnvironment(levelFile);
-                
-                //Player values
-                player.Health = 5;
-                //Stops red blinking
-                player.DamageState = DamageState.CanTakeDamage;
-                //Faces right
-                player.State = PlayerState.FaceRight;
-                currentState = GameState.MainMenu;
-            }
-        }
         //return to main menu for button
         private void ReturnToMenu()
         {
             enemies.Clear();
+            environments.Clear();
             //environment
-            LoadEnvironment(levelFile);
+            //Adds objects back to environments
+            //skybackground
+            skyBackground.Reset();
+            envirConverter = (Environment)skyBackground;
+            environments.Add(envirConverter);
+
             //sun
             sun.LocationX = 40 * Scale;
             sun.LocationY = -20 * Scale;
-            //skybackground
-            skyBackground.Reset();
+            envirConverter = (Environment)sun;
+            environments.Add(envirConverter);
+
             //normal background
             gameBackground.Reset();
-            //player values
+            envirConverter = (Environment)gameBackground;
+            environments.Add(envirConverter);
+            LoadEnvironment(levelFile);
+
+            //Player values
             player.Health = 5;
+            //Stops red blinking
+            player.DamageState = DamageState.CanTakeDamage;
+            //Faces right
+            player.State = PlayerState.FaceRight;
             currentState = GameState.MainMenu;
         }
         //helper method for GamePlayState

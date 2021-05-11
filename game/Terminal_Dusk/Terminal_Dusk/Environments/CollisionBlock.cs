@@ -16,6 +16,8 @@ namespace Terminal_Dusk.Environments
         PlayerState playerState;
         int speed;
 
+        private Rectangle originalLoc;
+
         //Should all be base 10X10
 
         public int LocationX
@@ -38,6 +40,7 @@ namespace Terminal_Dusk.Environments
         {
             this.spriteSheet = sprite;
             this.location = location;
+            originalLoc = location;
             this.state = state;
             this.playerState = playerState;
             this.speed = speed;
@@ -70,8 +73,7 @@ namespace Terminal_Dusk.Environments
 
         public void Reset()
         {
-            location.X = 0;
-            location.Y = 0;
+            location = originalLoc;
         }
     }
 }

@@ -33,15 +33,7 @@ namespace Terminal_Dusk
             this.location = location;
         }
 
-        //a method to check if the player and the enviornment are touching       
-        public bool CheckCollision(GameObject check)//some class or object inside the parantehses 
-        {
-            if (this.Position.Intersects(check.Position))
-            {
-                return true;
-            }
-            return false;
-        }
+        
 
         //all currently not implemented
         public override void Update(GameTime gameTime)

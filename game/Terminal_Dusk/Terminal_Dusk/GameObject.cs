@@ -27,7 +27,17 @@ namespace Terminal_Dusk
         {
             sb.Draw(image, Position, Color.White);
         }
-        
+
+        //a method to check if the player and the enviornment are touching       
+        public bool CheckCollision(GameObject check)//some class or object inside the parantehses 
+        {
+            if (this.Position.Intersects(check.Position))
+            {
+                return true;
+            }
+            return false;
+        }
+
         //abstract method for child classes to update as needed
         public abstract void Update(GameTime gameTime);
 

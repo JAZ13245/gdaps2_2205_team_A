@@ -287,16 +287,7 @@ namespace Terminal_Dusk
             //Creates wall list
             startWall = new List<CollisionBlock>();
 
-            //TempGround
-            /*for (int i = 0; i < 1000; i++)
-            {
-                ground = new CollisionBlock(envirImgs[2], new Rectangle(i*scale, GraphicsDevice.Viewport.Height - 10*scale, 10 * scale, 10 * scale), currentState, player.State, 2);
-                envirConverter = (Environment)ground;
-                environments.Add(envirConverter);
-                i += 9;
-            }*/
             LoadEnvironment(levelFile);
-
         }
 
         protected override void Update(GameTime gameTime)
@@ -368,19 +359,6 @@ namespace Terminal_Dusk
                     //Background
                     for (int i = 0; i < environments.Count; i++)
                     {
-                        environments[i].Update(gameTime);
-                    }
-                    
-                    foreach (Enemy enemy in enemies)
-                    {
-                        enemy.Update(gameTime);
-                        player.CheckEnemyCollisions(enemy);
-                    }
-                    //TODO: see if these single loops can replace the double loops that are implemented
-                    /*
-                    //Background
-                    for (int i = 0; i < environments.Count; i++)
-                    {
                         //Updates
                         environments[i].Update(gameTime);
                         //Updates the game state for environments
@@ -389,49 +367,23 @@ namespace Terminal_Dusk
                         environments[i].PlayerState = player.State;
                     }
                     
-                    /*foreach (Slime slime in slimeEnemies)
-                    {
-                        //Update
-                        slime.Update(gameTime);
-                        player.CheckEnemyCollisions(slime);
-                        if(slime.CurrentState == EnemyState.Dying)
-                        {
-                            slimeEnemies.RemoveAt(slime);
-                        }
-                        //Updates PlayerState
-                        slime.State = currentState;
-                        slime.PlayerState = player.State;
-                      }*/
+                    //TODO: Fix enemy speed this was a double update causing it to look right
+                    //foreach (Enemy enemy in enemies)
+                    //{
+                    //    enemy.Update(gameTime);
+                    //    player.CheckEnemyCollisions(enemy);
+                    //}
 
+                    
                     //Check collision with the invisible wall
                     //Should be fixed over the summer to fit in line with other planned collision
                     bool wallCollide = false;
-                    /*foreach(CollisionBlock c in startWall)
+                    foreach(CollisionBlock c in startWall)
                     {
-                        if (c.CheckCollision(player))
-                        {
-                            wallCollide = true;
-                            break;
-                        }
-                        else { wallCollide = false; }
-                    }*/
+                        wallCollide = player.CheckCollision(c);
+                    }
                     //Position doesn't update
-                    /*Rectangle position;
-                    for( int i = 5; i < 16; i++)
-                    {
-                        //Posito
-                        position = environments[i].Position;
-                        if (player.Position.Intersects(position))
-                        {
-                            wallCollide = true;
-                            break;
-                        }
-                        else { wallCollide = false; }
-                        if (i == 10)
-                        {
-                            i = 14;
-                        }
-                    }*/
+                    //Only updates when in environments
 
 
                     for (int i = 0; i < enemies.Count; i++)
@@ -439,15 +391,27 @@ namespace Terminal_Dusk
                         //Update
                         enemies[i].Update(gameTime);
                         player.CheckEnemyCollisions(enemies[i]);
+
                         //Updates PlayerState
                         enemies[i].State = currentState;
                         enemies[i].PlayerState = player.State;
+
                         if (enemies[i].CurrentState == EnemyState.Dying)
                         {
                             enemies.RemoveAt(i);
                         }
                     }
+
+
                     player.Update(gameTime);
+                    if (wallCollide)
+                    {
+                        System.Diagnostics.Debug.WriteLine("True");
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("False");
+                    }
                     // TODO: Logic should be moved and handled in Player class, just copy/pasted for ease
                     switch (player.State)
                     {
@@ -718,6 +682,10 @@ namespace Terminal_Dusk
                     {
                         enemy.Draw(_spriteBatch);
                     }
+                    //foreach(CollisionBlock c in startWall)
+                    //{
+                    //    c.Draw(_spriteBatch);
+                    //}
 
 
                     _spriteBatch.DrawString(labelFont, "" + counter, new Vector2(5, 5), Color.Black);
@@ -925,6 +893,7 @@ namespace Terminal_Dusk
 
         }
 
+
         //Loads the environment based off of the text file
         public void LoadEnvironment(string filename)
         {
@@ -955,7 +924,7 @@ namespace Terminal_Dusk
                             xPlacement += 10 * scale;
                             break;
                         case '|':
-                            startWallBlock = new CollisionBlock(envirImgs[6], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
+                            startWallBlock = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
                             startWall.Add(startWallBlock);
                             envirConverter = (Environment)startWallBlock;
                             environments.Add(envirConverter);
@@ -1049,13 +1018,13 @@ namespace Terminal_Dusk
                         //Slime
                         case '*':
                             //slime load at 150 + 3
-                            slime1 = new Slime(slimeSpriteSheet, new Rectangle(xPlacement, yPlacement + (3 * scale), 23 * scale, 17 * scale), currentState, player.State, 1);
+                            slime1 = new Slime(slimeSpriteSheet, new Rectangle(xPlacement, yPlacement + (3 * scale), 23 * scale, 17 * scale), currentState, player.State, 2);
                             enemies.Add((Enemy)slime1);
                             xPlacement += 10 * scale;
                             break;
                         //Imp
                         case '$':
-                            imp1 = new Imp(impSpriteSheet, new Rectangle(xPlacement, yPlacement, 20 * scale, 30 * scale), currentState, player.State, 1);
+                            imp1 = new Imp(impSpriteSheet, new Rectangle(xPlacement, yPlacement, 20 * scale, 30 * scale), currentState, player.State, 2);
                             enemies.Add((Enemy)imp1);
                             xPlacement += 10 * scale;
                             break;

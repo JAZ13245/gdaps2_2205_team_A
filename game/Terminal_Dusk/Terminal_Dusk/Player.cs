@@ -521,10 +521,11 @@ namespace Terminal_Dusk
         }
 
         //checks to see if player is colliding with environment blocks
-        public bool CheckCollision(Environments.CollisionBlock check)//some class or object inside the parantehses 
+        public bool CheckCollision(Environment check)//some class or object inside the parantehses 
         {
-            if (this.Position.Intersects(check.Position))
+            if (playerLoc.Intersects(check.Position))// && state == PlayerState.WalkLeft)
             {
+                //state = PlayerState.FaceLeft;
                 return true;
             }
             return false;

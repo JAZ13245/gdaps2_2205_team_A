@@ -390,6 +390,7 @@ namespace Terminal_Dusk
                     {
                         //Update
                         enemies[i].Update(gameTime);
+                        enemies[i].Update(gameTime);
                         player.CheckEnemyCollisions(enemies[i]);
 
                         //Updates PlayerState
@@ -924,7 +925,7 @@ namespace Terminal_Dusk
                             xPlacement += 10 * scale;
                             break;
                         case '|':
-                            startWallBlock = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
+                            startWallBlock = new CollisionBlock(envirImgs[6], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
                             startWall.Add(startWallBlock);
                             envirConverter = (Environment)startWallBlock;
                             environments.Add(envirConverter);
@@ -1018,13 +1019,13 @@ namespace Terminal_Dusk
                         //Slime
                         case '*':
                             //slime load at 150 + 3
-                            slime1 = new Slime(slimeSpriteSheet, new Rectangle(xPlacement, yPlacement + (3 * scale), 23 * scale, 17 * scale), currentState, player.State, 2);
+                            slime1 = new Slime(slimeSpriteSheet, new Rectangle(xPlacement, yPlacement + (3 * scale), 23 * scale, 17 * scale), currentState, player.State, 1);
                             enemies.Add((Enemy)slime1);
                             xPlacement += 10 * scale;
                             break;
                         //Imp
                         case '$':
-                            imp1 = new Imp(impSpriteSheet, new Rectangle(xPlacement, yPlacement, 20 * scale, 30 * scale), currentState, player.State, 2);
+                            imp1 = new Imp(impSpriteSheet, new Rectangle(xPlacement, yPlacement, 20 * scale, 30 * scale), currentState, player.State, 1);
                             enemies.Add((Enemy)imp1);
                             xPlacement += 10 * scale;
                             break;

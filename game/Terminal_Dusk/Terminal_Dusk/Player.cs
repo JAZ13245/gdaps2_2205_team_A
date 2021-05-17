@@ -35,13 +35,7 @@ namespace Terminal_Dusk
      *      Left,
      *      Right
      * }
-     * 
-     * enum PlayerMovementState
-     * {
-     *      Still,
-     *      Crouching, //Could be seperate enum or put into the jump enum(jump may actually be better)
-     *      Moving
-     * } */
+     */
 
     //to tell if the player is taking damage or not
     enum DamageState
@@ -80,15 +74,20 @@ namespace Terminal_Dusk
 
         //constants for walk rectangles
         const int walkFrameCount = 4;
-        const int mainRectHeight = 37*6;
-        const int mainRectWidth = 10*6;
+        //Row locations
         const int secondRow = 37*6;
         const int thirdRow = 65*6;
         const int fourthRow = 102 * 6;
+        //Standard sprite size
+        const int mainRectHeight = 37 * 6;
+        const int mainRectWidth = 10 * 6;
+        //Crouch sprite size
         const int crouchWidth = 12*6;
         const int crouchHeight = 28*6;
+        //Attack sprite size
         const int attackHeight = 37 * 6;
         const int attackWidth = 28 * 6;
+        //Crouch attack sprite size
         const int attackCrouchHeight = 28 * 6;
         const int attackCrouchWidth = 28 * 6;
 
@@ -168,6 +167,7 @@ namespace Terminal_Dusk
         {
             UpdateAnimation(gameTime);
             UpdateDamageState(gameTime);
+            UpdateRectangleSize(gameTime);
         }
 
         //updating the player's animation
@@ -222,9 +222,86 @@ namespace Terminal_Dusk
                 }
                 timeCounterDamage += gameTime.ElapsedGameTime.TotalSeconds;
             }
-            
-            
-            
+        }
+
+        //Used to adjust the rectangle size for better hit detection
+        public void UpdateRectangleSize(GameTime gameTime)
+        {
+            switch (state)
+            {
+                //All width/heights divide by 2 since it uses the full size assets and we currently run a scale 3
+                case PlayerState.FaceLeft:
+                case PlayerState.WalkLeft:
+                    if (jumpingState == PlayerJumpingState.Jumping)
+                    {
+                        if (AttackingState == PlayerAttackingState.IsAttacking)
+                        {
+                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, attackCrouchWidth / 2, attackCrouchHeight / 2);
+                        }
+                        else if (AttackingState == PlayerAttackingState.IsNotAttacking)
+                        {
+                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, crouchWidth / 2, crouchHeight / 2);
+                        }
+                    }
+                    else if (jumpingState == PlayerJumpingState.Standing)
+                    {
+                        if (AttackingState == PlayerAttackingState.IsAttacking)
+                        {
+                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, attackWidth / 2, attackHeight / 2);
+                        }
+                        else if (AttackingState == PlayerAttackingState.IsNotAttacking)
+                        {
+                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, mainRectWidth / 2, mainRectWidth / 2);
+                        }
+                    }
+                    break;
+                case PlayerState.FaceRight:
+                case PlayerState.WalkRight:
+                    if(jumpingState == PlayerJumpingState.Jumping)
+                    {
+                        if (AttackingState == PlayerAttackingState.IsAttacking)
+                        {
+                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, attackCrouchWidth /2, attackCrouchHeight/2);
+                        }
+                        else if (AttackingState == PlayerAttackingState.IsNotAttacking)
+                        {
+                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, crouchWidth/2, crouchHeight/2);
+                        }
+                    }
+                    else if(jumpingState == PlayerJumpingState.Standing)
+                    {
+                        if (AttackingState == PlayerAttackingState.IsAttacking)
+                        {
+                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, attackWidth/2, attackHeight/2);
+                        }
+                        else if (AttackingState == PlayerAttackingState.IsNotAttacking)
+                        {
+                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, mainRectWidth / 2, mainRectWidth / 2);
+                        }
+                    }//- 19 * 3
+                    break;
+
+                case PlayerState.CrouchLeft:
+                    if (AttackingState == PlayerAttackingState.IsAttacking)
+                    {
+                        playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, attackCrouchWidth / 2, attackCrouchHeight / 2);
+                    }
+                    else if (AttackingState == PlayerAttackingState.IsNotAttacking)
+                    {
+                        playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, crouchWidth / 2, crouchHeight / 2);
+                    }
+                    break;
+                case PlayerState.CrouchRight:
+                    if (AttackingState == PlayerAttackingState.IsAttacking)
+                    {
+                        playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, attackCrouchWidth / 2, attackCrouchHeight / 2);
+                    }
+                    else if (AttackingState == PlayerAttackingState.IsNotAttacking)
+                    {
+                        playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, crouchWidth / 2, crouchHeight / 2);
+                    }
+                    break;
+            }
         }
 
         //draws the player depending on their current state

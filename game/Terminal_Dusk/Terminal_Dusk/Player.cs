@@ -92,8 +92,8 @@ namespace Terminal_Dusk
         private const int attackCrouchWidth = 28 * 6;
         //Hitbox for attacking
         private Rectangle hitBox;
-        private const int hitBoxWidth = 20 * 3;
-        private const int hitBoxHeight = 20 * 3;
+        private const int hitBoxWidth = 18 * 3;
+        private const int hitBoxHeight = 18 * 3;
         //Hurtbox for player. Makes moving the rectangle around easier
         private Rectangle hurtBox;
 
@@ -248,15 +248,15 @@ namespace Terminal_Dusk
                     {
                         hurtBox = new Rectangle(playerLoc.X, playerLoc.Y + 9*3, crouchWidth / 2, crouchHeight / 2); 
 
-                        hitBox.X = playerLoc.X - 18 * 3;
+                        hitBox.X = playerLoc.X - 16 * 3;
                         hitBox.Y = hurtBox.Y;
                     }
                     else if (jumpingState == PlayerJumpingState.Standing)
                     {
                         hurtBox = playerLoc;
 
-                        hitBox.X = playerLoc.X - 18 * 3;
-                        hitBox.Y = playerLoc.Y + 2 * 3;
+                        hitBox.X = playerLoc.X - 16 * 3;
+                        hitBox.Y = playerLoc.Y + 1 * 3;
                     }
                     break;
                 case PlayerState.FaceRight:
@@ -273,14 +273,14 @@ namespace Terminal_Dusk
                         hurtBox = playerLoc;
 
                         hitBox.X = playerLoc.X + 10 * 3;
-                        hitBox.Y = playerLoc.Y + 2 * 3;
+                        hitBox.Y = playerLoc.Y + 1 * 3;
                     }
                     break;
 
                 case PlayerState.CrouchLeft:
                     hurtBox = new Rectangle(playerLoc.X, playerLoc.Y + 9*3, crouchWidth / 2, crouchHeight / 2);
 
-                    hitBox.X = playerLoc.X - 18 * 3;
+                    hitBox.X = playerLoc.X - 16 * 3;
                     hitBox.Y = hurtBox.Y;
                     break;
                 case PlayerState.CrouchRight:
@@ -297,7 +297,7 @@ namespace Terminal_Dusk
         {
             //Visualizes hitbox and hurtbox
             //sb.Draw(spriteSheet, hurtBox, Color.White);
-            //sb.Draw(spriteSheet, hitBox, Color.White);
+            sb.Draw(spriteSheet, hitBox, Color.White);
             switch (jumpingState)
             {
                 case PlayerJumpingState.Jumping:

@@ -90,10 +90,12 @@ namespace Terminal_Dusk
         //Crouch attack sprite size
         private const int attackCrouchHeight = 28 * 6;
         private const int attackCrouchWidth = 28 * 6;
-
+        //Hitbox for attacking
         private Rectangle hitBox;
-        private const int hitBoxWidth = 20;
-        private const int hitBoxHeight = 20;
+        private const int hitBoxWidth = 20 * 3;
+        private const int hitBoxHeight = 20 * 3;
+        //Hurtbox for player. Makes moving the rectangle around easier
+        private Rectangle hurtBox;
 
         // Properties to get & set player's current location and animation state
         public float X
@@ -163,6 +165,7 @@ namespace Terminal_Dusk
             takeDamageCooldown = 0;
 
             hitBox = new Rectangle(playerLoc.X + 10*3, playerLoc.Y + 2*3, hitBoxWidth, hitBoxHeight);
+            hurtBox = playerLoc;
 
             // Initialize
             fps = 5.0;                     // Will cycle through 5 walk frames per second
@@ -243,15 +246,14 @@ namespace Terminal_Dusk
                 case PlayerState.WalkLeft:
                     if (jumpingState == PlayerJumpingState.Jumping)
                     {
-                        //playerLoc.Width = crouchWidth / 2;
-                        //playerLoc.Height = crouchHeight / 2;
+                        hurtBox = new Rectangle(playerLoc.X, playerLoc.Y + 9*3, crouchWidth / 2, crouchHeight / 2); 
+
                         hitBox.X = playerLoc.X - 18 * 3;
-                        hitBox.Y = playerLoc.Y;
+                        hitBox.Y = hurtBox.Y;
                     }
                     else if (jumpingState == PlayerJumpingState.Standing)
                     {
-                        //playerLoc.Width = mainRectWidth / 2;
-                        //playerLoc.Height = mainRectWidth / 2;
+                        hurtBox = playerLoc;
 
                         hitBox.X = playerLoc.X - 18 * 3;
                         hitBox.Y = playerLoc.Y + 2 * 3;
@@ -261,32 +263,31 @@ namespace Terminal_Dusk
                 case PlayerState.WalkRight:
                     if(jumpingState == PlayerJumpingState.Jumping)
                     {
-                        //playerLoc.Width = crouchWidth/2;
-                        //playerLoc.Height = crouchHeight / 2;
+                        hurtBox = new Rectangle(playerLoc.X, playerLoc.Y + 9*3, crouchWidth / 2, crouchHeight / 2);
+
                         hitBox.X = playerLoc.X + 10 * 3;
-                        hitBox.Y = playerLoc.Y;
+                        hitBox.Y = hurtBox.Y;
                     }
                     else if(jumpingState == PlayerJumpingState.Standing)
                     {
-                        //playerLoc.Width = mainRectWidth / 2;
-                        //playerLoc.Height = mainRectWidth / 2;
+                        hurtBox = playerLoc;
 
                         hitBox.X = playerLoc.X + 10 * 3;
                         hitBox.Y = playerLoc.Y + 2 * 3;
-                    }//- 19 * 3
+                    }
                     break;
 
                 case PlayerState.CrouchLeft:
-                    //playerLoc.Width = crouchWidth / 2;
-                    //playerLoc.Height = crouchHeight / 2;
+                    hurtBox = new Rectangle(playerLoc.X, playerLoc.Y + 9*3, crouchWidth / 2, crouchHeight / 2);
+
                     hitBox.X = playerLoc.X - 18 * 3;
-                    hitBox.Y = playerLoc.Y;
+                    hitBox.Y = hurtBox.Y;
                     break;
                 case PlayerState.CrouchRight:
-                    //playerLoc.Width = crouchWidth / 2;
-                    //playerLoc.Height = crouchHeight / 2;
+                    hurtBox = new Rectangle(playerLoc.X, playerLoc.Y + 9*3, crouchWidth / 2, crouchHeight / 2);
+
                     hitBox.X = playerLoc.X + 10 * 3;
-                    hitBox.Y = playerLoc.Y;
+                    hitBox.Y = hurtBox.Y;
                     break;
             }
         }
@@ -294,6 +295,9 @@ namespace Terminal_Dusk
         //draws the player depending on their current state
         public override void Draw(SpriteBatch sb)
         {
+            //Visualizes hitbox and hurtbox
+            //sb.Draw(spriteSheet, hurtBox, Color.White);
+            //sb.Draw(spriteSheet, hitBox, Color.White);
             switch (jumpingState)
             {
                 case PlayerJumpingState.Jumping:
@@ -585,7 +589,7 @@ namespace Terminal_Dusk
                 }
             }
             //if player isn't attacking, they were hit, they take damage
-            else if (damageState == DamageState.CanTakeDamage & playerLoc.Intersects(check.Position))
+            else if (damageState == DamageState.CanTakeDamage & hurtBox.Intersects(check.Position))
             {
                 damageState = DamageState.Invulnerable;
                 health--;  

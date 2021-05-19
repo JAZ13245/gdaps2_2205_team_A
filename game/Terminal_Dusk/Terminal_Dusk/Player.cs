@@ -48,22 +48,22 @@ namespace Terminal_Dusk
     //inherits from GameObject
     class Player : GameObject
     {
-        Rectangle playerLoc;  // Mc's location on the screen
-        PlayerState state;
-        PlayerJumpingState jumpingState;
-        PlayerAttackingState attackingState;
-        DamageState damageState;
+        private Rectangle playerLoc;  // Mc's location on the screen
 
+        private PlayerState state;
+        private PlayerJumpingState jumpingState;
+        private PlayerAttackingState attackingState;
+        private DamageState damageState;
 
         //for the character sheet
-        Texture2D spriteSheet;
+        private Texture2D spriteSheet;
 
         //for the animation
-        int frame;
-        double timeCounter;
-        double fps;
-        double timePerFrame;
-        int frameListIndex;
+        private int frame;
+        private double timeCounter;
+        private double fps;
+        private double timePerFrame;
+        private int frameListIndex;
 
         //fields for the health
         private int health;
@@ -73,23 +73,27 @@ namespace Terminal_Dusk
         private double takeDamageCooldown;
 
         //constants for walk rectangles
-        const int walkFrameCount = 4;
+        private const int walkFrameCount = 4;
         //Row locations
-        const int secondRow = 37*6;
-        const int thirdRow = 65*6;
-        const int fourthRow = 102 * 6;
+        private const int secondRow = 37*6;
+        private const int thirdRow = 65*6;
+        private const int fourthRow = 102 * 6;
         //Standard sprite size
-        const int mainRectHeight = 37 * 6;
-        const int mainRectWidth = 10 * 6;
+        private const int mainRectHeight = 37 * 6;
+        private const int mainRectWidth = 10 * 6;
         //Crouch sprite size
-        const int crouchWidth = 12*6;
-        const int crouchHeight = 28*6;
+        private const int crouchWidth = 12*6;
+        private const int crouchHeight = 28*6;
         //Attack sprite size
-        const int attackHeight = 37 * 6;
-        const int attackWidth = 28 * 6;
+        private const int attackHeight = 37 * 6;
+        private const int attackWidth = 28 * 6;
         //Crouch attack sprite size
-        const int attackCrouchHeight = 28 * 6;
-        const int attackCrouchWidth = 28 * 6;
+        private const int attackCrouchHeight = 28 * 6;
+        private const int attackCrouchWidth = 28 * 6;
+
+        private Rectangle hitBox;
+        private const int hitBoxWidth = 20;
+        private const int hitBoxHeight = 20;
 
         // Properties to get & set player's current location and animation state
         public float X
@@ -143,6 +147,7 @@ namespace Terminal_Dusk
         }
 
         public DamageState DamageState { set { damageState = value; } }
+        
         //the constructor
         public Player(Texture2D spriteSheet, Rectangle playerLoc, PlayerState startingState, int health) : base(spriteSheet, playerLoc)
         {
@@ -150,11 +155,14 @@ namespace Terminal_Dusk
             this.playerLoc = playerLoc;
             this.state = startingState;
             this.health = health;
+            
             this.jumpingState = PlayerJumpingState.Standing;
             damageState = DamageState.CanTakeDamage;
             damageColor = Color.White;
             timePerFrameDamage = 1 / fps;
             takeDamageCooldown = 0;
+
+            hitBox = new Rectangle(playerLoc.X + 10*3, playerLoc.Y + 2*3, hitBoxWidth, hitBoxHeight);
 
             // Initialize
             fps = 5.0;                     // Will cycle through 5 walk frames per second
@@ -227,6 +235,7 @@ namespace Terminal_Dusk
         //Used to adjust the rectangle size for better hit detection
         public void UpdateRectangleSize(GameTime gameTime)
         {
+            //hitBox = new Rectangle(playerLoc.X + 10*3, playerLoc.Y + 2*3, hitBoxWidth, hitBoxHeight);
             switch (state)
             {
                 //All width/heights divide by 2 since it uses the full size assets and we currently run a scale 3
@@ -234,72 +243,50 @@ namespace Terminal_Dusk
                 case PlayerState.WalkLeft:
                     if (jumpingState == PlayerJumpingState.Jumping)
                     {
-                        if (AttackingState == PlayerAttackingState.IsAttacking)
-                        {
-                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, attackCrouchWidth / 2, attackCrouchHeight / 2);
-                        }
-                        else if (AttackingState == PlayerAttackingState.IsNotAttacking)
-                        {
-                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, crouchWidth / 2, crouchHeight / 2);
-                        }
+                        //playerLoc.Width = crouchWidth / 2;
+                        //playerLoc.Height = crouchHeight / 2;
+                        hitBox.X = playerLoc.X - 18 * 3;
+                        hitBox.Y = playerLoc.Y;
                     }
                     else if (jumpingState == PlayerJumpingState.Standing)
                     {
-                        if (AttackingState == PlayerAttackingState.IsAttacking)
-                        {
-                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, attackWidth / 2, attackHeight / 2);
-                        }
-                        else if (AttackingState == PlayerAttackingState.IsNotAttacking)
-                        {
-                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, mainRectWidth / 2, mainRectWidth / 2);
-                        }
+                        //playerLoc.Width = mainRectWidth / 2;
+                        //playerLoc.Height = mainRectWidth / 2;
+
+                        hitBox.X = playerLoc.X - 18 * 3;
+                        hitBox.Y = playerLoc.Y + 2 * 3;
                     }
                     break;
                 case PlayerState.FaceRight:
                 case PlayerState.WalkRight:
                     if(jumpingState == PlayerJumpingState.Jumping)
                     {
-                        if (AttackingState == PlayerAttackingState.IsAttacking)
-                        {
-                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, attackCrouchWidth /2, attackCrouchHeight/2);
-                        }
-                        else if (AttackingState == PlayerAttackingState.IsNotAttacking)
-                        {
-                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, crouchWidth/2, crouchHeight/2);
-                        }
+                        //playerLoc.Width = crouchWidth/2;
+                        //playerLoc.Height = crouchHeight / 2;
+                        hitBox.X = playerLoc.X + 10 * 3;
+                        hitBox.Y = playerLoc.Y;
                     }
                     else if(jumpingState == PlayerJumpingState.Standing)
                     {
-                        if (AttackingState == PlayerAttackingState.IsAttacking)
-                        {
-                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, attackWidth/2, attackHeight/2);
-                        }
-                        else if (AttackingState == PlayerAttackingState.IsNotAttacking)
-                        {
-                            playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, mainRectWidth / 2, mainRectWidth / 2);
-                        }
+                        //playerLoc.Width = mainRectWidth / 2;
+                        //playerLoc.Height = mainRectWidth / 2;
+
+                        hitBox.X = playerLoc.X + 10 * 3;
+                        hitBox.Y = playerLoc.Y + 2 * 3;
                     }//- 19 * 3
                     break;
 
                 case PlayerState.CrouchLeft:
-                    if (AttackingState == PlayerAttackingState.IsAttacking)
-                    {
-                        playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, attackCrouchWidth / 2, attackCrouchHeight / 2);
-                    }
-                    else if (AttackingState == PlayerAttackingState.IsNotAttacking)
-                    {
-                        playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, crouchWidth / 2, crouchHeight / 2);
-                    }
+                    //playerLoc.Width = crouchWidth / 2;
+                    //playerLoc.Height = crouchHeight / 2;
+                    hitBox.X = playerLoc.X - 18 * 3;
+                    hitBox.Y = playerLoc.Y;
                     break;
                 case PlayerState.CrouchRight:
-                    if (AttackingState == PlayerAttackingState.IsAttacking)
-                    {
-                        playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, attackCrouchWidth / 2, attackCrouchHeight / 2);
-                    }
-                    else if (AttackingState == PlayerAttackingState.IsNotAttacking)
-                    {
-                        playerLoc = new Rectangle(playerLoc.X, playerLoc.Y, crouchWidth / 2, crouchHeight / 2);
-                    }
+                    //playerLoc.Width = crouchWidth / 2;
+                    //playerLoc.Height = crouchHeight / 2;
+                    hitBox.X = playerLoc.X + 10 * 3;
+                    hitBox.Y = playerLoc.Y;
                     break;
             }
         }
@@ -585,12 +572,20 @@ namespace Terminal_Dusk
         public void CheckEnemyCollisions(Enemy check)
         {
             //if player is attacking, enemy dies
-            if(playerLoc.Intersects(check.Position) && attackingState == PlayerAttackingState.IsAttacking)
+            if(attackingState == PlayerAttackingState.IsAttacking)
             {
-                check.CurrentState = EnemyState.Dying;
+                if (hitBox.Intersects(check.Position))
+                {
+                    check.CurrentState = EnemyState.Dying;
+                }
+                else if (damageState == DamageState.CanTakeDamage & playerLoc.Intersects(check.Position))
+                {
+                    damageState = DamageState.Invulnerable;
+                    health--;
+                }
             }
             //if player isn't attacking, they were hit, they take damage
-            else if (damageState == DamageState.CanTakeDamage && playerLoc.Intersects(check.Position) && attackingState==PlayerAttackingState.IsNotAttacking)
+            else if (damageState == DamageState.CanTakeDamage & playerLoc.Intersects(check.Position))
             {
                 damageState = DamageState.Invulnerable;
                 health--;  

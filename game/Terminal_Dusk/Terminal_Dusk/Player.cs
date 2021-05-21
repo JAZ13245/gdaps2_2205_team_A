@@ -296,7 +296,7 @@ namespace Terminal_Dusk
         {
             //Visualizes hitbox and hurtbox
             //sb.Draw(spriteSheet, hurtBox, Color.White);
-            sb.Draw(spriteSheet, hitBox, Color.White);
+            //sb.Draw(spriteSheet, hitBox, Color.White);
             switch (jumpingState)
             {
                 case PlayerJumpingState.Jumping:

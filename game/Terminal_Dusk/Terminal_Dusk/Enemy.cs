@@ -25,6 +25,7 @@ namespace Terminal_Dusk
         protected Random enemyRNG;
         protected GameState state;
         protected PlayerState playerState; //enemy must use playerstate to determine if it's being attacked
+        protected Rectangle hitBox;
         
         public EnemyState CurrentState
         {
@@ -40,6 +41,11 @@ namespace Terminal_Dusk
         public PlayerState PlayerState
         {
             set { playerState = value; }
+        }
+
+        public Rectangle HitBox
+        {
+            get { return hitBox; }
         }
 
         //standard constructor for all enemies

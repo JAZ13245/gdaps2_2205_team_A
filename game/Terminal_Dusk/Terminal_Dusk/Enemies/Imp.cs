@@ -25,6 +25,10 @@ namespace Terminal_Dusk
         private int randomDirection;
         private int attackSpeed = 2;
 
+        //Hitbox size
+        private const int hitBoxWidth = 17;
+        private const int hitBoxHeight = 17;
+
         //constructor
         public Imp(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location, state, playerState, speed)
         {
@@ -38,6 +42,8 @@ namespace Terminal_Dusk
             this.state = state;
             this.playerState = playerState;
             this.speed = speed;
+
+            hitBox = new Rectangle(position.X + 2 * 3, position.Y + 7 *3, hitBoxWidth * 3, hitBoxHeight * 3);
         }
 
 
@@ -70,6 +76,7 @@ namespace Terminal_Dusk
 
         public override void Update(GameTime gameTime)
         {
+            UpdateRectangleSize(gameTime);
             ScrollWithPlayer();
             //timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
             
@@ -181,17 +188,13 @@ namespace Terminal_Dusk
                 flip,                     // - Can be used to flip the image
                 0);                             // - Layer depth (unused)
         }
-
-        //Moved to Enemy
-        /*public GameState State
+        */
+        //Updates Hitbox
+        public void UpdateRectangleSize(GameTime gameTime)
         {
-            set { state = value; }
+            hitBox.X = position.X + 2 * 3;
+            hitBox.Y = position.Y + 7 * 3;
         }
-
-        public PlayerState PlayerState
-        {
-            set { playerState = value; }
-        }*/
 
         //scrolls as the player moves
         public override void ScrollWithPlayer()

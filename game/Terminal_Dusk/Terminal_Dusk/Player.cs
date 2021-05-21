@@ -238,7 +238,6 @@ namespace Terminal_Dusk
         //Used to adjust the rectangle size for better hit detection
         public void UpdateRectangleSize(GameTime gameTime)
         {
-            //hitBox = new Rectangle(playerLoc.X + 10*3, playerLoc.Y + 2*3, hitBoxWidth, hitBoxHeight);
             switch (state)
             {
                 //All width/heights divide by 2 since it uses the full size assets and we currently run a scale 3
@@ -400,22 +399,6 @@ namespace Terminal_Dusk
                     }
                     break;
             }
-            /*
-            spriteBatch.Draw(
-                spriteSheet,                    // - The texture to draw
-                new Vector2(playerLoc.X,playerLoc.Y),                       // - The location to draw on the screen
-                new Rectangle(                  // - The "source" rectangle
-                    0,                          //   - This rectangle specifies
-                    0,                          //	   where "inside" the texture
-                    mainRectWidth,             //     to get pixels (We don't want to
-                    mainRectHeight),           //     draw the whole thing)
-                damageColor,                    // - The color
-                0,                              // - Rotation (none currently)
-                Vector2.Zero,                   // - Origin inside the image (top left)
-                0.5f,                           // - Scale (100% - no change)  //Should eventually take screenSize to keep main clean
-                flipSprite,                     // - Can be used to flip the image
-                0);                             // - Layer depth (unused)
-            */
         }
 
         //draws the walking sprites
@@ -476,24 +459,6 @@ namespace Terminal_Dusk
                     }
                     break;
             }
-
-            /*
-            //Adjust rectangle to not get the odd clipping - done
-            spriteBatch.Draw(
-                spriteSheet,
-                new Vector2(playerLoc.X, playerLoc.Y),              
-                new Rectangle(                 
-                    frame * mainRectWidth,   
-                    0,         
-                    mainRectWidth,             
-                    mainRectHeight),        
-                damageColor,               
-                0,                            
-                Vector2.Zero,
-                0.5f,                    
-                flipSprite,                 
-                0);  
-            */
         }
 
         //draws the crouching sprites
@@ -554,42 +519,28 @@ namespace Terminal_Dusk
                     }
                     break;
             }
-            /*
-            spriteBatch.Draw(
-                spriteSheet,
-                new Vector2(X, Y + 9*3),
-                new Rectangle(
-                    0,    
-                    secondRow,
-                    crouchWidth,
-                    crouchHeight),
-                damageColor,
-                0,
-                Vector2.Zero,
-                0.5f,
-                flipSprite,
-                0);
-            */
         }
 
         //checks to see if the player is touching an enemy
         public void CheckEnemyCollisions(Enemy check)
         {
-            //if player is attacking, enemy dies
+            //if player is attacking
             if(attackingState == PlayerAttackingState.IsAttacking)
             {
-                if (hitBox.Intersects(check.Position))
+                //Check if they hit it
+                if (hitBox.Intersects(check.HitBox))
                 {
                     check.CurrentState = EnemyState.Dying;
                 }
-                else if (damageState == DamageState.CanTakeDamage & playerLoc.Intersects(check.Position))
+                //or if they got hit and can take damage
+                else if (damageState == DamageState.CanTakeDamage & playerLoc.Intersects(check.HitBox))
                 {
                     damageState = DamageState.Invulnerable;
                     health--;
                 }
             }
-            //if player isn't attacking, they were hit, they take damage
-            else if (damageState == DamageState.CanTakeDamage & hurtBox.Intersects(check.Position))
+            //if player isn't attacking and they were hit, they take damage
+            else if (damageState == DamageState.CanTakeDamage & hurtBox.Intersects(check.HitBox))
             {
                 damageState = DamageState.Invulnerable;
                 health--;  

@@ -15,6 +15,10 @@ namespace Terminal_Dusk
         private SpriteEffects flip;
         private int currentSprite;
 
+        //Hitbox size
+        private const int hitBoxWidth = 13;
+        private const int hitBoxHeight = 13;
+
         //constructor
         public Slime(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) :base (sprite, location, state,playerState,speed)
         {
@@ -28,6 +32,8 @@ namespace Terminal_Dusk
             this.state = state;
             this.playerState = playerState;
             this.speed = speed;
+
+            hitBox = new Rectangle(position.X + 5 * 3, position.Y + 4 * 3, hitBoxWidth * 3, hitBoxHeight * 3);
         }
 
 
@@ -60,6 +66,7 @@ namespace Terminal_Dusk
 
         public override void Update(GameTime gameTime)
         {
+            UpdateRectangleSize(gameTime);
             ScrollWithPlayer();
             timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
             if (timeCounter >= timePerFrame)
@@ -169,18 +176,49 @@ namespace Terminal_Dusk
                 0);                             // - Layer depth (unused)
         }
 
-        //Moved to Enemy
-        /*public GameState State
+        //Updates Hitbox
+        public void UpdateRectangleSize(GameTime gameTime)
         {
-            set { state = value; }
+            switch (frame)
+            {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    hitBox.X = position.X + 5 * 3;
+                    hitBox.Y = position.Y + 4 * 3;
+                    break;
+                case 6:
+                case 7:
+                case 8:
+                    hitBox.X = position.X;
+                    hitBox.Y = position.Y + 5 * 3;
+                    break;
+                case 9:
+                case 10:
+                    hitBox.X = position.X + 5 * 3;
+                    hitBox.Y = position.Y + 4 * 3;
+                    break;
+                case 11:
+                    hitBox.X = position.X + 8 * 3;
+                    hitBox.Y = position.Y + 4 * 3;
+                    break;
+                case 12:
+                    hitBox.X = position.X + 9 * 3;
+                    hitBox.Y = position.Y + 4 * 3;
+                    break;
+                case 13:
+                    hitBox.X = position.X + 7 * 3;
+                    hitBox.Y = position.Y + 4 * 3;
+                    break;
+                case 14:
+                    hitBox.X = position.X + 5 * 3;
+                    hitBox.Y = position.Y + 4 * 3;
+                    break;
+            }
         }
-
-        public PlayerState PlayerState
-        {
-            set { playerState = value; }
-        }*/
-
-
 
         //for scrolling as the player moves
         public override void ScrollWithPlayer()

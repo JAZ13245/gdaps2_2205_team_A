@@ -17,6 +17,7 @@ namespace Terminal_Dusk.Environments
         int speed;
 
         private Rectangle originalLoc;
+        private Rectangle hitBox;
 
         //Should all be base 10X10
 
@@ -35,6 +36,11 @@ namespace Terminal_Dusk.Environments
             set { playerState = value; }
         }
 
+        public Rectangle HitBox
+        {
+            get { return hitBox; }
+        }
+
         //inherits from environment
         public CollisionBlock(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
         {
@@ -44,6 +50,7 @@ namespace Terminal_Dusk.Environments
             this.state = state;
             this.playerState = playerState;
             this.speed = speed;
+            hitBox = new Rectangle(location.X - 2, location.Y - 1, location.Width + 4, location.Height + 2);
         }
 
         //updates based on player 'location'
@@ -58,10 +65,12 @@ namespace Terminal_Dusk.Environments
                 if (playerState == PlayerState.WalkRight)
                 {
                     location.X -= speed;
+                    hitBox.X = location.X;
                 }
                 else if (playerState == PlayerState.WalkLeft)
                 {
                     location.X += speed;
+                    hitBox.X = location.X;
                 }
             }
         }

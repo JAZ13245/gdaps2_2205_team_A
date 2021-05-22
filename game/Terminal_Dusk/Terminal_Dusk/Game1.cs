@@ -380,7 +380,7 @@ namespace Terminal_Dusk
                     bool wallCollide = false;
                     foreach(CollisionBlock c in startWall)
                     {
-                        wallCollide = player.CheckCollision(c);
+                        wallCollide = player.CheckCollision(c.HitBox);
                     }
                     //Position doesn't update
                     //Only updates when in environments

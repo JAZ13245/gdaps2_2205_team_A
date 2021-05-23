@@ -367,28 +367,24 @@ namespace Terminal_Dusk
                         environments[i].PlayerState = player.State;
                     }
                     
-                    //TODO: Fix enemy speed this was a double update causing it to look right
-                    //foreach (Enemy enemy in enemies)
-                    //{
-                    //    enemy.Update(gameTime);
-                    //    player.CheckEnemyCollisions(enemy);
-                    //}
-
                     
                     //Check collision with the invisible wall
-                    //Should be fixed over the summer to fit in line with other planned collision
                     bool wallCollide = false;
                     foreach(CollisionBlock c in startWall)
                     {
-                        wallCollide = player.CheckCollision(c.HitBox);
+                        if (player.CheckCollision(c.HitBox))
+                        {
+                            //break added because you could previously jump through the wall
+                            wallCollide = true;
+                            break;
+                        }
                     }
-                    //Position doesn't update
-                    //Only updates when in environments
 
 
                     for (int i = 0; i < enemies.Count; i++)
                     {
                         //Update
+                        //TODO: Fix enemy speed this was a double update causing it to look right
                         enemies[i].Update(gameTime);
                         enemies[i].Update(gameTime);
                         player.CheckEnemyCollisions(enemies[i]);

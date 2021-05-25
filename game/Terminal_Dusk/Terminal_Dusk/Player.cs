@@ -20,22 +20,14 @@ namespace Terminal_Dusk
     enum PlayerJumpingState
     {
         Standing,
-        Jumping
+        Jumping,
+        Falling
     }
     enum PlayerAttackingState
     {
         IsNotAttacking,
         IsAttacking
     }
-    /* //Not all of these need to be created
-     * //However, if this works the way I think it will in my head, combinations will work better than the 16 needed states in PlayerState
-     * //If only two states don't use enum use bool
-     * enum PlayerDirectionState
-     * {
-     *      Left,
-     *      Right
-     * }
-     */
 
     //to tell if the player is taking damage or not
     enum DamageState
@@ -243,7 +235,7 @@ namespace Terminal_Dusk
                 //All width/heights divide by 2 since it uses the full size assets and we currently run a scale 3
                 case PlayerState.FaceLeft:
                 case PlayerState.WalkLeft:
-                    if (jumpingState == PlayerJumpingState.Jumping)
+                    if (jumpingState == PlayerJumpingState.Jumping || jumpingState == PlayerJumpingState.Falling)
                     {
                         hurtBox = new Rectangle(playerLoc.X, playerLoc.Y + 9*3, crouchWidth / 2, crouchHeight / 2); 
 
@@ -260,7 +252,7 @@ namespace Terminal_Dusk
                     break;
                 case PlayerState.FaceRight:
                 case PlayerState.WalkRight:
-                    if(jumpingState == PlayerJumpingState.Jumping)
+                    if(jumpingState == PlayerJumpingState.Jumping || jumpingState == PlayerJumpingState.Falling)
                     {
                         hurtBox = new Rectangle(playerLoc.X, playerLoc.Y + 9*3, crouchWidth / 2, crouchHeight / 2);
 

@@ -522,17 +522,21 @@ namespace Terminal_Dusk
                             }
                             break;
                     }
+
                     //jumping switch statement
                     switch (player.JumpingState)
                     {
                         case PlayerJumpingState.Standing:
+                            jumpSpeed = 0;
+                            jumpingCurrentTime = 0f;
+                            
                             if (SingleKeyPress(upMove, kbState))
                             {
                                 player.JumpingState = PlayerJumpingState.Jumping;
                                 
                                 jumpSpeed = -16;//Give it upward thrust
-                                jumpingCurrentTime = 0f;
                             }
+                            /*if (!topCollision){player.JumpingState = PlayerJumpingState.Falling;}*/
                             break;
 
                         case PlayerJumpingState.Jumping:
@@ -540,6 +544,7 @@ namespace Terminal_Dusk
 
                             //Would need to be edited to work with collision
                             //Will be jank with falling of edges. Not perfect fit but a good start to having better jumping
+                            //Should be set distance above player
                             if (player.Y != GraphicsDevice.Viewport.Height - (92 * scale))
                             {
                                 player.Y += jumpSpeed;
@@ -569,7 +574,7 @@ namespace Terminal_Dusk
                                 }
                             }
 
-
+                            //TODO: Substitute with top collision == true
                             if (player.Y >= GraphicsDevice.Viewport.Height - (47 * scale))
                             //If it's farther than ground
                             {
@@ -577,7 +582,17 @@ namespace Terminal_Dusk
                                 player.JumpingState = PlayerJumpingState.Standing;
                             }
                             break;
+
+                        case PlayerJumpingState.Falling:
+                            /*if(!topCollision)
+                            {
+                                player.Y += jumpSpeed;
+                                jumpSpeed++;
+                            }
+                            else{player.JumpingState = PlayerJumpingState.Standing;}*/
+                            break;
                     }
+
                     switch (player.AttackingState)
                     {
                         case PlayerAttackingState.IsNotAttacking:

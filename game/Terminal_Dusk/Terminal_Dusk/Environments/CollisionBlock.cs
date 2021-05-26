@@ -19,6 +19,12 @@ namespace Terminal_Dusk.Environments
         private Rectangle originalLoc;
         private Rectangle hitBox;
 
+        private Rectangle top;
+        private Rectangle left; 
+        private Rectangle right;
+        private Rectangle bottom;
+
+        private Rectangle[] edgeArray;
         //Should all be base 10X10
 
         public int LocationX
@@ -41,6 +47,11 @@ namespace Terminal_Dusk.Environments
             get { return hitBox; }
         }
 
+        public Rectangle[] CollisionArray
+        {
+            get { return edgeArray; }
+        }
+
         //inherits from environment
         public CollisionBlock(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
         {
@@ -50,7 +61,13 @@ namespace Terminal_Dusk.Environments
             this.state = state;
             this.playerState = playerState;
             this.speed = speed;
+
             hitBox = new Rectangle(location.X - 2, location.Y - 1, location.Width + 4, location.Height + 2);
+            //edges for directional collision. Scale should eventually be added
+            top = new Rectangle(hitBox.X + 3, hitBox.Y, hitBox.Width - 6, 3);
+            left = new Rectangle(hitBox.X, hitBox.Y + 3, 3, hitBox.Height - 6);
+            right = new Rectangle(hitBox.X + hitBox.Width - 3, hitBox.Y + 3, 3, hitBox.Height - 6);
+            bottom = new Rectangle(hitBox.X + 3, hitBox.Y + hitBox.Height- 3, hitBox.Width - 6, 3);
         }
 
         //updates based on player 'location'
@@ -72,7 +89,15 @@ namespace Terminal_Dusk.Environments
                     location.X += speed;
                     hitBox.X = location.X;
                 }
+                UpdateEdges();
             }
+        }
+        private void UpdateEdges()
+        {
+            top.X = hitBox.X + 3;
+            left.X = hitBox.X;
+            right.X = hitBox.X + hitBox.Width - 3;
+            bottom.X = hitBox.X + 3;
         }
 
         public override void Draw(SpriteBatch sb)

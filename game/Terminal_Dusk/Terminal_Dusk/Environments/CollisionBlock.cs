@@ -24,7 +24,6 @@ namespace Terminal_Dusk.Environments
         private Rectangle right;
         private Rectangle bottom;
 
-        private Rectangle[] edgeArray;
         //Should all be base 10X10
 
         public int LocationX
@@ -47,10 +46,7 @@ namespace Terminal_Dusk.Environments
             get { return hitBox; }
         }
 
-        public Rectangle[] CollisionArray
-        {
-            get { return edgeArray; }
-        }
+        public Rectangle[] EdgeArray { get; }
 
         //inherits from environment
         public CollisionBlock(Texture2D sprite, Rectangle location, GameState state, PlayerState playerState, int speed) : base(sprite, location)
@@ -68,6 +64,8 @@ namespace Terminal_Dusk.Environments
             left = new Rectangle(hitBox.X, hitBox.Y + 3, 3, hitBox.Height - 6);
             right = new Rectangle(hitBox.X + hitBox.Width - 3, hitBox.Y + 3, 3, hitBox.Height - 6);
             bottom = new Rectangle(hitBox.X + 3, hitBox.Y + hitBox.Height- 3, hitBox.Width - 6, 3);
+
+            EdgeArray = new Rectangle[4] { top, left, right, bottom };
         }
 
         //updates based on player 'location'
@@ -95,14 +93,23 @@ namespace Terminal_Dusk.Environments
         private void UpdateEdges()
         {
             top.X = hitBox.X + 3;
+            EdgeArray[0] = top;
             left.X = hitBox.X;
+            EdgeArray[1] = left;
             right.X = hitBox.X + hitBox.Width - 3;
+            EdgeArray[2] = right;
             bottom.X = hitBox.X + 3;
+            EdgeArray[3] = bottom;
         }
 
         public override void Draw(SpriteBatch sb)
         {
             sb.Draw(spriteSheet, location, Color.White);
+            //Edges
+            //sb.Draw(spriteSheet, top, Color.Red);
+            //sb.Draw(spriteSheet, left, Color.Red);
+            //sb.Draw(spriteSheet, right, Color.Red);
+            //sb.Draw(spriteSheet, bottom, Color.Red);
         }
 
         public void Reset()

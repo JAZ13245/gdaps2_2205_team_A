@@ -372,7 +372,7 @@ namespace Terminal_Dusk
                     bool wallCollide = false;
                     foreach(CollisionBlock c in startWall)
                     {
-                        if (player.CheckCollision(c.HitBox))
+                        if (player.CheckCollision(c)[2])
                         {
                             //break added because you could previously jump through the wall
                             wallCollide = true;

@@ -287,8 +287,9 @@ namespace Terminal_Dusk
         public override void Draw(SpriteBatch sb)
         {
             //Visualizes hitbox and hurtbox
-            //sb.Draw(spriteSheet, hurtBox, Color.White);
+            sb.Draw(spriteSheet, hurtBox, Color.White);
             //sb.Draw(spriteSheet, hitBox, Color.White);
+            //sb.Draw(spriteSheet, Position, Color.White);
             switch (jumpingState)
             {
                 case PlayerJumpingState.Jumping:
@@ -306,7 +307,23 @@ namespace Terminal_Dusk
                             break;
                     }
                     break;
-                
+
+                case PlayerJumpingState.Falling:
+                    switch (state)
+                    {
+                        case PlayerState.FaceLeft:
+                        case PlayerState.WalkLeft:
+                        case PlayerState.CrouchLeft:
+                            DrawCrouching(SpriteEffects.FlipHorizontally, sb);
+                            break;
+                        case PlayerState.FaceRight:
+                        case PlayerState.WalkRight:
+                        case PlayerState.CrouchRight:
+                            DrawCrouching(SpriteEffects.None, sb);
+                            break;
+                    }
+                    break;
+
                 case PlayerJumpingState.Standing:
                     switch (state)
                     {
@@ -543,9 +560,9 @@ namespace Terminal_Dusk
         public bool[] CheckCollision(Environments.CollisionBlock block)//some class or object inside the parantehses 
         {
             bool[] edgesCollision = new bool[4] { false, false, false, false }; 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             { 
-                if (playerLoc.Intersects(block.EdgeArray[i]))
+                if (hurtBox.Intersects(block.EdgeArray[i]))
                 {
                     edgesCollision[i] = true;
                 }

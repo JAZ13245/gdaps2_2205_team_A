@@ -305,6 +305,8 @@ namespace Terminal_Dusk
             switch (currentState)
             {
                 case GameState.MainMenu:
+                    IsMouseVisible = true;
+
                     for (int i = 0; i < 3; i++)
                     {
                         buttons[i].Update();
@@ -312,10 +314,13 @@ namespace Terminal_Dusk
                     break;
 
                 case GameState.PauseMenu:
+                    IsMouseVisible = true;
                     ProcessPauseMenu(kbState);
                     break;
 
                 case GameState.OptionsMenu:
+                    IsMouseVisible = true;
+
                     if (wasMainOrPause)
                     {
                         buttons[3].Update();
@@ -340,6 +345,7 @@ namespace Terminal_Dusk
 
                 case GameState.SaveFileMenu:
                     //ProcessSaveFileMenu(kbState, mouseState);
+                    //IsMouseVisible = true;
                     break;
 
                 case GameState.GamePlayState:
@@ -396,11 +402,12 @@ namespace Terminal_Dusk
                         {
                             bottomCollision = true;
                         }
+                        //TODO: Try again once each type has its own loop
                         //If one or more is true break out of the loop
-                        if (topCollision == true || leftCollision == true || rightCollision == true || bottomCollision == true)
-                        {
-                            break;
-                        }
+                        //if (topCollision || leftCollision || rightCollision || bottomCollision)
+                        //{
+                        //    break;
+                        //}
                     }
 
 
@@ -441,7 +448,7 @@ namespace Terminal_Dusk
                     {
                         System.Diagnostics.Debug.WriteLine("Bottom: True");
                     }
-                    else
+                    if (!(topCollision || leftCollision || rightCollision || bottomCollision))
                     {
                         System.Diagnostics.Debug.WriteLine("False");
                     }
@@ -494,6 +501,7 @@ namespace Terminal_Dusk
                             }
                             break;
                         case PlayerState.FaceRight:
+                            
                             //Changes direction
                             if (kbState.IsKeyDown(leftMove) && !kbState.IsKeyDown(rightMove))
                             {
@@ -502,7 +510,10 @@ namespace Terminal_Dusk
                             //Transitions to walking
                             else if (kbState.IsKeyDown(rightMove))
                             {
-                                player.State = PlayerState.WalkRight;
+                                if (!leftCollision)
+                                {
+                                    player.State = PlayerState.WalkRight;
+                                }
                             }
                             //Transitions to crouching
                             else if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
@@ -511,6 +522,10 @@ namespace Terminal_Dusk
                             }
                             break;
                         case PlayerState.WalkRight:
+                            if (leftCollision)
+                            {
+                                player.State = PlayerState.FaceRight;
+                            }
                             //Transitions to crouch
                             if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
                             {
@@ -563,7 +578,6 @@ namespace Terminal_Dusk
                     switch (player.JumpingState)
                     {
                         case PlayerJumpingState.Standing:
-                            jumpSpeed = 0;
                             jumpingCurrentTime = 0f;
                             
                             if (SingleKeyPress(upMove, kbState))
@@ -572,19 +586,31 @@ namespace Terminal_Dusk
                                 
                                 jumpSpeed = -16;//Give it upward thrust
                             }
-                            /*if (!topCollision){player.JumpingState = PlayerJumpingState.Falling;}*/
+                            if (!topCollision) 
+                            {
+                                jumpSpeed = 0;
+                                player.JumpingState = PlayerJumpingState.Falling;
+                            }
                             break;
 
                         case PlayerJumpingState.Jumping:
-                            
+                            if (bottomCollision)
+                            {
+                                jumpSpeed = 0;
+                                player.JumpingState = PlayerJumpingState.Falling;
+                            }
 
                             //Would need to be edited to work with collision
-                            //Will be jank with falling of edges. Not perfect fit but a good start to having better jumping
                             //Should be set distance above player
                             if (player.Y != GraphicsDevice.Viewport.Height - (92 * scale))
                             {
                                 player.Y += jumpSpeed;
                                 jumpSpeed++; //Acts as the physics accelerating/deccelerating
+                                //Allows player to leave ground
+                                if (jumpSpeed < 0)
+                                {
+                                    topCollision = false;
+                                }
                             }
 
                             //Keeps player a peak for a small amount of time
@@ -610,22 +636,25 @@ namespace Terminal_Dusk
                                 }
                             }
 
-                            //TODO: Substitute with top collision == true
-                            if (player.Y >= GraphicsDevice.Viewport.Height - (47 * scale))
+                            if (topCollision)
                             //If it's farther than ground
                             {
+                                //TODO: Find a proper way to stop. W/out player.Y statement sinks into ground
                                 player.Y = GraphicsDevice.Viewport.Height - (47 * scale);//Then set it on
                                 player.JumpingState = PlayerJumpingState.Standing;
                             }
                             break;
 
                         case PlayerJumpingState.Falling:
-                            /*if(!topCollision)
+                            if(!topCollision)
                             {
                                 player.Y += jumpSpeed;
                                 jumpSpeed++;
                             }
-                            else{player.JumpingState = PlayerJumpingState.Standing;}*/
+                            else{
+                                //TODO: Find a proper way to stop. W/out player.Y statement sinks into ground
+                                player.Y = GraphicsDevice.Viewport.Height - (47 * scale);//Then set it on
+                                player.JumpingState = PlayerJumpingState.Standing;}
                             break;
                     }
 
@@ -668,9 +697,11 @@ namespace Terminal_Dusk
                     }
                     break;
                 case GameState.GameOverMenu:
+                    IsMouseVisible = true;
                     buttons[7].Update();
                     break;
                 case GameState.Winner:
+                    IsMouseVisible = true;
                     buttons[7].Update();
                     break;
                 case GameState.ExitGame:
@@ -967,6 +998,8 @@ namespace Terminal_Dusk
                         //Ground
                         case 'O':
                             ground = new CollisionBlock(envirImgs[2], new Rectangle(xPlacement, yPlacement, 10 * scale, 10 * scale), currentState, player.State, 2);
+                            //TODO: Remove this is for temp testing only
+                            startWall.Add(ground);
                             envirConverter = (Environment)ground;
                             environments.Add(envirConverter);
                             xPlacement += 10 * scale;

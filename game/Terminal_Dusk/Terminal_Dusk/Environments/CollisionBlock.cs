@@ -81,13 +81,16 @@ namespace Terminal_Dusk.Environments
                 {
                     location.X -= speed;
                     hitBox.X = location.X;
+
+                    UpdateEdges();
                 }
                 else if (playerState == PlayerState.WalkLeft)
                 {
                     location.X += speed;
                     hitBox.X = location.X;
+
+                    UpdateEdges();
                 }
-                UpdateEdges();
             }
         }
         private void UpdateEdges()

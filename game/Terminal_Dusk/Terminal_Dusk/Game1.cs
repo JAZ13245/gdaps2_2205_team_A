@@ -92,6 +92,11 @@ namespace Terminal_Dusk
         //Invisible wall at the begining of the game 
         private CollisionBlock startWallBlock;
         private List<CollisionBlock> startWall;
+        //bools for collision
+        private bool topCollision;
+        private bool leftCollision;
+        private bool rightCollision;
+        private bool bottomCollision;
 
         //A scale for changing the size of the screen
         private int scale = 3;
@@ -339,6 +344,7 @@ namespace Terminal_Dusk
 
                 case GameState.GamePlayState:
                     ProcessGamePlayState(kbState);
+                    IsMouseVisible = false;
                     //code for timer update
                     
                     currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds; //Time passed since last Update() 
@@ -366,16 +372,33 @@ namespace Terminal_Dusk
                         //Updates the player state for environments
                         environments[i].PlayerState = player.State;
                     }
-                    
-                    
-                    //Check collision with the invisible wall
-                    bool wallCollide = false;
+
+                    topCollision = false;
+                    leftCollision = false;
+                    rightCollision = false;
+                    bottomCollision = false;
+                    //Test collision check
                     foreach(CollisionBlock c in startWall)
                     {
+                        if (player.CheckCollision(c)[0])
+                        {
+                            topCollision = true;
+                        }
+                        if (player.CheckCollision(c)[1])
+                        {
+                            leftCollision = true;
+                        }
                         if (player.CheckCollision(c)[2])
                         {
-                            //break added because you could previously jump through the wall
-                            wallCollide = true;
+                            rightCollision = true;
+                        }
+                        if (player.CheckCollision(c)[3])
+                        {
+                            bottomCollision = true;
+                        }
+                        //If one or more is true break out of the loop
+                        if (topCollision == true || leftCollision == true || rightCollision == true || bottomCollision == true)
+                        {
                             break;
                         }
                     }
@@ -401,9 +424,22 @@ namespace Terminal_Dusk
 
 
                     player.Update(gameTime);
-                    if (wallCollide)
+                    //Collision check
+                    if (topCollision)
                     {
-                        System.Diagnostics.Debug.WriteLine("True");
+                        System.Diagnostics.Debug.WriteLine("Top: True");
+                    }
+                    if (leftCollision)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Left: True");
+                    }
+                    if (rightCollision)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Right: True");
+                    }
+                    if (bottomCollision)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Bottom: True");
                     }
                     else
                     {
@@ -422,7 +458,7 @@ namespace Terminal_Dusk
                             else if (kbState.IsKeyDown(leftMove) && prevKbState.IsKeyDown(leftMove))
                             {
                                 //Stops player seeing empty left screen
-                                if (!wallCollide)
+                                if (!rightCollision)
                                 {
                                     player.State = PlayerState.WalkLeft;
                                 }
@@ -435,7 +471,7 @@ namespace Terminal_Dusk
 
                             break;
                         case PlayerState.WalkLeft:
-                            if (wallCollide)
+                            if (rightCollision)
                             {
                                 player.State = PlayerState.FaceLeft;
                             }

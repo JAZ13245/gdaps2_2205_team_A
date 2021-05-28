@@ -618,11 +618,6 @@ namespace Terminal_Dusk
                                 {
                                     jumpSpeed++;
                                 }
-                                //Allows player to leave ground
-                                if (jumpSpeed < 0)
-                                {
-                                    topCollision = false;
-                                }
                             }
 
                             //Keeps player a peak for a small amount of time
@@ -648,6 +643,11 @@ namespace Terminal_Dusk
                                     jumpSpeed++;
                                 }
                             }
+                            //Allows player to leave ground
+                            if (jumpSpeed < 0)
+                            {
+                                topCollision = false;
+                            }
 
                             if (topCollision)
                             //If it's farther than ground
@@ -659,7 +659,7 @@ namespace Terminal_Dusk
                             break;
 
                         case PlayerJumpingState.Falling:
-                            if(!topCollision)
+                            if (!topCollision)
                             {
                                 player.Y += jumpSpeed;
                                 jumpSpeed++;

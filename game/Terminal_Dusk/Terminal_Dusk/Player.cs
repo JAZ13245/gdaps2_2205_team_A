@@ -237,7 +237,8 @@ namespace Terminal_Dusk
                 case PlayerState.WalkLeft:
                     if (jumpingState == PlayerJumpingState.Jumping || jumpingState == PlayerJumpingState.Falling)
                     {
-                        hurtBox = new Rectangle(playerLoc.X, playerLoc.Y + 9*3, crouchWidth / 2, crouchHeight / 2); 
+                        //TODO:Check values could be made tighter
+                        hurtBox = new Rectangle(playerLoc.X, playerLoc.Y + 9*3, 10 * 3, crouchHeight / 2); 
 
                         hitBox.X = playerLoc.X - 16 * 3;
                         hitBox.Y = hurtBox.Y;
@@ -254,7 +255,7 @@ namespace Terminal_Dusk
                 case PlayerState.WalkRight:
                     if(jumpingState == PlayerJumpingState.Jumping || jumpingState == PlayerJumpingState.Falling)
                     {
-                        hurtBox = new Rectangle(playerLoc.X, playerLoc.Y + 9*3, crouchWidth / 2, crouchHeight / 2);
+                        hurtBox = new Rectangle(playerLoc.X + 2 * 3, playerLoc.Y + 9*3, 10 * 3, crouchHeight / 2);
 
                         hitBox.X = playerLoc.X + 10 * 3;
                         hitBox.Y = hurtBox.Y;

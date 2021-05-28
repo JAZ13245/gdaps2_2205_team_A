@@ -63,10 +63,14 @@ namespace Terminal_Dusk
         //field for jumping
         private int jumpingCounter = 0;
         private int jumpingLimit = 1;
-        private float jumpingCountDuration = 0.03f; //every  .03s.
+        private float jumpingCountDuration = 0.06f; //every  .06s.
         private float jumpingCurrentTime = 0f;
         //new jump
         private int jumpSpeed;
+        //Tracks player begining height
+        private int startHeight;
+        //Adjust where you land so that you don't get stuck in the ground.
+        private int landingHeight;
 
         //fields for attacking
         private int attackingCounter = 0;
@@ -383,11 +387,16 @@ namespace Terminal_Dusk
                     leftCollision = false;
                     rightCollision = false;
                     bottomCollision = false;
+
+                    landingHeight = GraphicsDevice.Viewport.Height - (47 * scale);
+
                     //Test collision check
-                    foreach(CollisionBlock c in startWall)
+                    foreach (CollisionBlock c in startWall)
                     {
                         if (player.CheckCollision(c)[0])
                         {
+                            landingHeight = c.Position.Y - (37 * scale);
+                            startHeight = landingHeight;
                             topCollision = true;
                         }
                         if (player.CheckCollision(c)[1])
@@ -583,7 +592,6 @@ namespace Terminal_Dusk
                             if (SingleKeyPress(upMove, kbState))
                             {
                                 player.JumpingState = PlayerJumpingState.Jumping;
-                                
                                 jumpSpeed = -16;//Give it upward thrust
                             }
                             if (!topCollision) 
@@ -594,7 +602,7 @@ namespace Terminal_Dusk
                             break;
 
                         case PlayerJumpingState.Jumping:
-                            if (bottomCollision)
+                            if (bottomCollision & jumpSpeed <= 0)
                             {
                                 jumpSpeed = 0;
                                 player.JumpingState = PlayerJumpingState.Falling;
@@ -602,10 +610,14 @@ namespace Terminal_Dusk
 
                             //Would need to be edited to work with collision
                             //Should be set distance above player
-                            if (player.Y != GraphicsDevice.Viewport.Height - (92 * scale))
+                            if (player.Y != startHeight - (45 * scale))
                             {
                                 player.Y += jumpSpeed;
                                 jumpSpeed++; //Acts as the physics accelerating/deccelerating
+                                if(jumpSpeed == -1)
+                                {
+                                    jumpSpeed++;
+                                }
                                 //Allows player to leave ground
                                 if (jumpSpeed < 0)
                                 {
@@ -631,6 +643,7 @@ namespace Terminal_Dusk
                                     //reset the counter
                                     jumpingCounter = 0;
                                     //continues movement
+                                    jumpSpeed = 2;
                                     player.Y += jumpSpeed;
                                     jumpSpeed++;
                                 }
@@ -640,7 +653,7 @@ namespace Terminal_Dusk
                             //If it's farther than ground
                             {
                                 //TODO: Find a proper way to stop. W/out player.Y statement sinks into ground
-                                player.Y = GraphicsDevice.Viewport.Height - (47 * scale);//Then set it on
+                                player.Y = landingHeight;//Then set it on
                                 player.JumpingState = PlayerJumpingState.Standing;
                             }
                             break;
@@ -651,10 +664,12 @@ namespace Terminal_Dusk
                                 player.Y += jumpSpeed;
                                 jumpSpeed++;
                             }
-                            else{
+                            else
+                            {
                                 //TODO: Find a proper way to stop. W/out player.Y statement sinks into ground
-                                player.Y = GraphicsDevice.Viewport.Height - (47 * scale);//Then set it on
-                                player.JumpingState = PlayerJumpingState.Standing;}
+                                player.Y = landingHeight;//Then set it on
+                                player.JumpingState = PlayerJumpingState.Standing;
+                            }
                             break;
                     }
 
@@ -761,10 +776,6 @@ namespace Terminal_Dusk
                     {
                         enemy.Draw(_spriteBatch);
                     }
-                    //foreach(CollisionBlock c in startWall)
-                    //{
-                    //    c.Draw(_spriteBatch);
-                    //}
 
 
                     _spriteBatch.DrawString(labelFont, "" + counter, new Vector2(5, 5), Color.Black);

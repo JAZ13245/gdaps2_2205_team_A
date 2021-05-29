@@ -288,9 +288,9 @@ namespace Terminal_Dusk
         public override void Draw(SpriteBatch sb)
         {
             //Visualizes hitbox and hurtbox
-            sb.Draw(spriteSheet, hurtBox, Color.White);
-            //sb.Draw(spriteSheet, hitBox, Color.White);
-            //sb.Draw(spriteSheet, Position, Color.White);
+            sb.Draw(spriteSheet, hurtBox, Color.Blue);
+            //sb.Draw(spriteSheet, hitBox, Color.Red);
+            //sb.Draw(spriteSheet, Position, Color.Green);
             switch (jumpingState)
             {
                 case PlayerJumpingState.Jumping:

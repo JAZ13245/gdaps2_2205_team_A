@@ -58,12 +58,12 @@ namespace Terminal_Dusk.Environments
             this.playerState = playerState;
             this.speed = speed;
 
-            hitBox = new Rectangle(location.X - 2, location.Y - 1, location.Width + 4, location.Height + 2);
+            hitBox = new Rectangle(location.X - 3, location.Y - 2 * 3, location.Width + 2 * 3, location.Height + 4 * 3);
             //edges for directional collision. Scale should eventually be added
-            top = new Rectangle(hitBox.X + 3, hitBox.Y, hitBox.Width - 6, 3);
-            left = new Rectangle(hitBox.X, hitBox.Y + 3, 3, hitBox.Height - 6);
-            right = new Rectangle(hitBox.X + hitBox.Width - 3, hitBox.Y + 3, 3, hitBox.Height - 6);
-            bottom = new Rectangle(hitBox.X + 3, hitBox.Y + hitBox.Height- 3, hitBox.Width - 6, 3);
+            top = new Rectangle(hitBox.X + 3, hitBox.Y, hitBox.Width - 2 * 3, 3 * 2);
+            left = new Rectangle(hitBox.X, hitBox.Y + 2 * 3, 3, hitBox.Height - 4 * 3);
+            right = new Rectangle(hitBox.X + hitBox.Width - 3, hitBox.Y + 2* 3, 3, hitBox.Height - 4 * 3);
+            bottom = new Rectangle(hitBox.X + 3, hitBox.Y + hitBox.Height- 2 * 3, hitBox.Width - 2 * 3, 3);
 
             EdgeArray = new Rectangle[4] { top, left, right, bottom };
         }
@@ -80,14 +80,14 @@ namespace Terminal_Dusk.Environments
                 if (playerState == PlayerState.WalkRight)
                 {
                     location.X -= speed;
-                    hitBox.X = location.X;
+                    hitBox.X = location.X - 3;
 
                     UpdateEdges();
                 }
                 else if (playerState == PlayerState.WalkLeft)
                 {
                     location.X += speed;
-                    hitBox.X = location.X;
+                    hitBox.X = location.X -3;
 
                     UpdateEdges();
                 }
@@ -109,10 +109,12 @@ namespace Terminal_Dusk.Environments
         {
             sb.Draw(spriteSheet, location, Color.White);
             //Edges
-            //sb.Draw(spriteSheet, top, Color.Red);
-            //sb.Draw(spriteSheet, left, Color.Red);
-            //sb.Draw(spriteSheet, right, Color.Red);
-            //sb.Draw(spriteSheet, bottom, Color.Red);
+            sb.Draw(spriteSheet, top, Color.Red);
+            sb.Draw(spriteSheet, left, Color.Red);
+            sb.Draw(spriteSheet, right, Color.Red);
+            sb.Draw(spriteSheet, bottom, Color.Red);
+            //hitbox
+            //sb.Draw(spriteSheet, hitBox, Color.Orange);
         }
 
         public void Reset()

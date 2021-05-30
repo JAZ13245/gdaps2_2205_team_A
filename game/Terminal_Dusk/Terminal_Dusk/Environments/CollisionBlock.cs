@@ -60,7 +60,7 @@ namespace Terminal_Dusk.Environments
 
             hitBox = new Rectangle(location.X - 3, location.Y - 2 * 3, location.Width + 2 * 3, location.Height + 4 * 3);
             //edges for directional collision. Scale should eventually be added
-            top = new Rectangle(hitBox.X + 3, hitBox.Y - 5 * 3, hitBox.Width - 2 * 3, 7 * 3);
+            top = new Rectangle(hitBox.X + 3, hitBox.Y - 7 * 3, hitBox.Width - 2 * 3, 9 * 3);
             left = new Rectangle(hitBox.X, hitBox.Y + 2 * 3, 3, hitBox.Height - 4 * 3);
             right = new Rectangle(hitBox.X + hitBox.Width - 3, hitBox.Y + 2* 3, 3, hitBox.Height - 4 * 3);
             bottom = new Rectangle(hitBox.X + 3, hitBox.Y + hitBox.Height- 2 * 3, hitBox.Width - 2 * 3, 3);

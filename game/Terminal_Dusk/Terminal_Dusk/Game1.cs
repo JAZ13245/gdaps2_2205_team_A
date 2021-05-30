@@ -612,11 +612,18 @@ namespace Terminal_Dusk
                             //Should be set distance above player
                             if (player.Y != startHeight - (45 * scale))
                             {
-                                player.Y += jumpSpeed;
-                                jumpSpeed++; //Acts as the physics accelerating/deccelerating
-                                if(jumpSpeed == -1)
+                                if (jumpSpeed < 16)
                                 {
-                                    jumpSpeed++;
+                                    player.Y += jumpSpeed;
+                                    jumpSpeed++; //Acts as the physics accelerating/deccelerating
+                                    if (jumpSpeed == -1)
+                                    {
+                                        jumpSpeed++;
+                                    }
+                                }
+                                else if ( jumpSpeed == 16)
+                                {
+                                    player.Y += jumpSpeed;
                                 }
                             }
 
@@ -661,8 +668,15 @@ namespace Terminal_Dusk
                         case PlayerJumpingState.Falling:
                             if (!topCollision)
                             {
-                                player.Y += jumpSpeed;
-                                jumpSpeed++;
+                                if (jumpSpeed < 16)
+                                {
+                                    player.Y += jumpSpeed;
+                                    jumpSpeed++;
+                                }
+                                else if (jumpSpeed == 16)
+                                {
+                                    player.Y += jumpSpeed;
+                                }
                             }
                             else
                             {

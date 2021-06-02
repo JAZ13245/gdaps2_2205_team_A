@@ -190,8 +190,6 @@ namespace Terminal_Dusk
                 //frame += 1;   //Different logic needed. I assume you wanted to go 1, 2, 1, 3 for the cycle, this won't do that. -James                
                 frame = frameList[frameListIndex];
 
-                                  
-
                 timeCounter -= timePerFrame;
             }
         }
@@ -288,8 +286,8 @@ namespace Terminal_Dusk
         public override void Draw(SpriteBatch sb)
         {
             //Visualizes hitbox and hurtbox
-            sb.Draw(spriteSheet, hurtBox, Color.Blue);
-            sb.Draw(spriteSheet, hitBox, Color.Red);
+            //sb.Draw(spriteSheet, hurtBox, Color.Blue);
+            //sb.Draw(spriteSheet, hitBox, Color.Red);
             //sb.Draw(spriteSheet, Position, Color.Green);
             switch (jumpingState)
             {
@@ -377,7 +375,7 @@ namespace Terminal_Dusk
                     {
                         spriteBatch.Draw(
                         spriteSheet,                    // - The texture to draw
-                        new Vector2(playerLoc.X - 19 * 3, playerLoc.Y),                       // - The location to draw on the screen
+                        new Vector2(playerLoc.X - 18 * 3, playerLoc.Y),                       // - The location to draw on the screen
                         new Rectangle(                  // - The "source" rectangle
                             0,                          //   - This rectangle specifies
                             thirdRow,                          //	   where "inside" the texture
@@ -437,7 +435,7 @@ namespace Terminal_Dusk
                     {
                         spriteBatch.Draw(
                         spriteSheet,                    // - The texture to draw
-                        new Vector2(playerLoc.X - 19 * 3, playerLoc.Y),                       // - The location to draw on the screen
+                        new Vector2(playerLoc.X - 18 * 3, playerLoc.Y),                       // - The location to draw on the screen
                         new Rectangle(                  // - The "source" rectangle
                             0,                          //   - This rectangle specifies
                             thirdRow,                          //	   where "inside" the texture

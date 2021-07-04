@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using Terminal_Dusk.Environments;
 using Terminal_Dusk.PlayerComponents;
+using Terminal_Dusk.Managers;
 using System.IO;
 
 namespace Terminal_Dusk
@@ -61,24 +62,7 @@ namespace Terminal_Dusk
         private float countDuration = 1f; //every  1s.
         private float currentTime = 0f;
 
-        //fields for jumping
-        private int jumpingCounter = 0;
-        private int jumpingLimit = 1;
-        private float jumpingCountDuration = 0.06f; //every  .06s.
-        private float jumpingCurrentTime = 0f;
-        //new jump
-        private int jumpSpeed;
-        //Tracks player begining height
-        private int startHeight;
-        //Adjust where you land so that you don't get stuck in the ground.
-        private int landingHeight;
-
-        //fields for attacking
-        private int attackingCounter = 0;
-        private int attackingLimit = 2;
-        private float attackingCountDuration = .13f; //every  .15s.
-        private float attackingCurrentTime = 0f;
-
+        
         //Environment list
         private List<Environment> environments = new List<Environment>();
         private List<Texture2D> envirImgs = new List<Texture2D>();
@@ -98,7 +82,6 @@ namespace Terminal_Dusk
         private CollisionBlock startWallBlock;
         private List<CollisionBlock> startWall;
 
-        //TODO: Both arrays need to be updated to be used properly.
         //bools for collision
         private bool topCollision;
         private bool leftCollision;
@@ -117,8 +100,14 @@ namespace Terminal_Dusk
         private Keys crouchMove = Keys.S;
         private Keys upMove = Keys.W;
         private Keys attack = Keys.Space;
-        private Keys[] keysArray;
+        private Keys[] keysArray; //TODO: Array needs to be updated to be used properly.
         private bool usingWASD = true;
+
+        //Manager
+        private PlayerVariableManager playerVariableManager;
+
+        //PlayerControls class
+        private PlayerControls playerControls;
 
         //FileIO
         private string levelFile = "..\\..\\..\\FileIO\\levelFile.txt";
@@ -139,8 +128,10 @@ namespace Terminal_Dusk
             _graphics.PreferredBackBufferHeight = 180 * scale;
             _graphics.ApplyChanges();
 
-            //TODO: Update dpending on option selected.
             keysArray = new Keys[5] { rightMove, leftMove, crouchMove, upMove, attack };
+            blockCollisionArray = new bool[4];
+
+            playerVariableManager = new PlayerVariableManager(keysArray, blockCollisionArray);
             base.Initialize();
         }
 
@@ -265,6 +256,9 @@ namespace Terminal_Dusk
             playerSpreadSheet = Content.Load<Texture2D>("pixel_charTestScale");
             Rectangle playerLoc = new Rectangle(GraphicsDevice.Viewport.Width / 4, GraphicsDevice.Viewport.Height - 47 * scale, 10*scale, 37 * scale);//3 is scale
             player = new Player(playerSpreadSheet, playerLoc, PlayerState.FaceRight,5);
+
+            //Player Controls
+            playerControls = new PlayerControls(player, playerVariableManager);
 
             //player HP
             healthSprite = Content.Load<Texture2D>("hpScale");
@@ -395,15 +389,15 @@ namespace Terminal_Dusk
                     rightCollision = false;
                     bottomCollision = false;
 
-                    landingHeight = GraphicsDevice.Viewport.Height - (47 * scale);
+                    playerVariableManager.LandingHeight = GraphicsDevice.Viewport.Height - (47 * scale);
 
                     //Test collision check
                     foreach (CollisionBlock c in startWall)
                     {
                         if (player.CheckCollision(c)[0])
                         {
-                            landingHeight = c.Position.Y - (37 * scale);
-                            startHeight = landingHeight;
+                            playerVariableManager.LandingHeight = c.Position.Y - (37 * scale);
+                            playerVariableManager.StartHeight = playerVariableManager.LandingHeight;
                             topCollision = true;
                         }
                         if (player.CheckCollision(c)[1])
@@ -425,6 +419,12 @@ namespace Terminal_Dusk
                         //    break;
                         //}
                     }
+
+                    blockCollisionArray[0] = topCollision;
+                    blockCollisionArray[1] = leftCollision;
+                    blockCollisionArray[2] = rightCollision;
+                    blockCollisionArray[3] = bottomCollision;
+                    playerVariableManager.BlockCollisionArray = blockCollisionArray;
 
 
                     for (int i = 0; i < enemies.Count; i++)
@@ -469,262 +469,8 @@ namespace Terminal_Dusk
                     {
                         System.Diagnostics.Debug.WriteLine("False");
                     }
-                    // TODO: Logic should be moved and handled in Player class, just copy/pasted for ease
-                    switch (player.State)
-                    {
-                        case PlayerState.FaceLeft:
-                            //Changes direction
-                            if (kbState.IsKeyDown(rightMove) && !kbState.IsKeyDown(leftMove))
-                            {
-                                player.State = PlayerState.FaceRight;
-                            }
-                            //Transitions to walking
-                            else if (kbState.IsKeyDown(leftMove) && prevKbState.IsKeyDown(leftMove))
-                            {
-                                //Stops player seeing empty left screen
-                                if (!rightCollision)
-                                {
-                                    player.State = PlayerState.WalkLeft;
-                                }
-                            }
-                            //Transitions to crouching
-                            else if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
-                            {
-                                player.State = PlayerState.CrouchLeft;
-                            }
+                    playerControls.StateUpdate(gameTime);
 
-                            break;
-                        case PlayerState.WalkLeft:
-                            if (rightCollision)
-                            {
-                                player.State = PlayerState.FaceLeft;
-                            }
-                            //Transitions to crouch
-                            if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
-                            {
-                                player.State = PlayerState.CrouchLeft;
-                            }
-                            //Allows smoother movement Ex: holding leftMove then also pressing rightMove then letting go of rightMove
-                            if (kbState.IsKeyDown(rightMove) && prevKbState.IsKeyUp(rightMove))
-                            {
-                                player.State = PlayerState.FaceRight;
-                            }
-                            //Moves left
-                            if (kbState.IsKeyDown(leftMove)) { }
-                            //Transitions to standing
-                            else
-                            {
-                                player.State = PlayerState.FaceLeft;
-                            }
-                            break;
-                        case PlayerState.FaceRight:
-                            
-                            //Changes direction
-                            if (kbState.IsKeyDown(leftMove) && !kbState.IsKeyDown(rightMove))
-                            {
-                                player.State = PlayerState.FaceLeft;
-                            }
-                            //Transitions to walking
-                            else if (kbState.IsKeyDown(rightMove))
-                            {
-                                if (!leftCollision)
-                                {
-                                    player.State = PlayerState.WalkRight;
-                                }
-                            }
-                            //Transitions to crouching
-                            else if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
-                            {
-                                player.State = PlayerState.CrouchRight;
-                            }
-                            break;
-                        case PlayerState.WalkRight:
-                            if (leftCollision)
-                            {
-                                player.State = PlayerState.FaceRight;
-                            }
-                            //Transitions to crouch
-                            if (kbState.IsKeyDown(crouchMove) && prevKbState.IsKeyUp(crouchMove))
-                            {
-                                player.State = PlayerState.CrouchRight;
-                            }
-                            //Allows smoother movement (Example in WalkLeft)
-                            if (kbState.IsKeyDown(leftMove) && prevKbState.IsKeyUp(leftMove))
-                            {
-                                player.State = PlayerState.FaceLeft;
-                            }
-                            //Moves right
-                            if (kbState.IsKeyDown(rightMove)) { }
-                            //Transitions to standing
-                            else
-                            {
-                                player.State = PlayerState.FaceRight;
-                            }
-                            break;
-                        case PlayerState.CrouchLeft:
-                            //Changes direction while crouching
-                            if (kbState.IsKeyDown(rightMove) && !kbState.IsKeyDown(leftMove) && kbState.IsKeyDown(crouchMove))
-                            {
-                                player.State = PlayerState.CrouchRight;
-                            }
-                            //Is crouching
-                            if (kbState.IsKeyDown(crouchMove)) { }
-                            //Transitions to standing
-                            else
-                            {
-                                player.State = PlayerState.FaceLeft;
-                            }
-                            break;
-                        case PlayerState.CrouchRight:
-                            //Changes direction while crouching
-                            if (kbState.IsKeyDown(leftMove) && !kbState.IsKeyDown(rightMove) && kbState.IsKeyDown(crouchMove))
-                            {
-                                player.State = PlayerState.CrouchLeft;
-                            }
-                            //Is crouching
-                            if (kbState.IsKeyDown(crouchMove)) { }
-                            //Transitions to standing
-                            else
-                            {
-                                player.State = PlayerState.FaceRight;
-                            }
-                            break;
-                    }
-
-                    //jumping switch statement
-                    switch (player.JumpingState)
-                    {
-                        case PlayerJumpingState.Standing:
-                            jumpingCurrentTime = 0f;
-                            
-                            if (SingleKeyPress(upMove, kbState))
-                            {
-                                player.JumpingState = PlayerJumpingState.Jumping;
-                                jumpSpeed = -16;//Give it upward thrust
-                            }
-                            if (!topCollision) 
-                            {
-                                jumpSpeed = 0;
-                                player.JumpingState = PlayerJumpingState.Falling;
-                            }
-                            break;
-
-                        case PlayerJumpingState.Jumping:
-                            if (bottomCollision & jumpSpeed <= 0)
-                            {
-                                jumpSpeed = 0;
-                                player.JumpingState = PlayerJumpingState.Falling;
-                            }
-
-                            //Would need to be edited to work with collision
-                            //Should be set distance above player
-                            if (player.Y != startHeight - (45 * scale))
-                            {
-                                if (jumpSpeed < 15)
-                                {
-                                    player.Y += jumpSpeed;
-                                    jumpSpeed++; //Acts as the physics accelerating/deccelerating
-                                    if (jumpSpeed == -1)
-                                    {
-                                        jumpSpeed++;
-                                    }
-                                }
-                                else if ( jumpSpeed == 15)
-                                {
-                                    player.Y += jumpSpeed;
-                                }
-                            }
-
-                            //Keeps player a peak for a small amount of time
-                            else                   
-                            {     
-                                jumpingCurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                                
-                                if (jumpingCurrentTime >= jumpingCountDuration)
-                                {
-                                    jumpingCounter++;
-                                    //reset the timer to loop again
-                                    jumpingCurrentTime -= jumpingCountDuration; // "use up" the time
-                                }
-                                //if the counter is greater then our limit
-                                //the pause has completed
-                                if (jumpingCounter >= jumpingLimit)
-                                {
-                                    //reset the counter
-                                    jumpingCounter = 0;
-                                    //continues movement
-                                    jumpSpeed = 2;
-                                    player.Y += jumpSpeed;
-                                    jumpSpeed++;
-                                }
-                            }
-                            //Allows player to leave ground
-                            if (jumpSpeed < 0)
-                            {
-                                topCollision = false;
-                            }
-
-                            if (topCollision)
-                            //If it's farther than ground
-                            {
-                                //TODO: Find a proper way to stop. W/out player.Y statement sinks into ground
-                                player.Y = landingHeight;//Then set it on
-                                player.JumpingState = PlayerJumpingState.Standing;
-                            }
-                            break;
-
-                        case PlayerJumpingState.Falling:
-                            if (!topCollision)
-                            {
-                                if (jumpSpeed < 15)
-                                {
-                                    player.Y += jumpSpeed;
-                                    jumpSpeed++;
-                                }
-                                else if (jumpSpeed == 15)
-                                {
-                                    player.Y += jumpSpeed;
-                                }
-                            }
-                            else
-                            {
-                                //TODO: Find a proper way to stop. W/out player.Y statement sinks into ground
-                                player.Y = landingHeight;//Then set it on
-                                player.JumpingState = PlayerJumpingState.Standing;
-                            }
-                            break;
-                    }
-
-                    switch (player.AttackingState)
-                    {
-                        case PlayerAttackingState.IsNotAttacking:
-                            if (SingleKeyPress(attack, kbState))
-                            {
-                                player.AttackingState = PlayerAttackingState.IsAttacking;
-                            }
-                            break;
-                        case PlayerAttackingState.IsAttacking:
-
-                            attackingCurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                            if (attackingCurrentTime >= attackingCountDuration)
-                            {
-                                attackingCounter++;
-                                //reset the timer to loop again
-                                attackingCurrentTime -= attackingCountDuration; // "use up" the time
-                            }
-                            //if the counter is greater then our limit
-                            //the pause has completed
-                            if (attackingCounter >= attackingLimit)
-                            {
-                                //reset the counter
-                                attackingCounter = 0;
-                                player.AttackingState = PlayerAttackingState.IsNotAttacking;
-                            }
-                            break;
-                    }
-
-                    //TODO: Can be added to player.Update
                     health.Update(gameTime, player.Health);
 
                     //TODO: Move to appropiate section of code if there is a better place.
@@ -734,14 +480,17 @@ namespace Terminal_Dusk
                         currentState = GameState.Winner;
                     }
                     break;
+
                 case GameState.GameOverMenu:
                     IsMouseVisible = true;
                     buttons[7].Update();
                     break;
+
                 case GameState.Winner:
                     IsMouseVisible = true;
                     buttons[7].Update();
                     break;
+
                 case GameState.ExitGame:
                     break;
                 default:
@@ -913,7 +662,7 @@ namespace Terminal_Dusk
             player.DamageState = DamageState.CanTakeDamage;
             //Faces right
             player.State = PlayerState.FaceRight;
-            startHeight = GraphicsDevice.Viewport.Height - (47 * scale);
+            playerVariableManager.StartHeight = GraphicsDevice.Viewport.Height - (47 * scale);
 
             currentState = GameState.MainMenu;
         }

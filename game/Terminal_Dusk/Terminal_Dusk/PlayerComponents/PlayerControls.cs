@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,10 +25,20 @@ namespace Terminal_Dusk.PlayerComponents
         private bool rightCollision;
         private bool bottomCollision;
 
-        public PlayerControls(KeyboardState kb, KeyboardState prevkb, Player player, PlayerVariableManager playerManager)
+        //Creates the physics of the jump
+        int jumpSpeed = -16;
+
+        private PlayerState playerState;
+        public PlayerState PlayerState { get { return playerState; } set { playerState = value; } }
+
+        private PlayerJumpingState jumpState;
+        public PlayerJumpingState JumpState { get { return jumpState; } set { jumpState = value; } }
+
+        private PlayerAttackingState attackState;
+        public PlayerAttackingState AttackState { get { return attackState; } set { attackState = value; } }
+
+        public PlayerControls(Player player, PlayerVariableManager playerManager)
         {
-            kbState = kb;
-            prevKbState = prevkb;
             this.player = player;
             this.playerManager = playerManager;
 
@@ -36,14 +47,35 @@ namespace Terminal_Dusk.PlayerComponents
             crouchMove = playerManager.KeysArray[2];
             upMove = playerManager.KeysArray[3];
             attack = playerManager.KeysArray[4];
+
+            topCollision = playerManager.BlockCollisionArray[0];
+            leftCollision = playerManager.BlockCollisionArray[1];
+            rightCollision = playerManager.BlockCollisionArray[2];
+            bottomCollision = playerManager.BlockCollisionArray[3];
         }
 
-
-        // TODO: Logic should be moved and handled in Player class, just copy/pasted for ease
-        private void StateUpdate()
+        public void KeysUpdate()
         {
-            int jumpSpeed;
+            rightMove = playerManager.KeysArray[0];
+            leftMove = playerManager.KeysArray[1];
+            crouchMove = playerManager.KeysArray[2];
+            upMove = playerManager.KeysArray[3];
+            attack = playerManager.KeysArray[4];
+        }
 
+        private void CollisionUpdate()
+        {
+            topCollision = playerManager.BlockCollisionArray[0];
+            leftCollision = playerManager.BlockCollisionArray[1];
+            rightCollision = playerManager.BlockCollisionArray[2];
+            bottomCollision = playerManager.BlockCollisionArray[3];
+        }
+
+        public void StateUpdate(GameTime gameTime)
+        {
+            CollisionUpdate();
+
+            kbState = Keyboard.GetState();
 
             switch (player.State)
             {
@@ -68,7 +100,9 @@ namespace Terminal_Dusk.PlayerComponents
                         player.State = PlayerState.CrouchLeft;
                     }
 
+                    playerState = player.State;
                     break;
+
                 case PlayerState.WalkLeft:
                     if (rightCollision)
                     {
@@ -91,9 +125,11 @@ namespace Terminal_Dusk.PlayerComponents
                     {
                         player.State = PlayerState.FaceLeft;
                     }
-                    break;
-                case PlayerState.FaceRight:
 
+                    playerState = player.State;
+                    break;
+
+                case PlayerState.FaceRight:
                     //Changes direction
                     if (kbState.IsKeyDown(leftMove) && !kbState.IsKeyDown(rightMove))
                     {
@@ -112,7 +148,10 @@ namespace Terminal_Dusk.PlayerComponents
                     {
                         player.State = PlayerState.CrouchRight;
                     }
+
+                    playerState = player.State;
                     break;
+
                 case PlayerState.WalkRight:
                     if (leftCollision)
                     {
@@ -135,7 +174,10 @@ namespace Terminal_Dusk.PlayerComponents
                     {
                         player.State = PlayerState.FaceRight;
                     }
+
+                    playerState = player.State;
                     break;
+
                 case PlayerState.CrouchLeft:
                     //Changes direction while crouching
                     if (kbState.IsKeyDown(rightMove) && !kbState.IsKeyDown(leftMove) && kbState.IsKeyDown(crouchMove))
@@ -149,7 +191,10 @@ namespace Terminal_Dusk.PlayerComponents
                     {
                         player.State = PlayerState.FaceLeft;
                     }
+
+                    playerState = player.State;
                     break;
+
                 case PlayerState.CrouchRight:
                     //Changes direction while crouching
                     if (kbState.IsKeyDown(leftMove) && !kbState.IsKeyDown(rightMove) && kbState.IsKeyDown(crouchMove))
@@ -163,6 +208,8 @@ namespace Terminal_Dusk.PlayerComponents
                     {
                         player.State = PlayerState.FaceRight;
                     }
+
+                    playerState = player.State;
                     break;
             }
 
@@ -182,6 +229,8 @@ namespace Terminal_Dusk.PlayerComponents
                         jumpSpeed = 0;
                         player.JumpingState = PlayerJumpingState.Falling;
                     }
+
+                    jumpState = player.JumpingState;
                     break;
 
                 case PlayerJumpingState.Jumping:
@@ -191,9 +240,7 @@ namespace Terminal_Dusk.PlayerComponents
                         player.JumpingState = PlayerJumpingState.Falling;
                     }
 
-                    //Would need to be edited to work with collision
-                    //Should be set distance above player
-                    if (player.Y != startHeight - (45 * scale))
+                    if (player.Y != playerManager.StartHeight - (45 * 3)) //Need to use proper scale variable
                     {
                         if (jumpSpeed < 15)
                         {
@@ -213,20 +260,20 @@ namespace Terminal_Dusk.PlayerComponents
                     //Keeps player a peak for a small amount of time
                     else
                     {
-                        jumpingCurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        playerManager.JumpingCurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                        if (jumpingCurrentTime >= jumpingCountDuration)
+                        if (playerManager.JumpingCurrentTime >= playerManager.JumpingCountDuration)
                         {
-                            jumpingCounter++;
+                            playerManager.JumpingCounter++;
                             //reset the timer to loop again
-                            jumpingCurrentTime -= jumpingCountDuration; // "use up" the time
+                            playerManager.JumpingCurrentTime -= playerManager.JumpingCountDuration; // "use up" the time
                         }
                         //if the counter is greater then our limit
                         //the pause has completed
-                        if (jumpingCounter >= 1) //Previously jumpingLimit
+                        if (playerManager.JumpingCounter >= 1) //Previously jumpingLimit
                         {
                             //reset the counter
-                            jumpingCounter = 0;
+                            playerManager.JumpingCounter = 0;
                             //continues movement
                             jumpSpeed = 2;
                             player.Y += jumpSpeed;
@@ -243,7 +290,7 @@ namespace Terminal_Dusk.PlayerComponents
                     //If it's farther than ground
                     {
                         //TODO: Find a proper way to stop. W/out player.Y statement sinks into ground
-                        player.Y = landingHeight;//Then set it on
+                        player.Y = playerManager.LandingHeight;//Then set it on
                         player.JumpingState = PlayerJumpingState.Standing;
                     }
                     break;
@@ -264,9 +311,11 @@ namespace Terminal_Dusk.PlayerComponents
                     else
                     {
                         //TODO: Find a proper way to stop. W/out player.Y statement sinks into ground
-                        player.Y = landingHeight;//Then set it on
+                        player.Y = playerManager.LandingHeight;//Then set it on
                         player.JumpingState = PlayerJumpingState.Standing;
                     }
+
+                    jumpState = player.JumpingState;
                     break;
             }
 
@@ -277,27 +326,33 @@ namespace Terminal_Dusk.PlayerComponents
                     {
                         player.AttackingState = PlayerAttackingState.IsAttacking;
                     }
+
+                    attackState = player.AttackingState;
                     break;
                 case PlayerAttackingState.IsAttacking:
 
-                    attackingCurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    playerManager.AttackingCurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                    if (attackingCurrentTime >= attackingCountDuration)
+                    if (playerManager.AttackingCurrentTime >= playerManager.AttackingCountDuration)
                     {
-                        attackingCounter++;
+                        playerManager.AttackingCounter++;
                         //reset the timer to loop again
-                        attackingCurrentTime -= attackingCountDuration; // "use up" the time
+                        playerManager.AttackingCurrentTime -= playerManager.AttackingCountDuration; // "use up" the time
                     }
                     //if the counter is greater then our limit
                     //the pause has completed
-                    if (attackingCounter >= attackingLimit)
+                    if (playerManager.AttackingCounter >= 1) //Previously attackingLimit
                     {
                         //reset the counter
-                        attackingCounter = 0;
+                        playerManager.AttackingCounter = 0;
                         player.AttackingState = PlayerAttackingState.IsNotAttacking;
                     }
+
+                    attackState = player.AttackingState;
                     break;
             }
+
+            prevKbState = kbState;
         }
 
         //A helper method to check single key press

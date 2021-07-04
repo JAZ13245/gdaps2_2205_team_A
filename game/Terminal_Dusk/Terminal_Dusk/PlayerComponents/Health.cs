@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Terminal_Dusk
+namespace Terminal_Dusk.PlayerComponents
 {
     class Health : GameObject
     {

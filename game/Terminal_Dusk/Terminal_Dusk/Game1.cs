@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
 using Terminal_Dusk.Environments;
+using Terminal_Dusk.PlayerComponents;
 using System.IO;
 
 namespace Terminal_Dusk
@@ -60,7 +61,7 @@ namespace Terminal_Dusk
         private float countDuration = 1f; //every  1s.
         private float currentTime = 0f;
 
-        //field for jumping
+        //fields for jumping
         private int jumpingCounter = 0;
         private int jumpingLimit = 1;
         private float jumpingCountDuration = 0.06f; //every  .06s.
@@ -96,11 +97,14 @@ namespace Terminal_Dusk
         //Invisible wall at the begining of the game 
         private CollisionBlock startWallBlock;
         private List<CollisionBlock> startWall;
+
+        //TODO: Both arrays need to be updated to be used properly.
         //bools for collision
         private bool topCollision;
         private bool leftCollision;
         private bool rightCollision;
         private bool bottomCollision;
+        private bool[] blockCollisionArray;
 
         //A scale for changing the size of the screen
         private int scale = 3;
@@ -113,8 +117,8 @@ namespace Terminal_Dusk
         private Keys crouchMove = Keys.S;
         private Keys upMove = Keys.W;
         private Keys attack = Keys.Space;
+        private Keys[] keysArray;
         private bool usingWASD = true;
-        private bool usingArrow = false;
 
         //FileIO
         private string levelFile = "..\\..\\..\\FileIO\\levelFile.txt";
@@ -134,6 +138,9 @@ namespace Terminal_Dusk
             _graphics.PreferredBackBufferWidth = 320 * scale;
             _graphics.PreferredBackBufferHeight = 180 * scale;
             _graphics.ApplyChanges();
+
+            //TODO: Update dpending on option selected.
+            keysArray = new Keys[5] { rightMove, leftMove, crouchMove, upMove, attack };
             base.Initialize();
         }
 
@@ -440,6 +447,7 @@ namespace Terminal_Dusk
 
 
                     player.Update(gameTime);
+                   
                     //Collision check
                     if (topCollision)
                     {
@@ -716,6 +724,7 @@ namespace Terminal_Dusk
                             break;
                     }
 
+                    //TODO: Can be added to player.Update
                     health.Update(gameTime, player.Health);
 
                     //TODO: Move to appropiate section of code if there is a better place.
@@ -897,12 +906,15 @@ namespace Terminal_Dusk
             environments.Add(envirConverter);
             LoadEnvironment(levelFile);
 
+            //TODO: Make a player.reset method
             //Player values
             player.Health = 5;
             //Stops red blinking
             player.DamageState = DamageState.CanTakeDamage;
             //Faces right
             player.State = PlayerState.FaceRight;
+            startHeight = GraphicsDevice.Viewport.Height - (47 * scale);
+
             currentState = GameState.MainMenu;
         }
         //helper method for GamePlayState
@@ -962,7 +974,6 @@ namespace Terminal_Dusk
             crouchMove = Keys.S;
             upMove = Keys.W;
             usingWASD = true;
-            usingArrow = false;
         }
 
         private void ChangeToArrows()
@@ -972,7 +983,6 @@ namespace Terminal_Dusk
             crouchMove = Keys.Down;
             upMove = Keys.Up;
             usingWASD = false;
-            usingArrow = true;
         }
 
         //methods for changing scale

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Terminal_Dusk.Managers
 {
-    //Holds the variables that only the player class needs to know and allows less culstered constructors
+    //Holds the variables that only the player class needs to know and allows less clustered constructors
     class PlayerVariableManager
     {
         //Fields
@@ -55,11 +55,6 @@ namespace Terminal_Dusk.Managers
         public void UpdateControls(Keys[] newKeys)
         {
             keysArray = newKeys;
-        }
-
-        public void UpdateCollision(bool[] newColl)
-        {
-            blockCollisionArray = newColl;
         }
     }
 }

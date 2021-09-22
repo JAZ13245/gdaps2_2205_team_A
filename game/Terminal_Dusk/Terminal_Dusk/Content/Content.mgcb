@@ -13,18 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin BasicBackground.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:BasicBackground.png
-
 #begin DirtWithGrassScale.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -37,36 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:DirtWithGrassScale.png
 
-#begin eye boi-1.png.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:eye boi-1.png.png
-
 #begin File.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:File.spritefont
-
-#begin gameoverScale.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:gameoverScale.png
 
 #begin gameoverScale.png
 /importer:TextureImporter
@@ -135,18 +99,6 @@
 /processorParam:TextureFormat=Color
 /build:newTitleScale.png
 
-#begin pixel_charTest.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:pixel_charTest.png
-
 #begin pixel_charTestScale.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -182,18 +134,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ShrubsScale.png
-
-#begin SkyBackground.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SkyBackground.png
 
 #begin SkyBackgroundScale.png
 /importer:TextureImporter
@@ -231,18 +171,6 @@
 /processorParam:TextureFormat=Color
 /build:SunScale.png
 
-#begin TestScroll.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:TestScroll.png
-
 #begin TestScrollScale.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -254,18 +182,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:TestScrollScale.png
-
-#begin TitleScreen1.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:TitleScreen1.png
 
 #begin TitleScreen1Scale.png
 /importer:TextureImporter

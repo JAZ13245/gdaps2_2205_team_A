@@ -316,6 +316,12 @@ namespace Terminal_Dusk
                     {
                         buttons[i].Update();
                     }
+                    //fixes some player respawn issues
+                    player.Y = GraphicsDevice.Viewport.Height - (47 * scale);
+                    topCollision = false;
+                    rightCollision = false;
+                    leftCollision = false;
+                    bottomCollision = false;
                     break;
 
                 case GameState.PauseMenu:
